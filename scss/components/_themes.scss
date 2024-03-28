@@ -1,0 +1,61 @@
+.theme-primary{
+    // background-color: $primaryColor;
+
+    p, a{
+        color: $white;
+    }
+
+    .section-title{
+        padding: 20px;
+        position: relative;
+
+        .sub-title{
+            font-size: 20px;
+            margin-top: 10px;
+        }
+    }
+}
+
+.theme-black{
+    background-color: $primaryColor;
+    p, a{
+        color: $white;
+    }
+
+    .card{
+        position: relative;
+        background-color: $fontColor;
+        cursor: pointer;
+    }
+
+    .card-title{
+        color: $white;
+    }
+
+    .section{
+        padding: 20px;
+    }
+
+    .accordion, 
+    .accordion-item, 
+    .accordion-header, 
+    .accordion-button{
+        background-color: inherit;
+        border: none;
+        outline: none;
+    }
+
+    .accordion-body{
+        color: $white;
+        font: 16px;
+       
+    }
+
+    .accordion-header{
+
+        button{
+            color: $white;
+            font-size: 20px;
+        }
+    }
+}

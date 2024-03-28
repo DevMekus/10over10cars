@@ -1,0 +1,312 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Patua+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&display=swap");
+.orange {
+  color: #f0be6e;
+}
+
+.greenColor {
+  color: rgb(166, 241, 166);
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  position: relative;
+}
+
+.fullwidth {
+  width: 100%;
+  position: relative;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  justify-content: center;
+}
+
+.align-center {
+  justify-content: center;
+}
+
+.sectionSpace {
+  margin-top: 10px;
+}
+
+.default-footer {
+  background-color: #272c37;
+  padding: 20px;
+  color: #F7F3E3;
+}
+.default-footer p, .default-footer a {
+  color: #F7F3E3;
+}
+.default-footer .footer-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.default-footer .footer-item a {
+  display: block;
+}
+.default-footer a:hover {
+  opacity: 0.8;
+}
+.default-footer .footer-title {
+  color: #f0be6e;
+}
+.default-footer .date-footer {
+  color: #F7F3E3;
+}
+
+header {
+  width: 100%;
+  height: 90vh;
+  position: relative;
+  background-image: url("../assets/images/header1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+header .header-inner {
+  width: 100%;
+  height: 580px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-title-area {
+  position: relative;
+  width: 70%;
+  margin: auto;
+  border-left: 20px solid #2D3142;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(5px);
+  padding: 40px;
+}
+.main-title-area h1 {
+  margin: 10px 0px;
+  line-height: 60px;
+  letter-spacing: 2px;
+  font-size: 60px;
+  color: #272c37;
+}
+.main-title-area span {
+  color: #F7F3E3;
+}
+.main-title-area .cta {
+  width: 100%;
+  margin-top: 20px;
+}
+.main-title-area .cta a {
+  width: 250px;
+  padding: 15px;
+}
+
+.tab-wrapper {
+  width: 100%;
+  position: relative;
+}
+.tab-wrapper .tabs-header {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.tab-wrapper .tabs-body {
+  width: 80%;
+  margin: auto;
+  position: relative;
+  margin-top: 50px;
+}
+.tab-wrapper .tabs-body .card-title {
+  color: #E9ECED;
+}
+
+.getStarted {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.getStarted h1 {
+  font-size: 75px;
+  line-height: 70px;
+  color: #F7F3E3;
+}
+.getStarted p {
+  font-size: 25px;
+}
+.getStarted .btn {
+  width: 250px;
+  margin-top: 40px;
+}
+
+.input-wrap {
+  width: 80%;
+  margin: auto;
+  position: relative;
+  display: flex;
+  gap: 10px;
+}
+.input-wrap input {
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  padding: 0px 30px;
+  font-size: 25px;
+}
+.input-wrap input::-moz-placeholder {
+  font-size: 25px;
+  letter-spacing: 2px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+.input-wrap input::placeholder {
+  font-size: 25px;
+  letter-spacing: 2px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+.input-wrap .btn {
+  font-size: 20px;
+}
+
+.previous_jobs {
+  border-top: 1px solid #51565e;
+  border-bottom: 1px solid #51565e;
+  padding: 40px;
+}
+.previous_jobs .icon {
+  font-size: 30px;
+  margin-right: 10px;
+}
+.previous_jobs p {
+  font-size: 20px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 500;
+  line-height: 34px;
+  color: #272c37;
+  font-style: normal;
+  font-family: "Patua One", serif;
+}
+
+p, a {
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  font-family: "Sawarabi Gothic", sans-serif;
+  line-height: 26px;
+  color: #F7F3E3;
+  text-decoration: none;
+  text-align: justify;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.nav-container {
+  width: 100%;
+  position: sticky;
+  top: 0px;
+  left: 0px;
+  padding: 20px;
+  z-index: 5;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.btn {
+  padding: 10px 28px;
+  font-size: 16px;
+  font-weight: 100;
+  cursor: pointer;
+  font-style: normal;
+  font-family: "Patua One", serif;
+  transition: all 0.38s ease-in-out;
+}
+
+.outline {
+  border: 2px solid #f0be6e;
+  color: #F7F3E3;
+}
+.outline:hover {
+  background-color: #f0be6e;
+  color: #2D3142;
+  opacity: 0.9;
+}
+
+.primary {
+  background-color: #f0be6e;
+  color: #F7F3E3;
+}
+.primary:hover {
+  background-color: #f0be6e;
+  color: #F7F3E3;
+  opacity: 0.9;
+}
+
+.theme-primary p, .theme-primary a {
+  color: #F7F3E3;
+}
+.theme-primary .section-title {
+  padding: 20px;
+  position: relative;
+}
+.theme-primary .section-title .sub-title {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.theme-black {
+  background-color: #2D3142;
+}
+.theme-black p, .theme-black a {
+  color: #F7F3E3;
+}
+.theme-black .card {
+  position: relative;
+  background-color: #51565e;
+  cursor: pointer;
+}
+.theme-black .card-title {
+  color: #F7F3E3;
+}
+.theme-black .section {
+  padding: 20px;
+}
+.theme-black .accordion,
+.theme-black .accordion-item,
+.theme-black .accordion-header,
+.theme-black .accordion-button {
+  background-color: inherit;
+  border: none;
+  outline: none;
+}
+.theme-black .accordion-body {
+  color: #F7F3E3;
+  font: 16px;
+}
+.theme-black .accordion-header button {
+  color: #F7F3E3;
+  font-size: 20px;
+}/*# sourceMappingURL=main.css.map */
