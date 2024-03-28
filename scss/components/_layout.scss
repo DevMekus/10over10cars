@@ -34,7 +34,7 @@ body{
 
 .default-footer{
     background-color: $headingsColor;
-    padding: 20px;
+    padding: 30px;
     color: $white;
 
     p, a{
@@ -62,6 +62,42 @@ body{
 
     .date-footer{
         color: $white;
+    }
+
+    .id-footer{      
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        
+    }
+
+    .socials{
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+       
+
+        .icon{
+            font-size: 30px;
+           
+        }
+    }
+
+    .newsletter{
+        width: 100%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+       
+        input{
+            width: 100%; 
+            border: none;
+            outline: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+        }
     }
 }
 
@@ -156,7 +192,8 @@ header{
     }
 
     p{
-        font-size: 25px;
+        font-size: 20px;
+        margin-top: 20px;
     }
 
     .btn{
@@ -200,7 +237,67 @@ header{
         font-size: 30px;
         margin-right: 10px;
     }
+
     p{
         font-size: 20px;
     }
+}
+
+.testimonial-carousel{
+    position: relative;
+    width: 100%;
+    height: 500px;
+
+    .testimony-item{
+        border-left: 10px solid $orange;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        width: 550px;
+        height: 400px;
+        position: absolute;
+        left: 30px;
+        top: 30px;
+        padding: 15px;
+
+       .contents{
+
+            .testimony{
+                font-size: 20px;
+                color: $black;
+            }
+       }
+
+    }
+
+
+    .carousel-1{
+        position: relative;
+        width: 100%;
+        height: 500px;
+        background-image: url("../assets/images/header1.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat; 
+    }
+
+    .carousel-2{
+        position: relative;
+        width: 100%;
+        height: 500px;
+        background-image: url("../assets/images/header2.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat; 
+    }
+
+    .carousel-3{
+        position: relative;
+        width: 100%;
+        height: 500px;
+        background-image: url("../assets/images/header3.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat; 
+    }
+
 }

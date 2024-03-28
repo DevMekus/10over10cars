@@ -1,11 +1,36 @@
 <footer class="default-footer">
     <div class="container">
         <div class="row">
-            <div class="col-sm-3">
-                <h1 class="card-title footer-title">
-                    <?php echo $site_name; ?>
-                </h1>
-                <p>We are building Africa's biggest vehicle data service.</p>
+            <div class="col-sm-3 id-footer">
+                <div class="fullwidth">
+                    <h1 class="card-title text-center footer-title">
+                        <?php echo $site_name; ?>
+                    </h1>
+                    <div class="sectionSpace">
+                        <p class="text-center">7 am - 6 pm EST Monday - Friday
+                            2035 NE 151st St. North Miami Beach, FL 33162 USA
+                        </p>
+                    </div>
+                </div>
+                <div class="sectionSpace socials">
+                    <a class="#" class="social-link">
+                        <span class="fab fa-facebook icon"></span>
+                    </a>
+                    <a class="#" class="social-link">
+                        <span class="fab fa-instagram icon"></span>
+                    </a>
+                    <a class="#" class="social-link">
+                        <span class="fab fa-twitter icon"></span>
+                    </a>
+                    <a class="#" class="social-link">
+                        <span class="fab fa-youtube icon"></span>
+                    </a>
+                </div>
+                <div class="sectionSpace newsletter">
+                    <h5 class="card-title text-center">Subscribe to Our Newsletter</h5>
+                    <input placeholder="Enter your email" />
+                    <button class="btn pill outline">Subscribe</button>
+                </div>
             </div>
             <div class="col-sm-3 footer-item">
                 <h5 class="card-title footer-title">Links</h5>

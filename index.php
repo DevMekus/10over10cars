@@ -97,7 +97,7 @@ include("header.php");
                     <section class="section">
                         <div class="row">
                             <div class="col-sm-6 getStarted">
-                                <h1>Ready to get started?</h1>
+                                <h1>Ready to <span class="orange">get started?</span></h1>
                                 <p>Learn about a vehicle, starting at just $1</p>
                                 <a href="#" class="btn outline">GET STARTED</a>
                             </div>
@@ -151,7 +151,7 @@ include("header.php");
                     <section class="section">
                         <div class="row">
                             <div class="col-sm-6 getStarted">
-                                <h1>Frequently Asked Questions</h1>
+                                <h1>Frequently <span class="orange">Asked</span> Questions</h1>
                             </div>
                             <div class="col-sm-6">
                                 <div class="card">
@@ -208,19 +208,7 @@ include("header.php");
                             </div>
                         </div>
                     </section>
-                    <section class="section">
-                        <div class="card2 fullwidth">
-                            <div class="card-body">
-                                <div class="section-title">
-                                    <h1 class="card-title text-center">Check your car and <span class="orange">save thousands of dollars</span></h1>
-                                </div>
-                                <div class="input-wrap sectionSpace">
-                                    <input type="text" placeholder="ENTER YOUR VIN NUMBER" class="fullwidth" />
-                                    <button class="btn outline">GET STARTED </button>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+
                     <section class="section">
                         <div class="previous_jobs">
                             <div class="row">
@@ -246,10 +234,130 @@ include("header.php");
                     <section class="section">
                         <div class="row">
                             <div class="col-sm-5 getStarted">
-                                <h1>What Customers Say </h1>
+                                <h1>What <span class="orange">Customers </span> Say</h1>
                                 <p>Diverse perspectives and genuine testimonials demonstrating the value of our services.</p>
                             </div>
-                            <div class="col-sm-7"></div>
+                            <div class="col-sm-7">
+                                <div class="testimonial-carousel">
+                                    <div id="carouselExample" class="carousel slide">
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <div class="carousel-1 testimony">
+                                                    <div class="testimony-wrapper testimony-item">
+                                                        <div class="image"></div>
+                                                        <div class="contents">
+                                                            <p class="testimony">
+                                                                "My first trial with VINinspect was very successful. It was the only company that reported front damage, airbag deployment, and showed evidence that the vehicle was a total loss on a 2015 Honda Civic. I ended up purchasing another car. I really appreciate the information that they provided as I almost made a huge mistake by buying a total loss vehicle. I Highly recommend them."
+                                                            </p>
+                                                            <h4 class="card-title">Kenneth Hobb</h4>
+                                                            <p class="location"><span class="orange bold">Enugu state</span>, Nigeria</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item">
+                                                <div class="carousel-2 testimony">
+                                                    <div class="testimony-wrapper testimony-item">
+                                                        <div class="image"></div>
+                                                        <div class="contents">
+                                                            <p class="testimony">
+                                                                "My first trial with VINinspect was very successful. It was the only company that reported front damage, airbag deployment, and showed evidence that the vehicle was a total loss on a 2015 Honda Civic. I ended up purchasing another car. I really appreciate the information that they provided as I almost made a huge mistake by buying a total loss vehicle. I Highly recommend them."
+                                                            </p>
+                                                            <h4 class="card-title">Princewill Ishekiri</h4>
+                                                            <p class="location"><span class="orange bold">Ogun state</span>, Nigeria</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item">
+                                                <div class="carousel-3 testimony">
+                                                    <div class="testimony-wrapper testimony-item">
+                                                        <div class="image"></div>
+                                                        <div class="contents">
+                                                            <p class="testimony">
+                                                                "My first trial with VINinspect was very successful. It was the only company that reported front damage, airbag deployment, and showed evidence that the vehicle was a total loss on a 2015 Honda Civic. I ended up purchasing another car. I really appreciate the information that they provided as I almost made a huge mistake by buying a total loss vehicle. I Highly recommend them."
+                                                            </p>
+                                                            <h4 class="card-title">Olatunde Jide</h4>
+                                                            <p class="location"><span class="orange bold">Lagos state</span>, Nigeria</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <div class="section-title">
+                            <p class="sub-title text-center">Still Looking for a Car?</p>
+                            <h1 class="card-title text-center">Make the process of <span class="orange">checking your car easy</span></h1>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="number">
+                                            <h1 class="orange">1</h1>
+                                            <div class="horizontal"></div>
+                                        </div>
+                                        <h4 class="card-title">Enter Your Car’s VIN</h4>
+                                        <p class="text-justify">
+                                            The VIN is the only thing you need to know. Your 17-digit VIN can be found in car documents.
+                                        </p>
+                                        <a href="#" class="card-link sectionSpace btn outline">Enter VIN Number</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="number">
+                                            <h1 class="orange">2</h1>
+                                            <div class="horizontal"></div>
+                                        </div>
+                                        <h4 class="card-title">Check Available Information</h4>
+                                        <p class="text-justify">
+                                            Report contains a vast amount of information! Just check it out!
+                                        </p>
+                                        <a href="#" class="card-link sectionSpace btn outline">View Sample Report</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="number">
+                                    <h1 class="orange">3</h1>
+                                    <div class="horizontal"></div>
+                                </div>
+                                <h4 class="card-title">Get Vehicle History Report</h4>
+                                <p class="text-justify">
+                                    Get detailed information, a full car history report, and make an informed decision about your purchase. We have the most convenient payment methods for you.
+                                </p>
+                                <a href="#" class="card-link sectionSpace btn outline">View Prices</a>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="section">
+                        <div class="card2 fullwidth">
+                            <div class="card-body">
+                                <div class="section-title">
+                                    <h1 class="card-title text-center">Check your car and <span class="orange">save thousands of dollars</span></h1>
+                                </div>
+                                <div class="input-wrap sectionSpace">
+                                    <input type="text" placeholder="ENTER YOUR VIN NUMBER" class="fullwidth" />
+                                    <button class="btn outline">GET STARTED </button>
+                                </div>
+                            </div>
                         </div>
                     </section>
                 </div>
