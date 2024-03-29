@@ -102,7 +102,7 @@ include("header.php");
                                 <a href="#" class="btn outline">GET STARTED</a>
                             </div>
                             <div class="col-sm-6">
-                                <img src="assets/getstarted.webp" />
+                                <img src="assets/getstarted.webp" class="img-fluid" alt="car" />
                             </div>
                         </div>
                     </section>

@@ -1,22 +1,3 @@
-<!-- <nav class="nav-container theme-primary">
-    <div class="nav-inner container">
-        <div class="brand">
-            <a href="index.php" class="brand-title"><?php echo $site_name; ?>
-            </a>
-        </div>
-        <div class="nav-links">
-            <div class="nav-link-wrap"><a href="#" class="nav-link">About</a></div>
-            <div class="nav-link-wrap"><a href="#" class="nav-link">Product & services</a></div>
-            <div class="nav-link-wrap"><a href="#" class="nav-link">Faqs & Samples</a></div>
-            <div class="nav-link-wrap"><a href="#" class="nav-link">Contact us</a></div>
-        </div>
-        <div class="auth">
-            <a href="auth/login.php" class="btn outline btn-sm nav-btn">Sign in</a>
-        </div>
-    </div>
-
-</nav> -->
-
 <nav class="navbar navbar-expand-lg nav-container  theme-primary">
     <div class="container">
         <a class="navbar-brand " href="#"><?php echo $site_name; ?></a>

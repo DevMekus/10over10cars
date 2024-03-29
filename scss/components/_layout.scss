@@ -27,6 +27,14 @@ body{
     justify-content: center;
 }
 
+.flex-end{
+    justify-content: flex-end;
+}
+
+.gap_10{
+    gap: 10px;
+}
+
 
 .sectionSpace{
     margin-top: 10px;
@@ -203,7 +211,7 @@ header{
 }
 
 .input-wrap{
-    width: 80%;
+    width: 60%;
     margin: auto;
     position: relative;
     display: flex;
@@ -213,11 +221,11 @@ header{
         border-radius: 10px;
         outline: none;
         border: none;
-        padding: 0px 30px;
-        font-size: 25px;
+        padding: 0px 25px;
+        font-size: 20px;
 
         &::placeholder{
-            font-size: 25px;
+            font-size: 20px;
             letter-spacing: 2px;
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         }
