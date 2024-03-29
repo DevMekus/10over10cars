@@ -1,0 +1,191 @@
+.dash-wrap {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    gap: 0px;
+
+
+    .sidebar-section{
+        width: 300px;
+        height: 100vh;        
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        background-color: $fontColor;
+
+    }
+
+    .content-section{
+        width: 100%;
+        height: 100%;
+        min-height: 100vh;
+        max-height: inherit;
+        margin-left: 300px;
+    }
+}
+
+.outline-input{
+    width: 100%;
+    border: 1px solid $orange;
+    outline: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+
+    &:focus{
+        box-shadow: $white 0px 8px 24px;
+    }
+}
+
+.sidebar{
+    width: 100%;
+    position: relative;
+}
+
+.filterbox{
+    width: 80%;
+    margin: auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    // border: 1px solid $white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    background-color: white;
+
+    .filter{
+        width: 200px;
+    }
+
+    p{
+        font-size: 14px;
+        margin-bottom: -2px;
+        font-weight: bold;
+        z-index: 4;
+    }
+
+    select{
+        width: 100%;
+        border: none;
+        padding: 10px;
+
+        .selected{
+            font-weight: bold;
+        }
+    }
+}
+
+.cars-select{
+    margin-top: 50px;
+}
+
+.buy-filter{
+    width: 100%;
+    padding: 10px;
+    background-color: #2d3142d2;
+    margin-top: 20px;
+
+    .card-title{
+        color: white;
+    }
+
+    select{
+        padding: 10px;
+        border-radius: 10px;
+    }
+}
+
+
+.slidecontainer {
+    width: 100%; /* Width of the outside container */
+  }
+  
+  /* The slider itself */
+  .slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100%; /* Full-width */
+    height: 25px; /* Specified height */
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+  }
+  
+  /* Mouse-over effects */
+  .slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+  }
+  
+  /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #04AA6D; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #04AA6D; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+
+  .product-wrapper{
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+   
+
+    .product{
+        width: 30%;      
+        position: relative;
+        //border: 1px solid $orange;
+        border-radius: 10px;
+        cursor: pointer;
+        &:hover{
+            box-shadow: rgba(216, 217, 217, 0.2) 0px 8px 24px;
+            border: 1px solid $orange;
+        }
+
+        .section{
+            width: 100%;
+            height: 220px;            
+        }
+
+        .information{
+            padding: 10px;
+        }
+
+        .icon-wrap{
+            width: 100%;
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: -20px;
+
+        }
+
+        button{
+            margin-top: -10px;
+        }
+        
+    }
+}
+
+.image-carousel{
+    position: relative;
+    background-image: url("../assets/images/header1.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; 
+}

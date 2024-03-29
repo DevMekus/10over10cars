@@ -49,6 +49,10 @@ body {
   gap: 10px;
 }
 
+.space-between {
+  justify-content: space-between;
+}
+
 .sectionSpace {
   margin-top: 10px;
 }
@@ -84,14 +88,6 @@ body {
   flex-direction: column;
   gap: 10px;
 }
-.default-footer .socials {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-}
-.default-footer .socials .icon {
-  font-size: 30px;
-}
 .default-footer .newsletter {
   width: 100%;
   position: relative;
@@ -105,6 +101,20 @@ body {
   outline: none;
   padding: 10px 20px;
   border-radius: 30px;
+}
+
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  position: relative;
+}
+.socials .icon {
+  font-size: 25px;
+  cursor: pointer;
+}
+.socials .icon:hover {
+  opacity: 0.9;
 }
 
 header {
@@ -394,16 +404,40 @@ p, a {
 
 .primary {
   background-color: #f0be6e;
-  color: #F7F3E3;
+  color: #2D3142;
+  opacity: 0.9;
+  font-size: 18px;
 }
 .primary:hover {
   background-color: #f0be6e;
-  color: #F7F3E3;
-  opacity: 0.9;
+  color: #2D3142;
+  opacity: 1;
 }
 
 .theme-primary p, .theme-primary a {
-  color: #F7F3E3;
+  color: #2D3142;
+}
+.theme-primary .card {
+  position: relative;
+  background-color: #E9ECED;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border: none;
+}
+.theme-primary .card p, .theme-primary .card a {
+  color: #2D3142;
+}
+.theme-primary .card:hover {
+  box-shadow: rgba(216, 217, 217, 0.2) 0px 8px 24px;
+}
+.theme-primary .card .card-title {
+  color: #2D3142;
+}
+.theme-primary .card .outline {
+  color: #2D3142;
+}
+.theme-primary .card-title {
+  color: #2D3142;
 }
 .theme-primary .section-title {
   padding: 20px;
@@ -507,4 +541,174 @@ p, a {
   font-size: 18px;
   color: #F7F3E3;
   margin-bottom: 5px;
+}
+
+.dash-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  gap: 0px;
+}
+.dash-wrap .sidebar-section {
+  width: 300px;
+  height: 100vh;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  background-color: #51565e;
+}
+.dash-wrap .content-section {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  max-height: inherit;
+  margin-left: 300px;
+}
+
+.outline-input {
+  width: 100%;
+  border: 1px solid #f0be6e;
+  outline: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+.outline-input:focus {
+  box-shadow: #F7F3E3 0px 8px 24px;
+}
+
+.sidebar {
+  width: 100%;
+  position: relative;
+}
+
+.filterbox {
+  width: 80%;
+  margin: auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: white;
+}
+.filterbox .filter {
+  width: 200px;
+}
+.filterbox p {
+  font-size: 14px;
+  margin-bottom: -2px;
+  font-weight: bold;
+  z-index: 4;
+}
+.filterbox select {
+  width: 100%;
+  border: none;
+  padding: 10px;
+}
+.filterbox select .selected {
+  font-weight: bold;
+}
+
+.cars-select {
+  margin-top: 50px;
+}
+
+.buy-filter {
+  width: 100%;
+  padding: 10px;
+  background-color: rgba(45, 49, 66, 0.8235294118);
+  margin-top: 20px;
+}
+.buy-filter .card-title {
+  color: white;
+}
+.buy-filter select {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.slidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none; /* Override default CSS styles */
+  -moz-appearance: none;
+       appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */ /* 0.2 seconds transition on hover */
+  transition: opacity 0.2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #04AA6D; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #04AA6D; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.product-wrapper {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.product-wrapper .product {
+  width: 30%;
+  position: relative;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.product-wrapper .product:hover {
+  box-shadow: rgba(216, 217, 217, 0.2) 0px 8px 24px;
+  border: 1px solid #f0be6e;
+}
+.product-wrapper .product .section {
+  width: 100%;
+  height: 220px;
+}
+.product-wrapper .product .information {
+  padding: 10px;
+}
+.product-wrapper .product .icon-wrap {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -20px;
+}
+.product-wrapper .product button {
+  margin-top: -10px;
+}
+
+.image-carousel {
+  position: relative;
+  background-image: url("../assets/images/header1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }/*# sourceMappingURL=main.css.map */

@@ -20,18 +20,19 @@
 }
 
 .pill{
-    border-radius: 30px;
-     
+    border-radius: 30px;     
 }
 
 
 .primary{
     background-color: $orange;
-    color: $white;   
+    color: $primaryColor; 
+    opacity: .9;  
+    font-size: 18px;
 
     &:hover{
         background-color: $orange;
-        color: $white;
-        opacity: .9;
+        color: $primaryColor;
+        opacity: 1;
     }
 }

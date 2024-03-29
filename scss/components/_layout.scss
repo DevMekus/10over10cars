@@ -35,6 +35,9 @@ body{
     gap: 10px;
 }
 
+.space-between{
+    justify-content: space-between;
+}
 
 .sectionSpace{
     margin-top: 10px;
@@ -80,17 +83,7 @@ body{
         
     }
 
-    .socials{
-        display: flex;
-        justify-content: center;
-        gap: 25px;
-       
-
-        .icon{
-            font-size: 30px;
-           
-        }
-    }
+   
 
     .newsletter{
         width: 100%;
@@ -105,6 +98,23 @@ body{
             outline: none;
             padding: 10px 20px;
             border-radius: 30px;
+        }
+    }
+}
+
+.socials{
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    position: relative;
+   
+
+    .icon{
+        font-size: 25px;  
+        cursor: pointer;
+        
+        &:hover{
+            opacity: .9;
         }
     }
 }

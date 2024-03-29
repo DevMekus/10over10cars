@@ -1,8 +1,38 @@
 .theme-primary{
-    // background-color: $primaryColor;
+
 
     p, a{
-        color: $white;
+        color: $primaryColor;
+    }
+
+    .card {
+        position: relative;
+        background-color: $antiFlash;
+        cursor: pointer;
+        transition: all .30s ease-in-out;
+        border: none;
+
+        p, a{
+            color: $primaryColor;
+        }
+
+        &:hover{
+            box-shadow: rgba(216, 217, 217, 0.2) 0px 8px 24px;
+            //border: 1px solid $orange;
+        }
+
+        .card-title{
+            color: $primaryColor;
+        }
+
+        .outline{
+            color: $primaryColor;
+        }
+    }
+  
+
+    .card-title{
+        color: $primaryColor;
     }
 
     .section-title{
