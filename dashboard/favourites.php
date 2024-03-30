@@ -1,5 +1,5 @@
 <?php
-$title = "Search";
+$title = "Favourites";
 include("header.php");
 ?>
 <main class="dash-wrap theme-primary">
@@ -13,65 +13,31 @@ include("header.php");
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="page-title sectionSpace">
-                            <h1 class="card-title">Car searche</h1>
+                            <h1 class="card-title">My Favorites</h1>
                             <nav class="sectionSpace" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="./index.php">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Search</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Favorites</li>
                                 </ol>
                             </nav>
                         </div>
 
                         <div class="sectionSpace">
-                            <h2 class="card-title">My Saved searches</h2>
+                            <!-- <h2 class="card-title">Latest Reports</h2> -->
                             <div class="card sectionSpace">
                                 <div class="card-body">
-                                    <h5>Are you looking to purchase a Pre-owned or Used car?</h5>
-                                    <p>Find the right car for the right price, connect with dealers, and get detailed vehicle history, all in a single place.</p>
-                                    <div class="btn-group sectionSpace" role="group" aria-label="Basic mixed styles example">
-                                        <button type="button" class="btn primary">Search by Make</button>
-                                        <button type="button" class="btn outline">Search by Dealer</button>
-                                    </div>
-                                    <div class="filterbox">
-                                        <div class="filter">
-                                            <p>Make</p>
-                                            <select>
-                                                <option class="selected">All makes</option>
-                                                <option>1</option>
-                                                <option>1</option>
-                                            </select>
-                                        </div>
-                                        <div class="filter">
-                                            <p>Model</p>
-                                            <select>
-                                                <option class="selected">All models</option>
-                                                <option>1</option>
-                                                <option>1</option>
-                                            </select>
-                                        </div>
-                                        <div class="filter">
-                                            <p>Max price</p>
-                                            <select>
-                                                <option class="selected">All Prices</option>
-                                                <option>1</option>
-                                                <option>1</option>
-                                            </select>
-                                        </div>
-                                        <div class="filter">
-                                            <p>Location</p>
-                                            <select>
-                                                <option class="selected" selected>All States</option>
-                                                <option>1</option>
-                                                <option>1</option>
-                                            </select>
-                                        </div>
-                                        <button class="btn outline">Search</button>
-                                    </div>
-
+                                    <h5>No saved cars.</h5>
+                                    <p>Thinking to buy a car? Saving your search helps you:</p>
+                                    <ul>
+                                        <li>Gather your favorite items</li>
+                                        <li>Contrast features</li>
+                                        <li>Keep track of availability</li>
+                                    </ul>
+                                    <p>To add a car, click “heart“ on any specific search result or car ad page.</p>
+                                    <a href="./products.php" class="btn outline">Start Search</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="filter-result sectionSpace"></div>
                         <div class="sectionSpace">
                             <h2 class="card-title">Don't know what are you looking for? Start with type</h2>
 

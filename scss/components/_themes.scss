@@ -1,53 +1,54 @@
-.theme-primary{
+// .theme-primary{
 
 
-    p, a{
-        color: $primaryColor;
-    }
+//     p, a{
+//         color: $primaryColor;
+//     }
 
-    .card {
-        position: relative;
-        background-color: $antiFlash;
-        cursor: pointer;
-        transition: all .30s ease-in-out;
-        border: none;
+//     .card {
+//         position: relative;
+//         background-color: $antiFlash;
+//         cursor: pointer;
+//         transition: all .30s ease-in-out;
+//         border: none;
 
-        p, a{
-            color: $primaryColor;
-        }
+//         p, a{
+//             color: $primaryColor;
+//         }
 
-        &:hover{
-            box-shadow: rgba(216, 217, 217, 0.2) 0px 8px 24px;
-            //border: 1px solid $orange;
-        }
+//         &:hover{
+//             box-shadow: rgba(216, 217, 217, 0.2) 0px 8px 24px;
+//             //border: 1px solid $orange;
+//         }
 
-        .card-title{
-            color: $primaryColor;
-        }
+//         .card-title{
+//             color: $primaryColor;
+//         }
 
-        .outline{
-            color: $primaryColor;
-        }
-    }
+//         .outline{
+//             color: $primaryColor;
+//         }
+//     }
   
 
-    .card-title{
-        color: $primaryColor;
-    }
+//     .card-title{
+//         color: $primaryColor;
+//     }
 
-    .section-title{
-        padding: 20px;
-        position: relative;
+//     .section-title{
+//         padding: 20px;
+//         position: relative;
 
-        .sub-title{
-            font-size: 20px;
-            margin-top: 10px;
-        }
-    }
-}
+//         .sub-title{
+//             font-size: 20px;
+//             margin-top: 10px;
+//         }
+//     }
+// }
 
 .theme-black{
     background-color: $primaryColor;
+
     p, a{
         color: $white;
     }
@@ -58,9 +59,17 @@
         cursor: pointer;
         transition: all .30s ease-in-out;
 
+        p, a{
+            color: $white;
+        }
+
         &:hover{
             box-shadow: rgba(216, 217, 217, 0.2) 0px 8px 24px;
             border: 1px solid $orange;
+        }
+
+        .card-title{
+            color: $white;
         }
     }
 

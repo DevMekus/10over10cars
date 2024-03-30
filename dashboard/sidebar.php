@@ -1,44 +1,62 @@
 <div class="sidebar">
-    <img src="../assets/getstarted.webp" class="img-fluid" alt="car" />
-
-    <div class="buy-filter">
-        <div class="filter-inner">
-            <h5 class="card-title">2,572,695 found</h5>
-            <form>
-                <div class="form-wrap">
-                    <label>Make</label>
-                    <select class="form-item">
-                        <option class="selected">All makes</option>
-                        <option>1</option>
-                        <option>1</option>
-                    </select>
-                </div>
-                <div class="form-wrap">
-                    <label>Model</label>
-                    <select class="form-item">
-                        <option class="selected">All makes</option>
-                        <option>1</option>
-                        <option>1</option>
-                    </select>
-                </div>
-                <div class="form-wrap">
-                    <label>Location</label>
-                    <select class="form-item">
-                        <option class="selected">All makes</option>
-                        <option>1</option>
-                        <option>1</option>
-                    </select>
-                </div>
-                <div class="form-wrap">
-                    <div class="f fullwidth flex space-between">
-                        <label>Price </label>
-                        <h3 class="card-title">$ <span id="demo"></span></h3>
-                    </div>
-                    <div class="slidecontainer">
-                        <input type="range" min="1000" max="10000" value="50" class="slider" id="myRange">
-                    </div>
-                </div>
-            </form>
+    <div class="sectionSpace"><img src="../assets/getstarted.webp" class="img-fluid" alt="car" /> </div>
+    <div class="sidebar-inner sectionSpace">
+        <div class="link-wrap active-link">
+            <div class="icon-div">
+                <i class="fas fa-dashboard icon"></i>
+            </div>
+            <div class="link-div">
+                <a href="./index.php" class="dash-link">Dashboard</a>
+            </div>
+        </div>
+        <div class="link-wrap">
+            <div class="icon-div">
+                <i class="fas fa-file icon"></i>
+            </div>
+            <div class="link-div">
+                <a href="./report.php" class="dash-link">My Reports</a>
+            </div>
+        </div>
+        <div class="link-wrap">
+            <div class="icon-div">
+                <i class="fas fa-exchange icon"></i>
+            </div>
+            <div class="link-div">
+                <a href="./transactions.php" class="dash-link">Transactions</a>
+            </div>
+        </div>
+        <div class="link-wrap">
+            <div class="icon-div">
+                <i class="fas fa-search icon"></i>
+            </div>
+            <div class="link-div">
+                <a href="./search.php" class="dash-link">Search</a>
+            </div>
+        </div>
+        <div class="link-wrap">
+            <div class="icon-div">
+                <i class="fas fa-heart icon"></i>
+            </div>
+            <div class="link-div">
+                <a href="./favourites.php" class="dash-link">Favorite</a>
+            </div>
+        </div>
+        <div class="link-wrap">
+            <div class="icon-div">
+                <i class="fas fa-feed icon"></i>
+            </div>
+            <div class="link-div">
+                <a href="#" class="dash-link">Subscription</a>
+            </div>
+        </div>
+        <div class="link-wrap">
+            <div class="icon-div">
+                <i class="fas fa-cog icon"></i>
+            </div>
+            <div class="link-div">
+                <a href="#" class="dash-link">Settings</a>
+            </div>
         </div>
     </div>
+
 </div>
