@@ -104,3 +104,26 @@
         }
     }
 }
+
+.border-top-primary{
+    border-top: 1px solid $primaryColor;
+}
+
+.border-bottom-primary{
+    border-bottom: 1px solid $primaryColor;
+}
+
+.padding-default{
+    padding: 10px;
+}
+
+.card-plain{
+    background-color: none;
+    border: 1px solid rgb(194, 193, 193);
+    border-radius: 10px;
+    background-color: white;
+
+    .card-body{
+        padding: 10px;
+    }
+}

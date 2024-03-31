@@ -5,6 +5,10 @@
   color: #f0be6e;
 }
 
+.redColor {
+  color: red;
+}
+
 .greenColor {
   color: rgb(166, 241, 166);
 }
@@ -43,6 +47,10 @@ body {
 
 .flex-end {
   justify-content: flex-end;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
 }
 
 .gap_10 {
@@ -324,6 +332,10 @@ p, a {
   font-weight: bold;
 }
 
+.p-20 {
+  font-size: 20px;
+}
+
 .nav-container {
   width: 100%;
   position: sticky;
@@ -458,6 +470,28 @@ p, a {
 .theme-black .accordion-header button {
   color: #F7F3E3;
   font-size: 20px;
+}
+
+.border-top-primary {
+  border-top: 1px solid #2D3142;
+}
+
+.border-bottom-primary {
+  border-bottom: 1px solid #2D3142;
+}
+
+.padding-default {
+  padding: 10px;
+}
+
+.card-plain {
+  background-color: none;
+  border: 1px solid rgb(194, 193, 193);
+  border-radius: 10px;
+  background-color: white;
+}
+.card-plain .card-body {
+  padding: 10px;
 }
 
 .auth-wrap {
@@ -614,7 +648,7 @@ p, a {
   color: #F7F3E3;
 }
 .sidebar a {
-  font-size: 18px;
+  font-size: 16px;
   color: #F7F3E3;
 }
 
@@ -738,4 +772,53 @@ p, a {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.icon-big {
+  font-size: 20px;
+}
+
+.list-group .list-group-item {
+  border-bottom: none;
+}
+.list-group .list-group-item:hover {
+  background-color: #f0be6e;
+}
+
+.report-summary {
+  width: 100%;
+  position: relative;
+}
+.report-summary .summary-wrap {
+  width: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 10px;
+}
+.report-summary .summary-wrap:hover {
+  background-color: #E9ECED;
+}
+.report-summary .summary {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+}
+.report-summary .summary .info {
+  line-height: 2px;
+}
+.report-summary .summary p {
+  margin-top: -10px;
+  color: grey;
+  opacity: 0.8;
+}
+.report-summary .summary span {
+  font-size: 25px;
+  color: grey;
+  opacity: 0.8;
 }/*# sourceMappingURL=main.css.map */

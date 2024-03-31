@@ -7,7 +7,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item nav-link-wrap">
-                    <a class="nav-link active" aria-current="page" href="#">Sample Report</a>
+                    <a class="nav-link active" aria-current="page" href="sample-report.php">Sample Report</a>
                 </li>
                 <li class="nav-item nav-link-wrap">
                     <a class="nav-link" href="report.php">Vin Decoder</a>
@@ -31,7 +31,7 @@
                 </li>
 
                 <li class="nav-item nav-link-wrap">
-                    <a class="nav-link" href="./products.php">Cars for sale</a>
+                    <a class="nav-link" href="./products.php">Cars for sale <span class="badge bg-success">new</span></a>
                 </li>
 
             </ul>
