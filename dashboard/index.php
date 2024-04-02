@@ -94,6 +94,6 @@ include("header.php");
                 </div>
             </div>
         </section>
+        <?php include("footer.php");  ?>
     </section>
 </main>
-<?php include("footer.php");  ?>

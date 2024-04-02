@@ -41,20 +41,30 @@
                 <a href="./favourites.php" class="dash-link">Favorite</a>
             </div>
         </div>
-        <div class="link-wrap">
+        <!-- <div class="link-wrap">
             <div class="icon-div">
                 <i class="fas fa-feed icon"></i>
             </div>
             <div class="link-div">
-                <a href="#" class="dash-link">Subscription</a>
+                <a href="subscription.php" class="dash-link">Subscription</a>
             </div>
-        </div>
+        </div> -->
         <div class="link-wrap">
             <div class="icon-div">
                 <i class="fas fa-cog icon"></i>
             </div>
             <div class="link-div">
-                <a href="#" class="dash-link">Settings</a>
+                <a href="settings.php" class="dash-link">Settings</a>
+            </div>
+        </div>
+        <div class="bottom-sidebar">
+            <div class="link-wrap">
+                <div class="icon-div">
+                    <i class="fas fa-warning icon"></i>
+                </div>
+                <div class="link-div">
+                    <a href="report-theft.php" class="dash-link">Report Theft</a>
+                </div>
             </div>
         </div>
     </div>

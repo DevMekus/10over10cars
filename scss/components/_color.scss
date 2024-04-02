@@ -1,4 +1,5 @@
-$primaryColor: #2D3142;
+// $primaryColor: #2D3142;
+$primaryColor: #191919;
 $white : #F7F3E3;
 
 
@@ -8,7 +9,7 @@ $antiFlash: #E9ECED;
 $fontColor:#51565e;
 $headingsColor: #272c37;
 $greyColor:rgb(250, 247, 247);
-$orange :#f0be6e;
+$orange :#FBC703;
 $black:black;
 
 
@@ -20,10 +21,29 @@ $black:black;
     color: red;
 }
 
+.darkgreenColor{
+    color: rgb(32, 145, 32);
+}
+
 .greenColor{
     color: rgb(166, 241, 166);
 }
 
+.blueColor{
+    color: blue;
+}
+
 .whiteColor{
     color: $white;
+}
+
+.bg-antiFlash{
+    background-color: $antiFlash;
+}
+
+.bg-grey{
+    background-color: $greyColor;
+    p, a{
+        color: #191919;
+    }
 }

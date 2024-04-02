@@ -1,11 +1,11 @@
-<footer class="default-footer ">
+<footer class="default-footer">
     <div class="container">
         <div class="row">
             <div class="col-sm-3 id-footer">
                 <div class="fullwidth">
-                    <h1 class="card-title text-center footer-title">
-                        <?php echo $site_name; ?>
-                    </h1>
+                    <a class="navbar-brand bold" href="#">
+                        <img src="assets/logo/logo-white-edit.jpg" class="img-fluid logo-img" alt="logo" />
+                    </a>
                     <div class="sectionSpace">
                         <p class="text-center">7 am - 6 pm EST Monday - Friday
                             2035 NE 151st St. North Miami Beach, FL 33162 USA

@@ -57,6 +57,26 @@
         }
     }
 
+    textarea{
+        width: 100%;
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        font-weight: 400;
+        font-style: normal;
+        font-family: "Sawarabi Gothic", sans-serif;
+        line-height: 26px;
+
+
+        &:focus{
+            //box-shadow: $white 0px 5px 15px;
+            border: 1px solid $white;
+            box-shadow: $white 0px 2px 8px 0px;
+        }
+    }
+
     label{
         font-size: 18px;
         color: $white;

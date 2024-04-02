@@ -127,3 +127,21 @@
         padding: 10px;
     }
 }
+
+.card-blue{
+    background-color: blue;
+
+    .card-title{
+        color: white;
+    }
+}
+
+.section-title{
+    padding: 20px;
+    position: relative;
+
+    .sub-title{
+        font-size: 20px;
+        margin-top: 10px;
+    }
+}

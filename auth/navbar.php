@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg nav-container  theme-primary">
     <div class="container">
-        <a class="navbar-brand" href="../index.php"><?php echo $site_name; ?></a>
+        <a class="navbar-brand" href="../index.php">
+            <img src="../assets/logo/logo-black-edit.jpg" class="img-fluid logo-img" alt="logo" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

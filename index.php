@@ -298,10 +298,8 @@ include("header.php");
                         </div>
                     </section>
                     <section>
-                        <div class="section-title">
-                            <p class="sub-title text-center">Still Looking for a Car?</p>
+                        <div class="section-title">                            
                             <h1 class="card-title text-center">Make the process of <span class="orange">checking your car easy</span></h1>
-
                         </div>
                         <div class="row">
                             <div class="col-sm-4">

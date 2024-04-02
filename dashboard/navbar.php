@@ -1,6 +1,8 @@
 <nav class="navbar navbar-expand-lg nav-container nav-shadow  theme-primary">
     <div class="container">
-        <a class="navbar-brand bold" href="#"><?php echo $site_name; ?></a>
+        <a class="navbar-brand bold" href="#">
+            <img src="../assets/logo/logo-white-edit.jpg" class="img-fluid logo-img" alt="logo" />
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -10,13 +12,13 @@
                     <a class="nav-link active" aria-current="page" href="sample-report.php">Sample Report</a>
                 </li>
                 <li class="nav-item nav-link-wrap">
-                    <a class="nav-link" href="report.php">Vin Decoder</a>
+                    <a class="nav-link" href="vin-decoder.php">Vin Decoder</a>
                 </li>
 
                 <li class="nav-item nav-link-wrap">
-                    <a class="nav-link" href="transactions.php">For Dealers</a>
+                    <a class="nav-link" href="dealers.php">For Dealers</a>
                 </li>
-                <li class="nav-item dropdown nav-link-wrap">
+                <!-- <li class="nav-item dropdown nav-link-wrap">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Our Services
                     </a>
@@ -28,7 +30,7 @@
                         </li>
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
-                </li>
+                </li> -->
 
                 <li class="nav-item nav-link-wrap">
                     <a class="nav-link" href="./products.php">Cars for sale <span class="badge bg-success">new</span></a>
