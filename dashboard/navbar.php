@@ -9,36 +9,48 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item nav-link-wrap">
-                    <a class="nav-link active" aria-current="page" href="sample-report.php">Sample Report</a>
+                    <a class="nav-link active" aria-current="page" href="./index.php">Dashboard</a>
                 </li>
                 <li class="nav-item nav-link-wrap">
-                    <a class="nav-link" href="vin-decoder.php">Vin Decoder</a>
+                    <a class="nav-link" aria-current="page" href="./report.php">My Reports</a>
+                </li>
+                <li class="nav-item nav-link-wrap">
+                    <a class="nav-link" href="./transactions.php">Transactions</a>
                 </li>
 
                 <li class="nav-item nav-link-wrap">
-                    <a class="nav-link" href="dealers.php">For Dealers</a>
+                    <a class="nav-link" href="./favourites.php">Favorite</a>
                 </li>
-                <!-- <li class="nav-item dropdown nav-link-wrap">
+                <li class="nav-item nav-link-wrap">
+                    <a class="nav-link" href="./search.php">Search</a>
+                </li>
+                <li class="nav-item dropdown nav-link-wrap">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Our Services
+                        Services
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="nav-link-wraps"><a class="dropdown-item" href="search.php">Search car</a></li>
-                        <li class="nav-link-wraps"><a class="dropdown-item" href="favourites.php">My favourites</a></li>
+                        <li class="nav-link-wraps"><a class="dropdown-item" href="./sample-report.php">Sample Report</a></li>
+                        <li class="nav-link-wraps"><a class="dropdown-item" href="./vin-decoder.php">Vin Decoder</a></li>
+                        <li class="nav-link-wraps"><a class="dropdown-item" href="./report-theft.php">Report Theft</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><a class="dropdown-item" href="./dealers.php">For Dealers</a></li>
+                        <li><a class="dropdown-item" href="./settings.php">Settings</a></li>
                     </ul>
-                </li> -->
+                </li>
 
                 <li class="nav-item nav-link-wrap">
                     <a class="nav-link" href="./products.php">Cars for sale <span class="badge bg-success">new</span></a>
                 </li>
 
             </ul>
-            <form class="d-flex" role="search">
-                <a href="#" class="btn outline btn-sm nav-btn">Logout</a>
+            <form class="flex align-center gap_10" role="search">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onclick="toggleTheme()">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Dark theme</label>
+                </div>
+                <a href="#" class="btn danger btn-sm nav-btn">Logout</a>
             </form>
 
         </div>

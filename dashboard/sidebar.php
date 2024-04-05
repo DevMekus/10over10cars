@@ -14,7 +14,7 @@
                 <i class="fas fa-file icon"></i>
             </div>
             <div class="link-div">
-                <a href="./report.php" class="dash-link">My Reports</a>
+                <a href="./report.php" class="dash-link">Reports</a>
             </div>
         </div>
         <div class="link-wrap">

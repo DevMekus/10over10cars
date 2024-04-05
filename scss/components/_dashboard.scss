@@ -1,127 +1,5 @@
-.dash-wrap {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    gap: 0px;
-
-    
-    p, a{
-        color: $primaryColor;
-    }
-
-    .card {
-        position: relative;
-        background-color: $antiFlash;
-        cursor: pointer;
-        transition: all .30s ease-in-out;
-        border: none;
-
-        p, a{
-            color: $primaryColor;
-        }
-
-        &:hover{
-            box-shadow: rgba(216, 217, 217, 0.2) 0px 8px 24px;
-            //border: 1px solid $orange;
-        }
-
-        .card-title{
-            color: $primaryColor;
-        }
-
-        .outline{
-            color: $primaryColor;
-        }
-    }
-  
-
-    .card-title{
-        color: $primaryColor;
-    }
-
-    .section-title{
-        padding: 20px;
-        position: relative;
-
-        .sub-title{
-            font-size: 20px;
-            margin-top: 10px;
-        }
-    }
-
-
-    .sidebar-section{
-        width: 300px;
-        height: 100vh;        
-        position: fixed;
-        left: 0px;
-        top: 0px;
-        background-color: $fontColor;
-
-    }
-
-    .content-section{
-        width: 100%;
-        height: 100%;
-        min-height: 100vh;
-        max-height: inherit;
-        margin-left: 300px;
-    }
-}
-
-.outline-input{
-    width: 100%;
-    border: 1px solid $orange;
-    outline: none;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-size: 16px;
-
-    &:focus{
-        box-shadow: $white 0px 8px 24px;
-    }
-}
-
-.sidebar{
-    width: 100%;
-    position: relative;
-
-    .sidebar-inner{
-        width: 90%;
-        margin: auto;
-        
-        position: relative;
-    }
-
-    .link-wrap{
-        width: 100%;
-        position: relative;
-        display: flex;
-        gap: 20px;
-        margin-bottom: 10px;
-        padding: 10px 20px;
-        border-radius: 10px;
-        
-        &:hover{
-            opacity: .9;
-            background-color: $primaryColor;
-        }
-    }
-
-    .active-link{
-        background-color: $primaryColor;
-    }
-
-    .icon{
-        font-size: 18px;
-        color: $white;
-    }
-
-    a{
-        font-size: 16px;
-        color: $white
-    }
+.cars-select{
+    margin-top: 50px;
 }
 
 .filterbox{
@@ -132,6 +10,7 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 20px;
+    flex-wrap: wrap;
     // border: 1px solid $white;
     padding: 5px 10px;
     border-radius: 10px;
@@ -159,33 +38,13 @@
     }
 }
 
-.cars-select{
-    margin-top: 50px;
-}
-
-// .buy-filter{
-//     width: 100%;
-//     padding: 20px;
-//     background-color: #2d3142d2;
-//     margin-top: 20px;
-
-//     .card-title{
-//         color: white;
-//     }
-
-//     select{
-//         padding: 10px;
-//         border-radius: 10px;
-//     }
-// }
-
 
 .slidecontainer {
     width: 100%; /* Width of the outside container */
-  }
+}
   
   /* The slider itself */
-  .slider {
+.rangeslider {
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
     width: 100%; /* Full-width */
@@ -195,80 +54,78 @@
     opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
     -webkit-transition: .2s; /* 0.2 seconds transition on hover */
     transition: opacity .2s;
-  }
+}
   
   /* Mouse-over effects */
-  .slider:hover {
+.rangeslider:hover {
     opacity: 1; /* Fully shown on mouse-over */
-  }
+}
   
   /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-  .slider::-webkit-slider-thumb {
+.rangeslider::-webkit-slider-thumb {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
     width: 25px; /* Set a specific slider handle width */
     height: 25px; /* Slider handle height */
     background: #04AA6D; /* Green background */
     cursor: pointer; /* Cursor on hover */
-  }
+}
   
-  .slider::-moz-range-thumb {
+.rangeslider::-moz-range-thumb {
     width: 25px; /* Set a specific slider handle width */
     height: 25px; /* Slider handle height */
     background: #04AA6D; /* Green background */
     cursor: pointer; /* Cursor on hover */
-  }
+}
 
-  .product-wrapper{
+.product-wrapper{
     width: 100%;
     position: relative;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
-   
+}
 
-    .product{
-        width: 30%;      
-        position: relative;
-        //border: 1px solid $orange;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all .38s ease-in-out;
+.product{
+    width: 30%;      
+    position: relative;   
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .38s ease-in-out;
 
-        &:hover{
-            box-shadow: rgba(216, 217, 217, 0.2) 0px 8px 24px;
-            border: 1px solid $orange;
+    &:hover{
+        box-shadow: rgba(216, 217, 217, 0.2) 0px 8px 24px;
+        border: 1px solid var(--orange-color);
 
-            .image-carousel {
-                transform: scale(0.9); /* Equal to scaleX(0.7) scaleY(0.7) */
-                background-color: pink;
-            }
+        .image-carousel {
+            transform: scale(0.9); /* Equal to scaleX(0.7) scaleY(0.7) */
+            background-color: var(--orange-color);
         }
-
-        .section{
-            width: 100%;
-            height: 220px;            
-        }
-
-        .information{
-            padding: 10px;
-        }
-
-        .icon-wrap{
-            width: 100%;
-            position: relative;
-            display: flex;
-            justify-content: flex-end;
-            margin-top: -20px;
-
-        }
-
-        button{
-            margin-top: -10px;
-        }
-        
     }
+
+    .section{
+        width: 100%;
+        height: 220px;            
+    }
+
+    .information{
+        padding: 10px;
+    }
+
+    .icon-wrap{
+        width: 100%;
+        position: relative;
+        display: flex;
+        justify-content: flex-end;
+        margin-top: -20px;
+
+    }
+
+    button{
+        margin-top: -10px;
+    }
+    
 }
 
 .image-carousel{
@@ -279,8 +136,10 @@
     background-repeat: no-repeat; 
 }
 
-.icon-big{
-    font-size: 20px;
+.scrollSpy{
+    position: sticky;
+    right: 0px;
+    top: 100px;
 }
 
 .list-group{
@@ -290,17 +149,19 @@
         border-bottom: none;
 
         &:hover{
-            background-color: $orange;
+            background-color: var(--orange-color);
         }
         
     }
 }
 
+.icon-big{
+    font-size: 30px;
+}
+
 .report-summary{
     width: 100%;
-    position: relative;
-
-    
+    position: relative;    
   
     .summary-wrap{
         width: 100%;       
@@ -309,14 +170,12 @@
         justify-content: center;
         align-items: center;
         padding: 0px 10px;
-
-       
     }
 
     .sectionHover{
         &:hover{
-            background-color: $antiFlash;
-            
+            background-color: var(--bg-color);
+            color: grey;
         }
     }
     
@@ -326,59 +185,38 @@
         display: flex;
         align-items: center;
         gap: 20px;
-        cursor: pointer;       
-
-      
+        cursor: pointer;
 
         .info{
             line-height: 2px;
         }
+     
 
         p{
-            margin-top: -10px;
-            color: grey;
+            margin-top: -10px;       
             opacity: .8;
         }
 
         span{
-            font-size: 25px;
-            color: grey;
+            font-size: 25px;           
             opacity: .8;
             
         }
     }
 }
 
-.card-data-value{
-    width: 100%;
-    position: relative;
-    display: flex;
-    justify-content: space-between; 
-   
-
-    .data{
-        width: 70%;
-        position: relative;
-        
-    }
-
-    .value{
-        width: 30%;
-        position: relative;
-        display: flex;
-        justify-content: flex-end;  
-    }
+.pad-default{
+    padding: 10px;
 }
 
-.odometer-check{
-    width: 70%;
-    position: relative;
-
-    .icon{
-        margin-right: 10px;
-        font-size: 20px;
-    }
+.border-bottom-primary{
+    border-bottom: 1px solid var(--orange-color);
 }
+
+.border-top-primary{
+    border-top: 1px solid var(--orange-color);
+}
+
 
 .icon-wrap{
     width: 50px;
@@ -386,77 +224,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $greyColor;
+    background-color: var(--bg-color);
     border-radius: 50%;
-}
-
-.scrollSpy{
-    position: sticky;
-    right: 0px;
-    top: 100px;
-}
-
-.border-bottom-grey{
-    border-bottom: 1px solid rgba(128, 128, 128, 0.758);
-}
-
-.outlineMoreInfo{
-
-    position: relative;
-
-    .summary-wrap{
-
-        &:hover{
-            background-color: none;
-        }
-    }
-}
-
-.padding-20{
-    padding: 20px;
-}
-
-.icon-30{
-    font-size: 60px;
-}
-
-.dealer_howMuch{
-    margin-top: 50px;
-}
-
-.account-setting{
-
-    label{
-        color: $primaryColor;
-    }
-
-    input{
-        border: 1px solid $primaryColor;
-    }
-
-    .icon{
-        font-size: 25px;
-        cursor: pointer;       
-
-        &:hover{
-            opacity: .8;
-        }
-    }
-}
-.bottom-sidebar{
-    position: relative;
-    top: 40px;
-    left: 0px;
-    background-color: red;
-    border-radius: 10px;
-    opacity: .9;
-
-    .icon{
-        font-size: 25px;
-    }
-
-    &:hover{
-        background-color: red;
-        opacity: 1;
-    }
 }

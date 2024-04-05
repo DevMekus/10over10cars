@@ -2,16 +2,10 @@ function callAppFunctions() {
   /**
    * Call this function from the Init file
    */
-  rotateHeaderImage();
+
   rotateTheme();
   boxHover();
   onScrollNav();
-}
-
-function rotateHeaderImage() {
-  /**
-   * Using SetTimeout, change the header images
-   */
 }
 
 function rotateTheme() {
@@ -50,6 +44,7 @@ function typeWriterEffect(text, speed) {
 }
 
 //typeWriterEffect(text, 100); // Adjust speed as needed
+
 function slider() {
   var slider = document.getElementById("myRange");
   var output = document.getElementById("demo");
@@ -62,3 +57,22 @@ function slider() {
 }
 
 slider();
+
+function headerSlider() {
+  const slides = document.querySelectorAll(".slide");
+  let currentSlide = 0;
+
+  function nextSlide() {
+    slides[currentSlide].style.opacity = 0;
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].style.opacity = 1;
+  }
+
+  setInterval(nextSlide, 10000); // Change image every 10 seconds (10000 milliseconds)
+}
+
+//headerSlider();
+
+function toggleTheme() {
+  document.body.classList.toggle("dark-theme");
+}

@@ -8,31 +8,40 @@
     transition: all .38s ease-in-out;
 }
 
+.w250px{
+    width: 250px;
+}
+
 .outline{
-    border: 2px solid $orange;
-    color: $white; 
+    border: 1px solid var(--orange-color);
+    color: var(--text-color);
 
     &:hover{
-        background-color: $orange;
-        color: $primaryColor;
-        opacity: .9;
+        background-color: var(--orange-color);       
+        opacity: 1;
     }
 }
 
-.pill{
-    border-radius: 30px;     
-}
-
-
 .primary{
-    background-color: $orange;
-    color: $primaryColor; 
-    opacity: .9;  
-    font-size: 18px;
+    background-color: var(--orange-color);
+    color: var(--text-color);
+    opacity: .8;
 
     &:hover{
-        background-color: $orange;
-        color: $primaryColor;
+        background-color: var(--orange-color);
+        color: var(--text-color);
+        opacity: 1;
+    }
+}
+
+.danger{
+    background-color: red;
+    color: var(--text-color);
+    opacity: .8;
+
+    &:hover{
+        background-color: red;
+        color: var(--text-color);
         opacity: 1;
     }
 }

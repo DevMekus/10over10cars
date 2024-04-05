@@ -1,12 +1,12 @@
 <?php
 $title = "Welcome";
 include("header.php");
+include("navbar.php");
 ?>
 
-<body class="theme-primary">
-    <header class="index-header">
-        <?php include("navbar.php"); ?>
-        <div class="header-inner">
+<body>
+    <main>
+        <header class="slider">
             <div class="main-title-area">
                 <h4 class="card-title">Are you worried about buying a used car?</h4>
                 <h1 class="card-title blur-background-content">
@@ -14,19 +14,17 @@ include("header.php");
                 </h1>
                 <h4 class="card-title">Your Free VIN Check is just a click away</h4>
                 <div class="cta">
-                    <a href="#" class="btn outline">Get Started</a>
+                    <a href="#" class="btn w250px primary">Get Started</a>
                 </div>
             </div>
-        </div>
-    </header>
-    <main class="theme-black">
-        <div class="container">
+        </header>
+        <section class="container">
             <div class="row">
-                <div class="col-sm-12 ">
+                <div class="col-sm-12">
                     <section class="section">
                         <div class="section-title">
-                            <h1 class="card-title text-center">Why <span class="orange"><?php echo $site_name; ?></span> ?</h1>
-                            <p class="sub-title text-center">Market value monitor, history report, <span class="orange">theft alert</span>, sales</p>
+                            <h1 class="card-title text-center ">Why <span class="orange"><?php echo $site_name; ?></span> ?</h1>
+                            <p class="sub-title text-center p-20">Market value monitor, history report, <span class="orange">theft alert</span>, sales</p>
                         </div>
                         <div class="row sectionSpace">
                             <div class="col-sm-4">
@@ -70,7 +68,7 @@ include("header.php");
                     <section class="section">
                         <div class="section-title">
                             <h1 class="card-title text-center">Numerous <span class="orange">services and features</span> under the hood</h1>
-                            <p class="sub-title text-center"><?php echo $site_name; ?>.com is here to modernize the vehicle ownership experience</p>
+                            <p class="sub-title p-20 text-center"><?php echo $site_name; ?>.com is here to modernize the vehicle ownership experience</p>
                         </div>
                         <div class="card">
                             <div class="card-body">
@@ -83,7 +81,7 @@ include("header.php");
                                         <button class="btn outline btn-sm tab" data-id="1">Theft Check</button>
                                     </div>
                                     <div class="tabs-body">
-                                        <h2 class="cart-title text-center">Vehicle history reports
+                                        <h2 class="car-title text-center">Vehicle history reports
                                         </h2>
                                         <p class="sectionSpace text-center">
                                             Bumper compiles reliable, regularly updated information from NMVTIS, JD Power, NHTSA, and many other top industry data sources, including state-level government agencies, insurance providers and auto industry partners. Our affordable vehicle history reports may have accidents, recalls, market value data, in-depth ownership cost projections and more.
@@ -99,7 +97,7 @@ include("header.php");
                             <div class="col-sm-6 getStarted">
                                 <h1>Ready to <span class="orange">get started?</span></h1>
                                 <p>Learn about a vehicle, starting at just $1</p>
-                                <a href="#" class="btn outline">GET STARTED</a>
+                                <a href="#" class="btn primary">GET STARTED</a>
                             </div>
                             <div class="col-sm-6">
                                 <img src="assets/getstarted.webp" class="img-fluid" alt="car" />
@@ -108,8 +106,8 @@ include("header.php");
                     </section>
                     <section class="section">
                         <div class="section-title">
-                            <h1 class="card-title text-center">Why use our service</h1>
-                            <p class="sub-title text-center"><?php echo $site_name; ?>.com is here to modernize the vehicle ownership experience</p>
+                            <h1 class="card-title text-center">Why use <span class="orange">our service</span></h1>
+                            <p class="sub-title p-20 text-center"><?php echo $site_name; ?>.com is here to modernize the vehicle ownership experience</p>
                         </div>
                         <div class="row">
                             <div class="col-sm-4">
@@ -148,14 +146,14 @@ include("header.php");
                             </div>
                         </div>
                     </section>
-                    <section class="section">
+                    <section class="section sectionSpace">
                         <div class="row">
                             <div class="col-sm-6 getStarted">
-                                <h1>Frequently <span class="orange">Asked</span> Questions</h1>
+                                <h1><span class="orange">Frequently Asked</span> Questions</h1>
                             </div>
                             <div class="col-sm-6">
-                                <div class="card">
-                                    <div class="card-body">
+                                <div class="cards">
+                                    <div class="card-bodys">
                                         <div class="accordion" id="accordionExample">
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header">
@@ -208,7 +206,6 @@ include("header.php");
                             </div>
                         </div>
                     </section>
-
                     <section class="section">
                         <div class="previous_jobs">
                             <div class="row">
@@ -298,7 +295,7 @@ include("header.php");
                         </div>
                     </section>
                     <section>
-                        <div class="section-title">                            
+                        <div class="section-title">
                             <h1 class="card-title text-center">Make the process of <span class="orange">checking your car easy</span></h1>
                         </div>
                         <div class="row">
@@ -313,7 +310,7 @@ include("header.php");
                                         <p class="text-justify">
                                             The VIN is the only thing you need to know. Your 17-digit VIN can be found in car documents.
                                         </p>
-                                        <a href="#" class="card-link sectionSpace btn outline">Enter VIN Number</a>
+                                        <a href="#" class="card-link sectionSpace btn outline">Enter VIN Number <i class="fas fa-arrow-right icon"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -328,7 +325,7 @@ include("header.php");
                                         <p class="text-justify">
                                             Report contains a vast amount of information! Just check it out!
                                         </p>
-                                        <a href="#" class="card-link sectionSpace btn outline">View Sample Report</a>
+                                        <a href="#" class="card-link sectionSpace btn outline">View Sample Report <i class="fas fa-arrow-right icon"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -341,7 +338,7 @@ include("header.php");
                                 <p class="text-justify">
                                     Get detailed information, a full car history report, and make an informed decision about your purchase. We have the most convenient payment methods for you.
                                 </p>
-                                <a href="#" class="card-link sectionSpace btn outline">View Prices</a>
+                                <a href="#" class="card-link sectionSpace btn outline">View Prices <i class="fas fa-arrow-right icon"></i></a>
                             </div>
                         </div>
                     </section>
@@ -358,12 +355,60 @@ include("header.php");
                             </div>
                         </div>
                     </section>
+                    <section class="card sectionSpace">
+                        <div class="card-body">
+                            <div class="sectionSpace cars-select">
+                                <div class="page-title sectionSpace">
+                                    <h2 class="card-title">Don't know what are you looking for? Start with type</h2>
+                                </div>
+                                <div class="row cars-select">
+                                    <div class="col-sm-2">
+                                        <div>
+                                            <img src="assets/cars/hatchback.png" class="img-fluid" alt="car-hatchback" />
+                                            <h5 class="card-title text-center">Hatchback</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div>
+                                            <img src="assets/cars/minivan.png" class="img-fluid" alt="car-minivan" />
+                                            <h5 class="card-title text-center">Minivan</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div>
+                                            <img src="assets/cars/pickup.png" class="img-fluid" alt="car-pickup" />
+                                            <h5 class="card-title text-center">Pickup</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div>
+                                            <img src="assets/cars/sedan.png" class="img-fluid" alt="car-sedan" />
+                                            <h5 class="card-title text-center">Sedan</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div>
+                                            <img src="assets/cars/suv.png" class="img-fluid" alt="car-suv" />
+                                            <h5 class="card-title text-center">Suv</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div>
+                                            <img src="assets/cars/wagon.png" class="img-fluid" alt="car-wagon" />
+                                            <h5 class="card-title text-center">Wagon</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d fullwidth flex flex-center sectionSpace">
+                                    <a href="./auth/login.php" class="btn primary w250px">View all</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
-        </div>
+        </section>
+
     </main>
-
-
-
 
     <?php include("footer.php");  ?>

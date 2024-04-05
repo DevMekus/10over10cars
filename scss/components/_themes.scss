@@ -1,147 +1,28 @@
-// .theme-primary{
+:root {
+    --bg-color: #f0f0f0; /* Default background color */
+    --orange-color:#FBC703; /* Brand Orange color */
+    --text-color: #191919; /* Default text color */
+}
 
+.orange{
+    color: var(--orange-color);
+}
 
-//     p, a{
-//         color: $primaryColor;
-//     }
+.greenColor{
+    color: green;
+}
 
-//     .card {
-//         position: relative;
-//         background-color: $antiFlash;
-//         cursor: pointer;
-//         transition: all .30s ease-in-out;
-//         border: none;
+.redColor{
+    color: red;
+}
 
-//         p, a{
-//             color: $primaryColor;
-//         }
-
-//         &:hover{
-//             box-shadow: rgba(216, 217, 217, 0.2) 0px 8px 24px;
-//             //border: 1px solid $orange;
-//         }
-
-//         .card-title{
-//             color: $primaryColor;
-//         }
-
-//         .outline{
-//             color: $primaryColor;
-//         }
-//     }
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: all .38s ease-in-out;
+}
   
-
-//     .card-title{
-//         color: $primaryColor;
-//     }
-
-//     .section-title{
-//         padding: 20px;
-//         position: relative;
-
-//         .sub-title{
-//             font-size: 20px;
-//             margin-top: 10px;
-//         }
-//     }
-// }
-
-.theme-black{
-    background-color: $primaryColor;
-
-    p, a{
-        color: $white;
-    }
-
-    .card{
-        position: relative;
-        background-color: $fontColor;
-        cursor: pointer;
-        transition: all .30s ease-in-out;
-
-        p, a{
-            color: $white;
-        }
-
-        &:hover{
-            box-shadow: rgba(216, 217, 217, 0.2) 0px 8px 24px;
-            border: 1px solid $orange;
-        }
-
-        .card-title{
-            color: $white;
-        }
-    }
-
-    .card-title{
-        color: $white;
-    }
-
-    .section{
-        padding: 20px;
-    }
-
-    .accordion, 
-    .accordion-item, 
-    .accordion-header, 
-    .accordion-button{
-        background-color: inherit;
-        border: none;
-        outline: none;
-    }
-
-    .accordion-body{
-        color: $white;
-        font: 16px;
-       
-    }
-
-    .accordion-header{
-
-        button{
-            color: $white;
-            font-size: 20px;
-        }
-    }
-}
-
-.border-top-primary{
-    border-top: 1px solid $primaryColor;
-}
-
-.border-bottom-primary{
-    border-bottom: 1px solid $primaryColor;
-}
-
-.padding-default{
-    padding: 10px;
-}
-
-.card-plain{
-    background-color: none;
-    border: 1px solid rgb(194, 193, 193);
-    border-radius: 10px;
-    background-color: white;
-
-    .card-body{
-        padding: 10px;
-    }
-}
-
-.card-blue{
-    background-color: blue;
-
-    .card-title{
-        color: white;
-    }
-}
-
-.section-title{
-    padding: 20px;
-    position: relative;
-
-    .sub-title{
-        font-size: 20px;
-        margin-top: 10px;
-    }
+.dark-theme {
+    --bg-color: #191919; /* Dark background color */
+    --text-color: #fff; 
 }
