@@ -66,6 +66,24 @@ const page = () => {
             </Link>
           </div>
         </div>
+        <div className="mt-20 special-bg padding-10">
+          <h5 className="color-white">Vehicle Gallery</h5>
+          <p className="color-grey">
+            Visit the vehicle gallery and choose its display to car lovers
+          </p>
+
+          <div className="moveup-10">
+            <Link
+              href="/admin/vehicle/gallery/features"
+              className="link decoration"
+            >
+              <p className="color-grey">
+                <i className="fas fa-arrow-right mr-10 color-primary"></i>Open
+                Gallery
+              </p>
+            </Link>
+          </div>
+        </div>
       </div>
     </>
   );
