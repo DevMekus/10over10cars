@@ -1,0 +1,61 @@
+.sidebar{
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background-color: $blackColor;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-right: 1px solid $primaryColor;
+}
+
+.logo-section{
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.sidebar-link{
+    margin-top: 70px;
+    position: relative;
+}
+
+.sidebar .link-div{
+    width: 100%;
+    position: relative;
+    padding: 10px 20px;   
+}
+
+.sidebar .link-div .link-item{
+    width: 100%;
+    position: relative;
+    display: flex;
+    gap: 20px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar .link-div .icon{
+    color: $primaryColor;
+}
+
+.link-div h5{
+    color: whitesmoke;
+}
+
+.link-div:hover {
+    background-color: rgba(255, 255, 255, 0.329);
+}
+
+.sidebar .bottom{
+    width: 100%;
+    padding: 0px 20px;
+    position: absolute;
+    bottom: 0px;
+}
+
+.sidebar .bottom p{
+    font-size: 16px;
+}

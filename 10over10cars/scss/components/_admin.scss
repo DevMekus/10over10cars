@@ -1,0 +1,39 @@
+.app-wrapper{
+    width: 100%;
+    position: relative;
+    min-height: 100vh;
+}
+
+.app-flex{
+    display: flex;
+}
+
+.app-main-content{
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-height: 100vh;
+    position: relative;
+    background-color: $blackColor;
+}
+
+.summary-data{
+    width: 100%;
+    height: 100px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;    
+}
+
+.summary-data .moveup{
+    margin-top: -15px;
+    font-size: 16px;
+}
+
+.summary-data .link{
+    font-size: 17px;
+    color: $greyColor;    
+}
+
+.special-bg{
+    background-color: rgba(255, 255, 255, 0.078);
+}
