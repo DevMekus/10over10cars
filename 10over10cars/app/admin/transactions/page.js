@@ -31,24 +31,7 @@ const page = () => {
             </Link>
           </div>
         </div>
-        <div className="mt-20">
-          <h5 className="color-white">Order Management</h5>
-          <p className="color-grey">
-            Manage all customer pending order and uncleared invoice.
-          </p>
 
-          <div className="moveup-10">
-            <Link
-              href="/admin/vehicle/verification"
-              className="link decoration"
-            >
-              <p className="color-grey">
-                <i className="fas fa-arrow-right mr-10 color-primary"></i>Manage
-                Order
-              </p>
-            </Link>
-          </div>
-        </div>
         <div className="icon-bottom">
           <div
             className="page-icon"

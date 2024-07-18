@@ -36,4 +36,81 @@
 
 .special-bg{
     background-color: rgba(255, 255, 255, 0.078);
+    border-radius: 5px;
+}
+
+.recent-payment{
+    width: 100%;
+    position: relative;
+    margin-top: 20px;
+}
+
+.recent-payment .title{
+    font-size: 15px;
+}
+
+.recent-payment .date{
+    margin-top: -25px;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.summary-card{
+    border-radius: 5px;
+}
+
+.summary-card-big{
+    background-color: $greenColor;
+}
+
+.summary-card p{
+    font-size: 15px;
+    line-height: 15px;
+    font-weight: 500;
+}
+
+.summary-card h3{
+    letter-spacing: 2px;
+    color: $primaryColor;
+    margin-bottom: 10px;
+}
+
+.summary-card-white{
+    background-color: rgba(255, 255, 255, 0.078);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 5px;
+}
+
+.summary-card-white h3{
+    font-size: 20px;
+}
+
+.icon-div{
+    width: 45px;
+    height: 40px;
+    background-color: $greyColor;
+    border-radius: 5px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+}
+
+.icon-div img{
+    width: 100%;
+   
+}
+.small-p{
+    font-size: 16px;
+    line-height: 15px;
+    font-weight: 500;
+}
+
+.recent-verify{
+    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.078);
+    //box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    padding: 10px 20px;
+    border-radius: 5px;
 }

@@ -49,54 +49,53 @@ const page = () => {
           )}
         </div>
         <div className="mt-20">
-          <h5 className="color-white">Vehicle feature manager</h5>
-          <p className="color-grey">
-            Add, and delete car feature, including colors, model, body etc.
-          </p>
-
-          <div className="moveup-10">
-            <Link
-              href="/admin/vehicle/gallery/features"
-              className="link decoration"
-            >
-              <p className="color-grey">
-                <i className="fas fa-arrow-right mr-10 color-primary"></i>Get
-                started
-              </p>
-            </Link>
+          <h5 className="color-white">Vehicle List</h5>
+          <div className="mt-10 col-sm-3">
+            <div className="ctr-wrapper">
+              <label className="color-grey">Search list</label>
+              <input
+                className="form-input form-ctr ctr-no-bg"
+                type="text"
+                placeholder="Ex: 3678HJU39"
+                required
+              />
+            </div>
           </div>
-        </div>
-        <div className="mt-20 special-bg padding-10">
-          <h5 className="color-white">Vehicle Gallery</h5>
-          <p className="color-grey">
-            Visit the vehicle gallery and choose its display to car lovers
-          </p>
-
-          <div className="moveup-10">
-            <Link
-              href="/admin/vehicle/gallery/features"
-              className="link decoration"
-            >
-              <p className="color-grey">
-                <i className="fas fa-arrow-right mr-10 color-primary"></i>Open
-                Gallery
-              </p>
-            </Link>
-          </div>
-        </div>
-        <div className="mt-20">
-          <h5 className="color-white">Vehicle listing</h5>
-          <p className="color-grey">
-            List of all the vehicles in the system, verified and non-verified
-          </p>
-
-          <div className="moveup-10">
-            <Link href="/admin/vehicle/listing" className="link decoration">
-              <p className="color-grey">
-                <i className="fas fa-arrow-right mr-10 color-primary"></i>Visit
-                list
-              </p>
-            </Link>
+          <div className="mt-10 scrollable">
+            <table className="btable">
+              <thead>
+                <tr>
+                  <th scope="col">#VIN</th>
+                  <th scope="col">#InvoiceId</th>
+                  <th scope="col">Owner</th>
+                  <th scope="col">Save Date</th>
+                  <th scope="col">Verification</th>
+                  <th scope="col">Documentation</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">27HJJ937V</th>
+                  <td>27HJJ937V</td>
+                  <td>John Doe</td>
+                  <td>25-10-2021</td>
+                  <td>VERIFIED</td>
+                  <td>YES</td>
+                  <td className="flex gap-10">
+                    <Link
+                      href="/admin/vehicle/id"
+                      className="button button-sm radius-5 button-primary"
+                    >
+                      <i className="fas fa-eye"></i>
+                    </Link>
+                    <button className="button button-sm radius-5 button-danger">
+                      <i className="fas fa-times"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <div className="icon-bottom">

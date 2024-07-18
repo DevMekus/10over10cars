@@ -37,6 +37,10 @@
     gap: 10px;
 }
 
+.gap-20{
+    gap: 20px;
+}
+
 .mt-10{
     margin-top: 10px;
 }
@@ -127,7 +131,7 @@
 
 .icon-bottom{
     width: 100%;
-    position: absolute;
+    position: relative;
     bottom: 10px;
     right: 10px;
     display: flex;
@@ -151,4 +155,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.border-left-3-green{
+    border-left: 4px solid $greenColor;
 }

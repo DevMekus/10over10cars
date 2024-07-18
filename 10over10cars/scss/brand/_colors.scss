@@ -4,10 +4,14 @@ $blackColor: #15181F;
 $redColor: #DB2D2E;
 $yellowFade:#f5b754be;
 $greyColor:rgba(170, 168, 168, 0.579);
+$greenColor :  rgb(51, 168, 51);
 
 /**Basic Color class**/
 .color-red{
     color: $redColor;
+}
+.color-black{
+    color: black;
 }
 
 .color-grey{
@@ -15,7 +19,7 @@ $greyColor:rgba(170, 168, 168, 0.579);
 }
 
 .color-green{
-    color: green;
+    color: $greenColor;
 }
 
 .color-primary{

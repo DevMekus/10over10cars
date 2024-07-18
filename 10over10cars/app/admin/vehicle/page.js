@@ -27,7 +27,7 @@ const page = () => {
             </Link>
           </div>
         </div>
-        <div className="mt-20">
+        <div className="mt-20 special-bg padding-10">
           <h5 className="color-white">Verification requests</h5>
           <p className="color-grey">
             Manage all the car verification requests from members, including
@@ -45,6 +45,14 @@ const page = () => {
               </p>
             </Link>
           </div>
+        </div>
+        <div className="icon-bottom">
+          <div
+            className="page-icon"
+            style={{
+              backgroundImage: `url(https://cdn1.iconfinder.com/data/icons/ionicons-sharp-vol-1/512/car-sport-sharp-256.png)`,
+            }}
+          ></div>
         </div>
       </div>
     </>
