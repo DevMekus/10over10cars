@@ -114,3 +114,29 @@
     padding: 10px 20px;
     border-radius: 5px;
 }
+
+.verification-info{
+    width: 400px;
+    margin: auto;
+    //border: 1px solid $greyColor;
+    position: relative;
+}
+
+.info .flex-end{  
+    width: 50%;
+}
+
+.info .flex-start{    width: 50%;
+   
+}
+
+.info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.strike-through{
+    text-decoration: line-through;
+}

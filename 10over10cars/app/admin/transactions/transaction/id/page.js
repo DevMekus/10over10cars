@@ -95,13 +95,10 @@ const page = () => {
                   </Link>
                 </div>
                 <div className="moveup-10">
-                  <Link
-                    href="/admin/accounts/admins"
-                    className="link decoration"
-                  >
+                  <Link href="/admin/vehicle/id" className="link decoration">
                     <p className="color-grey">
                       <i className="fas fa-arrow-right mr-10 color-primary"></i>
-                      Manage supports
+                      View report
                     </p>
                   </Link>
                 </div>

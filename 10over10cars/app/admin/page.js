@@ -1,104 +1,17 @@
 import Link from "next/link";
 import React from "react";
-
+import StartVerification from "@/components/StartVerification";
 const page = () => {
   return (
     <>
       <div className="dash-page">
+        <div>
+          <StartVerification moreInfo={true} />
+        </div>
         <section className="container mt-20">
           <div className="row">
             <div className="col-sm-8">
-              <div className="row">
-                <div className="col-sm-4">
-                  <div className="f-width special-bg padding-20 summary-card summary-card-big">
-                    <p className="color-black title">
-                      Total number of <br />
-                      Vehicles registered
-                    </p>
-                    <h3>1,000</h3>
-                    <button className="button button-primary radius-5">
-                      <i className="fas fa-plus mr-10"></i>New Registration
-                    </button>
-                  </div>
-                </div>
-                <div className="col-sm-8">
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <div className="f-width special-bg padding-10 summary-card summary-card-white">
-                        <div className="flex gap-10">
-                          <div className="icon-div">
-                            <img
-                              src="https://cdn4.iconfinder.com/data/icons/doodle-5/184/car-256.png"
-                              alt="icon"
-                            />
-                          </div>
-                          <div>
-                            <h3>12</h3>
-                            <p className="color-grey title">
-                              Awaiting validation
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="f-width special-bg padding-10 summary-card summary-card-white">
-                        <div className="flex gap-10">
-                          <div className="icon-div">
-                            <img
-                              src="https://cdn4.iconfinder.com/data/icons/liny/24/users-line-512.png"
-                              alt="icon"
-                            />
-                          </div>
-                          <div>
-                            <h3>12</h3>
-                            <p className="color-grey title">Registered users</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-20">
-                    <div className="row">
-                      <div className="col-sm-6">
-                        <div className="f-width special-bg padding-10 summary-card summary-card-white">
-                          <div className="flex gap-10">
-                            <div className="icon-div">
-                              <img
-                                src="https://cdn4.iconfinder.com/data/icons/doodle-3/175/file-invoice-256.png"
-                                alt="icon"
-                              />
-                            </div>
-                            <div>
-                              <h3>14</h3>
-                              <p className="color-grey title">Unpaid invoice</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="f-width special-bg padding-10 summary-card summary-card-white">
-                          <div className="flex gap-10">
-                            <div className="icon-div">
-                              <img
-                                src="https://cdn4.iconfinder.com/data/icons/multimedia-75/512/multimedia-02-512.png"
-                                alt="icon"
-                              />
-                            </div>
-                            <div>
-                              <h3>18</h3>
-                              <p className="color-grey title">
-                                Support Messages
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <section className="mt-20">
+              <section className="mw">
                 <div className="f-width flex space-between align-center">
                   <h4 className="color-grey">Most recent registrations</h4>
                   <Link href="/" className="no-decoration">

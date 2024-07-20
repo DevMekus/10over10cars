@@ -1,119 +1,54 @@
 import React from "react";
+import { useState } from "react";
+import SummaryInfo from "../Verification/SummaryInfo";
+import SystemcheckInfo from "../Verification/SystemcheckInfo";
+import OdometerInfo from "../Verification/OdometerInfo";
+import SalesHistoryInfo from "../Verification/SalesHistoryInfo";
+import OwnershipInfo from "../Verification/OwnershipInfo";
+import MarketAnalysis from "../Verification/MarketAnalysis";
 
 const VehicleInformationForm = () => {
+  const [selectedComponent, setSelectedComponent] = useState("SummaryInfo");
+
+  const componentMap = {
+    SummaryInfo: <SummaryInfo />,
+    SystemcheckInfo: <SystemcheckInfo />,
+    OdometerInfo: <OdometerInfo />,
+    SalesHistoryInfo: <SalesHistoryInfo />,
+    OwnershipInfo: <OwnershipInfo />,
+    MarketAnalysis: <MarketAnalysis />,
+  };
+
+  const switchComponent = (event) => {
+    setSelectedComponent(event.target.value);
+  };
   return (
     <>
       <div className="wrapper padding-10">
-        <div className="row">
-          <div className="col-sm-6">
-            <h5 className="color-white">Vehicle Information</h5>
-            <p className="color-grey moveup-10">
-              Enter a car Vim to begin registration
-            </p>
-            <div className="row">
-              <div className="col-sm-6">
-                <div className="ctr-wrapper">
-                  <label className="color-grey">First name</label>
-                  <input
-                    className="form-input form-ctr .ctr-no-bg"
-                    type="text"
-                    placeholder="Ex: John"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-sm-6">
-            <div className="special-bg padding-10">
-              <h5 className="color-white mt-10">Theft Information</h5>
-              <p className="color-grey moveup-10">
-                Location, and Date can help in the search.
-              </p>
-              <div className="col-sm-12">
-                <div className="ctr-wrapper">
-                  <label className="color-grey">Location</label>
-                  <input
-                    className="form-input form-ctr .ctr-no-bg"
-                    type="text"
-                    placeholder="Ex: 39 London Street, New York Avenue, US"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-sm-6">
-                  <div className="ctr-wrapper">
-                    <label className="color-grey">City/State/County</label>
-                    <input
-                      className="form-input form-ctr .ctr-no-bg"
-                      type="text"
-                      placeholder="Ex: Houston, Texas"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="ctr-wrapper">
-                    <label className="color-grey">Country</label>
-                    <input
-                      className="form-input form-ctr .ctr-no-bg"
-                      type="text"
-                      placeholder="Ex: United States of America"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-              {/* <span className="color-grey moveup-10">Date of Incident</span> */}
-              <div className="row">
-                <div className="col-sm-4">
-                  <div className="ctr-wrapper">
-                    <label className="color-grey">Date</label>
-                    <input
-                      className="form-input form-ctr .ctr-no-bg"
-                      type="text"
-                      placeholder="Ex: 12"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-4">
-                  <div className="ctr-wrapper">
-                    <label className="color-grey">Month</label>
-                    <input
-                      className="form-input form-ctr .ctr-no-bg"
-                      type="text"
-                      placeholder="Ex: January"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="col-sm-4">
-                  <div className="ctr-wrapper">
-                    <label className="color-grey">Year</label>
-                    <input
-                      className="form-input form-ctr .ctr-no-bg"
-                      type="text"
-                      placeholder="Ex: 2000"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-              <p className="color-grey">
-                By submitting this form, you certify that the information
-                provided is true and authentic
-              </p>
-            </div>
-          </div>
-        </div>
+        <div className="form-start">
+          <h5 className="color-white">
+            Vin <span className="color-green">HJJK7883HJJ</span> registered
+          </h5>
 
-        <div className="f-width flex flex-end">
-          <button type="submit" className="button button-primary radius-5">
-            {" "}
-            Submit report
-          </button>
+          <p className="color-grey moveup-10">
+            Select which area of this vehicle to start with
+          </p>
+          <div className="col-sm-4 moveup-10">
+            <div className="ctr-wrapper">
+              <select
+                className="form-input form-ctr .ctr-no-bg"
+                onChange={switchComponent}
+              >
+                <option value="SummaryInfo">Vehicle summary report</option>
+                <option value="OwnershipInfo">Ownership history report</option>
+                <option value="OdometerInfo">Odometer report</option>
+                <option value="SalesHistoryInfo">Sales history report</option>
+                <option value="SystemcheckInfo">System checks report</option>
+                <option value="MarketAnalysis">Market analysis report</option>
+              </select>
+            </div>
+          </div>
+          <div className="mt-10"> {componentMap[selectedComponent]}</div>
         </div>
       </div>
     </>
