@@ -191,6 +191,65 @@
   border-left: 4px solid rgb(51, 168, 51);
 }
 
+.scrollable {
+  width: 100%;
+  overflow: scroll;
+}
+
+.scrollable::-webkit-scrollbar {
+  display: none;
+}
+
+.pagination-wr {
+  position: relative;
+  border: 1px solid rgba(170, 168, 168, 0.579);
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 5px;
+}
+
+.pagination-wr .action {
+  width: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgba(170, 168, 168, 0.579);
+  transition: all 0.3s ease-in-out;
+}
+
+.pagination-wr .action .link {
+  text-decoration: none;
+  font-size: 16px;
+  color: #FCC801;
+}
+
+.pagination-wr .action:hover {
+  background-color: #FCC801;
+  color: #15181F;
+  border: none;
+}
+
+.pagination-wr .action:hover .link {
+  color: #15181F;
+}
+
+.n-modal-container {
+  width: 100%;
+  position: relative;
+  height: 400px;
+}
+
+.alert-header {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 p {
   font-family: "Outfit", sans-serif;
   font-size: 20px;
@@ -510,6 +569,32 @@ h6 {
 
 .strike-through {
   text-decoration: line-through;
+}
+
+.support-conversation {
+  width: 100%;
+  position: relative;
+}
+
+.support-message-well {
+  width: 80%;
+  margin: auto;
+  height: 400px;
+  border-radius: 5px;
+  overflow: scroll;
+}
+
+.support-textbox-area {
+  width: 80%;
+  margin: auto;
+  position: relative;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.support-textbox-area div {
+  width: 70%;
 }
 
 .nav-container {

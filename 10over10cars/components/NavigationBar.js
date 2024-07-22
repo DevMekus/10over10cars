@@ -18,12 +18,6 @@ const NavigationBar = ({ breadcrumb }) => {
                 <span className="material-symbols-outlined icon">
                   notifications
                 </span>
-                <span
-                  className="material-symbols-outlined icon"
-                  title="Pull our Cart"
-                >
-                  shopping_cart
-                </span>
               </div>
               <div className="special-bg padding-10 flex gap-10 radius-5 pointer">
                 <span className="material-symbols-outlined icon color-primary">

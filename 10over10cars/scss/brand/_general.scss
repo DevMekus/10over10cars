@@ -160,3 +160,62 @@
 .border-left-3-green{
     border-left: 4px solid $greenColor;
 }
+
+.scrollable{
+    width: 100%;
+    overflow: scroll;
+}
+
+.scrollable::-webkit-scrollbar {
+    display: none;
+}
+
+.pagination-wr{
+    position: relative;
+    border: 1px solid $greyColor;
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+}
+
+.pagination-wr .action{
+    width: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px; 
+    border: 1px solid $greyColor; 
+    transition: all .30s ease-in-out;  
+}
+
+.pagination-wr .action .link{
+    text-decoration: none;
+    font-size: 16px;
+    color: $primaryColor;
+}
+
+.pagination-wr .action:hover{
+    background-color: $primaryColor;
+    color: $blackColor;
+    border: none;
+}
+
+.pagination-wr .action:hover .link{
+    color: $blackColor;
+}
+
+.n-modal-container{
+    width: 100%;
+    position: relative;
+    height: 400px;
+}
+
+.alert-header{
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

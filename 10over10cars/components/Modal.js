@@ -21,7 +21,7 @@ const Modal = ({
                 onClick={modalClose}
               ></button>
             </div>
-            <div className="c-modal-body">
+            <div className="c-modal-body scrollable">
               <form onSubmit={modalAction}>
                 <div className="wrapper">
                   <Component />

@@ -28,7 +28,7 @@ const page = () => {
                   ></div>
                 </div>
                 <div className="col-sm-8">
-                  <div className="profile info">
+                  <div className="profile-info">
                     <div className="f-width flex space-between align-center">
                       <p className="bold color-grey">#Userid</p>
                       <p className="color-white">36272HH8KJ</p>

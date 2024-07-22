@@ -65,8 +65,8 @@ export const adminUrl = [
   },
   {
     id: 6,
-    name: "Activity Log",
-    url: "/admin/logs",
+    name: "Activity & Log",
+    url: "/admin/activity",
     icon: "zone_person_alert",
   },
   {
