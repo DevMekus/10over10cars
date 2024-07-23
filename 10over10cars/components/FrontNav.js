@@ -25,9 +25,7 @@ const FrontNav = () => {
   }, []);
   return (
     <>
-      <div
-        className={`nav-wrapper ${isScrolled ? "nav-scrolled" : "nav-default"}`}
-      >
+      <div className="nav-wrapper">
         <div className="nav-inner">
           <div className="nav-section">
             <Link href="/">
@@ -56,7 +54,7 @@ const FrontNav = () => {
                         <div className="col-sm-3">
                           <h5>Company</h5>
                           <div>
-                            <Link href="/" className="link">
+                            <Link href="/" className="link color-black">
                               About us
                             </Link>
                           </div>
@@ -77,7 +75,7 @@ const FrontNav = () => {
                           </div>
                         </div>
                         <div className="col-sm-3">
-                          <h5>Useful links</h5>
+                          <h5 className="color-primary">Useful links</h5>
                           <div>
                             <Link href="/" className="link">
                               Pricing
@@ -95,7 +93,7 @@ const FrontNav = () => {
                           </div>
                         </div>
                         <div className="col-sm-3">
-                          <h5>Policy</h5>
+                          <h5 className="color-primary">Policy</h5>
                           <div>
                             <Link href="/" className="link">
                               Privacy policy
@@ -113,7 +111,7 @@ const FrontNav = () => {
                           </div>
                         </div>
                         <div className="col-sm-3">
-                          <h5>Download</h5>
+                          <h5 className="color-primary">Download</h5>
                           <p className="color-grey small-p">
                             Download Our Car Dealer Verification Application.
                           </p>
@@ -124,7 +122,7 @@ const FrontNav = () => {
                             ></i>
                             <span className="color-white">Apple Store</span>
                           </button>
-                          <button className="button button-dark radius-5 mt-10">
+                          <button className="button download-button-dark radius-5 mt-10">
                             <i
                               className="fab fa-android download-icon mr-10"
                               aria-hidden="true"
@@ -149,7 +147,7 @@ const FrontNav = () => {
                 <div className="top-filter padding-10">
                   <p className="color-grey small-p">Search & filter products</p>
                   <div className="ctr-wrapper">
-                    <label className="color-black">Search report list</label>
+                    <label className="color-primary">Search product</label>
                     <input
                       className="form-input form-ctr ctr-no-bg"
                       type="text"
@@ -165,13 +163,13 @@ const FrontNav = () => {
               <div className="account">
                 <span class="material-symbols-outlined">account_circle</span>
                 <div className="account-drop padding-10">
-                  <h5>Account login</h5>
+                  <h5 className="color-primary">Account login</h5>
                   <p className="color-grey small-p">
                     Log into your account and enjoy more.
                   </p>
                   <form>
                     <div className="ctr-wrapper">
-                      <label className="color-black">Email address</label>
+                      <label className="color-grey">Email address</label>
                       <input
                         className="form-input form-ctr ctr-no-bg"
                         type="text"
@@ -180,7 +178,7 @@ const FrontNav = () => {
                       />
                     </div>
                     <div className="ctr-wrapper">
-                      <label className="color-black">Password</label>
+                      <label className="color-grey">Password</label>
                       <input
                         className="form-input form-ctr ctr-no-bg"
                         type="password"
@@ -212,7 +210,7 @@ const FrontNav = () => {
               <div className="cart">
                 <span class="material-symbols-outlined">shopping_cart</span>
                 <div className="cart-drop padding-10">
-                  <h5>Shopping cart</h5>
+                  <h5 className="color-primary">Shopping cart</h5>
                   <p className="color-grey small-p">
                     Your cart is empty at the moment
                   </p>

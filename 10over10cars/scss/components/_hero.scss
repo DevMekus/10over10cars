@@ -1,0 +1,51 @@
+.hero-top-wrap{
+    width: 100%;
+    position: relative;
+    height: 95vh;
+}
+
+.hero-wrapper{
+    width: 100%;
+    position: relative;
+    height: 95vh;
+    display: flex;
+}
+
+.hero-sect {
+    width: 50%;
+    height: 100%;
+}
+
+.hero-yellow{
+    background-color: $primaryColor;
+}
+
+.hero-dark{
+    background-color: $blackColor;
+}
+
+.absolute-hero-items{
+    width: 100%;
+    position: absolute;
+    top: 20px;
+}
+
+.absolute-hero-items .item-1{
+    font-size: 70px;   
+}
+
+.absolute-hero-items .item-2{
+    font-size: 250px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.hero-image{
+   width: 100%;
+    height: auto;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    top: 250px;
+}
+
