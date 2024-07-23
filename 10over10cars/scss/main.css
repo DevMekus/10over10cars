@@ -305,7 +305,7 @@ h6 {
   transition: border-color 0.3s, box-shadow 0.3s;
   background-color: rgba(0, 0, 0, 0.537);
   outline: none;
-  color: #e4e4e4;
+  color: #fff;
 }
 
 .ctr-bg {
@@ -319,18 +319,18 @@ h6 {
 .form-ctr:focus {
   border-color: #FCC801;
   box-shadow: 0 0 5px #FCC801;
-  opacity: 0.5;
   outline: none;
+  opacity: 1;
 }
 
 .form-input::-moz-placeholder {
-  color: rgba(170, 168, 168, 0.579);
   opacity: 1;
+  color: #fff;
 }
 
 .form-input::placeholder {
-  color: rgba(170, 168, 168, 0.579);
   opacity: 1;
+  color: #fff;
 }
 
 .auth-page {
@@ -398,6 +398,12 @@ h6 {
   opacity: 0.8;
 }
 
+.button-dark {
+  background-color: #15181F;
+  color: white;
+  opacity: 0.8;
+}
+
 .button-danger {
   background-color: #DB2D2E;
   color: black;
@@ -416,6 +422,12 @@ h6 {
 
 .button-danger:hover {
   background-color: #DB2D2E;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+}
+
+.button-dark:hover {
+  background-color: #15181F;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   opacity: 1;
 }
@@ -744,7 +756,7 @@ h6 {
 }
 
 .custom-modal-fade {
-  background-color: rgba(18, 18, 18, 0.534);
+  background-color: rgba(255, 255, 255, 0.078);
 }
 
 .custom-modal-dialog {
@@ -845,4 +857,177 @@ h6 {
   bottom: 10px;
   right: 10px;
   cursor: pointer;
+}
+
+.nav-wrapper {
+  width: 100%;
+  height: 70px;
+  position: relative;
+}
+
+.nav-default {
+  background-color: transparent;
+}
+
+.nav-scrolled {
+  background-color: #15181F;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+}
+
+.nav-wrapper .nav-inner {
+  width: 90%;
+  position: relative;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-wrapper .link-section {
+  width: 50%;
+  position: relative;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  display: flex;
+  padding: 15px 10px;
+  border-radius: 5px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #FCC801;
+}
+
+.nav-wrapper .link-section .icons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-wrapper .link-section .icons span {
+  cursor: pointer;
+}
+
+.nav-wrapper .link-section .icons span:hover {
+  font-weight: 600;
+}
+
+.nav-pages {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-pages .link-wrap {
+  position: relative;
+  display: flex;
+}
+
+.nav-pages .link-wrap .link {
+  font-size: 20px;
+  text-decoration: none;
+  color: #15181F;
+  transition: all 0.3s ease-out;
+}
+
+.nav-pages .link-wrap .link:hover {
+  font-weight: 400;
+}
+
+.show-company,
+.filter-box,
+.account,
+.cart {
+  position: relative;
+}
+
+.drop-section {
+  width: 1000px;
+  margin: auto;
+  min-height: 100px;
+  position: fixed;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  top: 80px;
+  right: 10px;
+  border-radius: 10px;
+  border-top: 4px solid #FCC801;
+  visibility: hidden;
+  opacity: 0.8;
+  transition: all 0.3s ease-out;
+}
+
+.show-company:hover .drop-section {
+  visibility: visible;
+  opacity: 1;
+  top: 60px;
+}
+
+.drop-section .link {
+  transition: all 0.3s ease-out;
+}
+
+.drop-section .link:hover {
+  text-decoration: underline;
+}
+
+.filter-box:hover .top-filter {
+  visibility: visible;
+  opacity: 1;
+  top: 60px;
+}
+
+.top-filter {
+  width: 300px;
+  margin: auto;
+  min-height: 100px;
+  position: fixed;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  top: 80px;
+  right: 100px;
+  border-radius: 10px;
+  border-top: 4px solid #FCC801;
+  visibility: hidden;
+  opacity: 0.8;
+  transition: all 0.3s ease-out;
+}
+
+.account:hover .account-drop {
+  visibility: visible;
+  opacity: 1;
+  top: 60px;
+}
+
+.account-drop {
+  width: 300px;
+  margin: auto;
+  min-height: 100px;
+  position: fixed;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  top: 80px;
+  right: 20px;
+  border-radius: 10px;
+  border-top: 4px solid #FCC801;
+  visibility: hidden;
+  opacity: 0.8;
+  transition: all 0.3s ease-out;
+}
+
+.cart:hover .cart-drop {
+  visibility: visible;
+  opacity: 1;
+  top: 60px;
+}
+
+.cart-drop {
+  width: 300px;
+  margin: auto;
+  min-height: 100px;
+  position: fixed;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  top: 80px;
+  right: 10px;
+  border-radius: 10px;
+  border-top: 4px solid #FCC801;
+  visibility: hidden;
+  opacity: 0.8;
+  transition: all 0.3s ease-out;
 }/*# sourceMappingURL=main.css.map */

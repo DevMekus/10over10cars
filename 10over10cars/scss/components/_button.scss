@@ -17,6 +17,12 @@
     opacity: .8; 
 }
 
+.button-dark{
+    background-color: $blackColor;
+    color: white; 
+    opacity: .8; 
+}
+
 .button-danger{
     background-color: $redColor;
     color: black; 
@@ -35,6 +41,12 @@
 
 .button-danger:hover {
     background-color: $redColor; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
+    opacity: 1;
+}
+
+.button-dark:hover{
+    background-color: $blackColor;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
     opacity: 1;
 }

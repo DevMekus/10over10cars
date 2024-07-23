@@ -30,8 +30,8 @@ const page = () => {
                 Proceed
               </button>
               <Link
-                href="/auth/new"
-                className="link color-primary no-decoration bold"
+                href="/auth/login"
+                className="link color-primary no-decoration"
               >
                 Login Instead
               </Link>

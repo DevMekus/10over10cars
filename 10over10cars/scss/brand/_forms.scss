@@ -10,7 +10,7 @@
     transition: border-color 0.3s, box-shadow 0.3s; 
     background-color: rgba(0, 0, 0, 0.537);
     outline: none;
-    color: #e4e4e4;
+    color: #fff;
 }
 
 .ctr-bg{
@@ -24,15 +24,14 @@
 .form-ctr:focus{
     border-color: $yellowColor; 
     box-shadow: 0 0 5px $yellowColor;
-    opacity: 0.5; 
+    //opacity: 0.5; 
     outline: none; 
-}
-
-.form-input::placeholder {
-    color: $greyColor; 
     opacity: 1;
 }
 
-// label{
-//     margin-bottom: 10px;  
-// }
+.form-input::placeholder {
+    //color: $greyColor; 
+    opacity: 1;
+    color: #fff;
+}
+

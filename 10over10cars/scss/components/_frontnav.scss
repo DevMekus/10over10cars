@@ -1,0 +1,173 @@
+.nav-wrapper{
+    width: 100%;   
+    height: 70px;
+   position: relative;
+}
+
+.nav-default{
+    background-color: transparent;
+}
+
+.nav-scrolled{
+    background-color: $blackColor;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+.nav-wrapper .nav-inner{
+    width: 90%;
+    position: relative;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;   
+}
+
+.nav-wrapper .link-section{
+    width: 50%;
+    position: relative;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    display: flex;
+    padding: 15px 10px;
+    border-radius: 5px;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid $primaryColor;
+}
+
+.nav-wrapper .link-section .icons{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-wrapper .link-section .icons span{
+    cursor: pointer;
+}
+
+.nav-wrapper .link-section .icons span:hover{
+    font-weight: 600;
+}
+
+.nav-pages{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-pages .link-wrap{
+    position: relative;
+    display: flex;
+}
+
+.nav-pages .link-wrap .link{
+    font-size: 20px;
+    text-decoration: none;
+    color: $blackColor;
+    transition: all .30s ease-out;
+}
+
+.nav-pages .link-wrap .link:hover{
+    font-weight: 400;
+}
+
+.show-company,
+.filter-box,
+.account,
+.cart
+{
+    position: relative;
+}
+
+.drop-section{
+    width: 1000px;
+    margin: auto;
+    min-height: 100px;
+    position: fixed;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    top: 80px;
+    right: 10px;
+    border-radius: 10px;
+    border-top: 4px solid $primaryColor;
+    visibility: hidden;
+    opacity: .8;
+    transition: all .30s ease-out;
+}
+
+.show-company:hover .drop-section{
+    visibility: visible;
+    opacity: 1;
+    top: 60px;
+}
+
+.drop-section .link{
+    transition: all .30s ease-out;
+}
+
+.drop-section .link:hover{
+    text-decoration: underline;
+}
+
+.filter-box:hover .top-filter{
+    visibility: visible;
+    opacity: 1;
+    top: 60px;
+}
+
+.top-filter{
+    width: 300px;
+    margin: auto;
+    min-height: 100px;
+    position: fixed;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    top: 80px;
+    right: 100px;
+    border-radius: 10px;
+    border-top: 4px solid $primaryColor;
+    visibility: hidden;
+    opacity: .8;
+    transition: all .30s ease-out;
+}
+
+.account:hover .account-drop{
+    visibility: visible;
+    opacity: 1;
+    top: 60px;
+}
+
+.account-drop{
+    width: 300px;
+    margin: auto;
+    min-height: 100px;
+    position: fixed;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    top: 80px;
+    right: 20px;
+    border-radius: 10px;
+    border-top: 4px solid $primaryColor;
+    visibility: hidden;
+    opacity: .8;
+    transition: all .30s ease-out;
+}
+
+.cart:hover .cart-drop{
+    visibility: visible;
+    opacity: 1;
+    top: 60px;
+}
+
+.cart-drop{
+    width: 300px;
+    margin: auto;
+    min-height: 100px;
+    position: fixed;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    top: 80px;
+    right: 10px;
+    border-radius: 10px;
+    border-top: 4px solid $primaryColor;
+    visibility: hidden;
+    opacity: .8;
+    transition: all .30s ease-out;
+}
