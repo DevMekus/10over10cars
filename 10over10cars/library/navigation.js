@@ -20,14 +20,20 @@ export const dashUrl = [
 
   {
     id: 5,
-    name: "Market Place",
-    url: "/dashboard/market",
+    name: "Car gallery",
+    url: "/dashboard/vehicle",
     icon: "car_tag",
   },
   {
     id: 6,
+    name: "Messaging & alert",
+    url: "/dashboard/messaging",
+    icon: "edit_note",
+  },
+  {
+    id: 7,
     name: "Activity Log",
-    url: "/dashboard/logs",
+    url: "/dashboard/activity",
     icon: "zone_person_alert",
   },
 ];
@@ -75,10 +81,4 @@ export const adminUrl = [
     url: "/admin/messaging",
     icon: "edit_note",
   },
-  // {
-  //   id: 8,
-  //   name: "Messaging & Alert",
-  //   url: "/admins/messaging",
-  //   icon: "alarm_smart_wake",
-  // },
 ];

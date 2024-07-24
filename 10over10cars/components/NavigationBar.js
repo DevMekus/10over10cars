@@ -1,7 +1,7 @@
 import React from "react";
 import Breadcrumb from "./Breadcrumb";
 
-const NavigationBar = ({ breadcrumb }) => {
+const NavigationBar = () => {
   return (
     <>
       <div>

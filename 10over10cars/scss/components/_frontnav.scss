@@ -33,15 +33,15 @@
     border-bottom: 3px solid $primaryColor;
 }
 
-.nav-wrapper .link-section .icons{
+.nav-icon {
     display: flex;
     gap: 20px;
     align-items: center;
 }
 
-.nav-wrapper .link-section .icons span{
+.nav-icon span{
     cursor: pointer;
-    color: $primaryColor;
+    color: $greyColor;
 }
 
 .nav-wrapper .link-section .icons span:hover{
@@ -92,7 +92,7 @@
     visibility: hidden;
     opacity: .8;
     transition: all .30s ease-out;
-    //background-color: #fff;
+    background-color: $blackColor;
 }
 
 .show-company:hover .drop-section{
@@ -102,11 +102,22 @@
 }
 
 .drop-section .link{
-    transition: all .30s ease-out;
-    color: $blackColor;
+    transition: all .30s ease-out;  
 }
 
 .drop-section .link:hover{
+    text-decoration: underline;
+}
+
+.drop-link{
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all .38s ease-in-out;
+}
+
+.drop-link:hover{
     text-decoration: underline;
 }
 
@@ -129,6 +140,7 @@
     visibility: hidden;
     opacity: .8;
     transition: all .30s ease-out;
+    background-color: $blackColor;
 }
 
 .account:hover .account-drop{
@@ -150,6 +162,7 @@
     visibility: hidden;
     opacity: .8;
     transition: all .30s ease-out;
+    background-color: $blackColor;
 }
 
 .cart:hover .cart-drop{
@@ -171,6 +184,7 @@
     visibility: hidden;
     opacity: .8;
     transition: all .30s ease-out;
+    background-color: $blackColor;
 }
 
 
@@ -186,3 +200,13 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
     opacity: 1;
 }
+
+.scroll-white{
+    background-color: white;
+}
+
+.scroll-white .nav-pages .link-wrap .link
+{
+    color: $blackColor;
+}
+

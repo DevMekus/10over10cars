@@ -1,6 +1,6 @@
 import React from "react";
 
-const RegisterVin = () => {
+const RegisterVin = ({ id }) => {
   return (
     <>
       <div className="wrapper padding-10">

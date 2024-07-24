@@ -27,7 +27,7 @@ const page = () => {
           </div>
         </div>
         <div className="mt-10 special-bg padding-20">
-          <h5 className="color-white">New Report</h5>
+          <h5 className="color-white">Report Theft</h5>
           <p className="color-grey">
             Click on the button below to report a stolen vehicle.
           </p>
@@ -38,7 +38,7 @@ const page = () => {
               setModal(true);
             }}
           >
-            New Report
+            Start report
           </button>
           {modal && (
             <Modal
@@ -84,7 +84,7 @@ const page = () => {
                   <td>Not Found</td>
                   <td className="flex gap-10">
                     <Link
-                      href="/admin/report/theft/id"
+                      href="/dashboard/report/theft/id"
                       className="button button-sm radius-5 button-primary"
                     >
                       <i className="fas fa-eye"></i>

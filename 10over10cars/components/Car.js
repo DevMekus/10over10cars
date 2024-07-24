@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-const Car = ({ data }) => {
+const Car = ({ data, detail = "admin" }) => {
   return (
     <>
       <div className="car-box">
@@ -13,7 +13,11 @@ const Car = ({ data }) => {
         >
           <div className="more-info">
             <Link
-              href="/admin/vehicle/gallery/buy/id"
+              href={`${
+                detail == "admin"
+                  ? `/admin/vehicle/gallery/buy/id`
+                  : `/dashboard/vehicle/gallery/id`
+              }`}
               className="no-decoration"
             >
               <span

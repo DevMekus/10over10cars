@@ -36,40 +36,44 @@ const FrontNav = () => {
               />
             </Link>
           </div>
-          <div className="nav-section link-section">
+          <div
+            className={`nav-section link-section ${
+              isScrolled ? `scroll-white` : ``
+            }`}
+          >
             <div>
               <div className="nav-pages">
                 <div className="link-wrap">
-                  <Link href="/" className="link">
+                  <Link href="/" className="link top-link">
                     Home
                   </Link>
                 </div>
                 <div className="link-wrap show-company">
-                  <Link href="/" className="link">
+                  <Link href="/" className="link top-link">
                     Company <i className="fas fa-caret-down ml-10"></i>
                   </Link>
                   <div className="company-drop drop-section">
                     <div className="container padding-20">
                       <div className="row">
                         <div className="col-sm-3">
-                          <h5>Company</h5>
+                          <h5 className="color-primary">Company</h5>
                           <div>
-                            <Link href="/" className="link color-black">
+                            <Link href="/about" className="drop-link">
                               About us
                             </Link>
                           </div>
                           <div>
-                            <Link href="/" className="link">
+                            <Link href="/services" className="drop-link">
                               Our services
                             </Link>
                           </div>
                           <div>
-                            <Link href="/" className="link">
+                            <Link href="/" className="drop-link">
                               Career
                             </Link>
                           </div>
                           <div>
-                            <Link href="/" className="link">
+                            <Link href="/" className="drop-link">
                               Team
                             </Link>
                           </div>
@@ -77,17 +81,17 @@ const FrontNav = () => {
                         <div className="col-sm-3">
                           <h5 className="color-primary">Useful links</h5>
                           <div>
-                            <Link href="/" className="link">
+                            <Link href="/pricing" className="drop-link ">
                               Pricing
                             </Link>
                           </div>
                           <div>
-                            <Link href="/" className="link">
+                            <Link href="/" className="drop-link">
                               Frequently asked?
                             </Link>
                           </div>
                           <div>
-                            <Link href="/" className="link">
+                            <Link href="/contact" className="drop-link">
                               Contact us
                             </Link>
                           </div>
@@ -95,17 +99,17 @@ const FrontNav = () => {
                         <div className="col-sm-3">
                           <h5 className="color-primary">Policy</h5>
                           <div>
-                            <Link href="/" className="link">
+                            <Link href="/" className="drop-link">
                               Privacy policy
                             </Link>
                           </div>
                           <div>
-                            <Link href="/" className="link">
+                            <Link href="/" className="drop-link">
                               Terms & condition
                             </Link>
                           </div>
                           <div>
-                            <Link href="/" className="link">
+                            <Link href="/" className="drop-link">
                               Sample verification
                             </Link>
                           </div>
@@ -141,9 +145,11 @@ const FrontNav = () => {
                 </div>
               </div>
             </div>
-            <div className="icons">
+            <div className="icons nav-icon">
               <div className="filter-box">
-                <span class="material-symbols-outlined">travel_explore</span>
+                <span class="material-symbols-outlined t-nav-icon">
+                  travel_explore
+                </span>
                 <div className="top-filter padding-10">
                   <p className="color-grey small-p">Search & filter products</p>
                   <div className="ctr-wrapper">

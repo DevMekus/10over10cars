@@ -223,3 +223,42 @@
 .border-grey{
     border: 1px solid $greyColor;
 }
+
+.mbb-5{
+    margin-bottom: 5px;
+}
+
+.hr{
+    height: 2px;
+    position: relative;
+}
+
+.hr_200{
+    width: 200px;
+    margin: auto;
+}
+
+.hr_150{
+    width: 150px;
+    margin: auto;
+}
+
+.hr_danger{
+    background-color: $redColor;
+}
+
+.hr_primary{
+    background-color: $primaryColor;
+}
+
+.border-left{
+    border-left: 1px solid $greyColor;
+}
+
+.border-right{
+    border-right: 1px solid $greyColor;
+}
+
+.ml-10{
+    margin-left: 10px;
+}
