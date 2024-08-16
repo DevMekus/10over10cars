@@ -1,0 +1,62 @@
+.dash-page{
+    padding: 0px;
+    width: 90%;
+    margin: auto;
+}
+
+.dasboard-footer{
+    padding: 20px;
+}
+
+.dash-nav-wrapper{
+    width: 100%;
+    height: 60px;   
+    position: relative;   
+   
+   background-color: $primaryColor;
+}
+
+.fixed-dash-nav{    
+   z-index: 3;
+}
+
+.dash-nav-wrapper .inner{
+    width: 90%;   
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+}
+
+.dash-nav-wrapper .inner .t-nav-icon{
+    color: $blackColor;
+}
+
+.dash-nav-wrapper .inner .nav-drop{
+    background-color: $blackColor;
+}
+
+.dash-nav-wrapper .link{
+    color: white;
+    text-decoration: none;
+}
+
+.dash-nav-wrapper .nav-drop:hover{
+    visibility: visible;
+    opacity: 1;
+}
+
+.success-page{
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+.success-page .inner-div{
+    width: 350px;
+    height: 350px;    
+    margin-top: 50px;
+    //box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    padding: 30px;
+}

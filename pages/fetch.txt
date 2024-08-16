@@ -1,0 +1,30 @@
+export default async function handler(req, res) {
+  const { method } = req;
+  const { endpoint } = req.query;
+
+  const phpEndpoint = `http://localhost/API_10over10Cars/${endpoint}`;
+
+  let options = {
+    method: method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  if (method === "POST" || method === "PUT" || method === "PATCH") {
+    options.body = JSON.stringify(req.body);
+  }
+
+  try {
+    const response = await fetch(phpEndpoint, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}

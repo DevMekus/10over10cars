@@ -1,0 +1,89 @@
+.button {   
+    padding: 10px 20px; 
+    border: none;
+    font-size: 16px;
+    cursor: pointer; 
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s, box-shadow 0.3s; 
+}
+
+.button-sm{
+    padding: 5px 10px; 
+}
+
+.button-primary{
+    background-color: $primaryColor; 
+    color: black;
+    opacity: .8; 
+}
+
+.button-dark{
+    background-color: $blackColor;
+    color: white; 
+    opacity: .8; 
+}
+
+.button-success{
+    background-color: $greenColor;
+    color: white; 
+    opacity: .8; 
+}
+
+.button-danger{
+    background-color: $redColor;
+    color: black; 
+    opacity: .8;
+}
+
+.semi-pill{
+    border-radius: 10px; 
+}
+
+.button-primary:hover {
+    background-color: $primaryColor; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
+    opacity: 1;
+}
+
+.button-success:hover {
+    background-color: $greenColor;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
+    opacity: 1;
+}
+
+.button-danger:hover {
+    background-color: $redColor; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
+    opacity: 1;
+}
+
+.button-dark:hover{
+    background-color: $blackColor;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
+    opacity: 1;
+}
+
+.button:active {
+    background-color: $greyColor;
+    //opacity: .8;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+    transform: translateY(2px); 
+}
+
+.radius-5{
+    border-radius: 5px;
+}
+
+
+.download-button-dark{
+    background-color: $blackColor;
+    color: white; 
+    opacity: .8; 
+    border: 1px solid $greenColor;
+}
+
+.download-button-dark:hover{
+    background-color: $blackColor;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
+    opacity: 1;
+}

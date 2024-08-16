@@ -1,0 +1,37 @@
+.form-input{
+    width: 100%; 
+    padding: 10px 15px; 
+    margin: 5px 0; 
+    box-sizing: border-box; 
+    border: 1px solid #363636; 
+    border-radius: 4px; 
+    font-size: 16px; 
+    font-family: Arial, sans-serif;
+    transition: border-color 0.3s, box-shadow 0.3s; 
+    background-color: rgba(0, 0, 0, 0.537);
+    outline: none;
+    color: #fff;
+}
+
+.ctr-bg{
+    background-color: transparent;
+}
+
+.form-ctr{
+    position: relative;
+}
+
+.form-ctr:focus{
+    border-color: $yellowColor; 
+    box-shadow: 0 0 5px $yellowColor;
+    //opacity: 0.5; 
+    outline: none; 
+    opacity: 1;
+}
+
+.form-input::placeholder {
+    color: $greyColor; 
+    opacity: 1;
+    // color: #fff;
+}
+

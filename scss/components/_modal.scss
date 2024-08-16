@@ -1,0 +1,75 @@
+.custom-modal{
+    width: 100%;
+    min-height: 100vh;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 5;   
+}
+
+.custom-modal-fade{
+    //background-color: rgba(18, 18, 18, 0.534);
+    background-color: rgba(255, 255, 255, 0.078);
+}
+
+.custom-modal-dialog{
+    position: relative;
+    margin: auto;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background-color: $blackColor;
+    margin-top: 50px;
+    border-radius: 10px;
+    max-width: 500px; 
+    border: 1px solid $primaryColor;
+}
+
+.modal-xm{
+    max-width: 300px;  
+}
+
+.modal-md{
+    max-width: 600px;   
+}
+
+.modal-lg{
+    max-width: 1140px;
+}
+
+.custom-modal-content{
+    position: relative;
+}
+
+.custom-modal-content .c-modal-header{
+    position: relative;
+    padding: 15px 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $greyColor;
+}
+
+.custom-modal-content .c-modal-header .c-modal-title{
+    font-size: 25px;
+    color: white;
+}
+
+.custom-modal-content .c-modal-header .btn-close{
+    color: $greyColor;
+}
+
+.custom-modal-content .c-modal-body{
+    position: relative;
+    padding: 20px;
+    width: 100%;
+    max-height: 500px;
+    border-bottom: 1px solid $greyColor;
+    overflow-y: scroll;
+}
+
+.custom-modal-content  .c-modal-footer{
+    position: relative;
+    padding: 20px;
+    width: 100%;
+    border-bottom: 1px solid $greyColor;
+}

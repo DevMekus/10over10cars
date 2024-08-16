@@ -1,0 +1,47 @@
+$yellowColor: #FCC801;
+$primaryColor: #FCC801;
+$blackColor: #15181F;
+$redColor: #DB2D2E;
+$yellowFade:#f5b754be;
+$greyColor:rgba(170, 168, 168, 0.579);
+$greenColor :  rgb(51, 168, 51);
+
+/**Basic Color class**/
+.color-red{
+    color: $redColor;
+}
+.color-black{
+    color: black;
+}
+
+.color-grey{
+    color: $greyColor;
+}
+
+.color-green{
+    color: $greenColor;
+}
+
+.color-primary{
+    color: $yellowColor;
+}
+
+.color-white{
+    color: #fff;
+}
+
+.bg-yellow{
+    background-color: $yellowColor;
+}
+
+.bg-black{
+    background-color: $blackColor;
+}
+
+.bg-white{
+    background-color: #fff;
+}
+
+.bg-success{
+    background-color: #fff;
+}

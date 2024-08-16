@@ -1,0 +1,313 @@
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: none;
+    list-style: none;
+    word-wrap: break-word;
+}
+
+.f-width{
+    width: 100%;
+    position: relative;
+}
+
+.flex{
+    display: flex;
+}
+
+.flex-end{
+    justify-content: flex-end;
+}
+
+.flex-center{
+    justify-content: center;
+}
+
+.align-center{
+    align-items: center;
+}
+
+.space-between{
+    justify-content: space-between;
+}
+
+.flex-wrap{
+    flex-wrap: wrap;
+}
+
+.gap-10{
+    gap: 10px;
+}
+
+.gap-20{
+    gap: 20px;
+}
+
+.mt-10{
+    margin-top: 10px;
+}
+
+.mt-5{
+    margin-top: 5px;
+}
+
+.bold{
+    font-weight: 700;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.mr-10{
+    margin-right: 10px;
+}
+
+.mt-20{
+    margin-top: 20px;
+}
+
+.hidden{
+    display: none;
+}
+
+.no-decoration{
+    text-decoration: none;
+}
+
+.card-primary{
+    background-color: rgba(87, 87, 87, 0.564);
+    padding: 10px 20px; 
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;  
+    border-radius: 5px; 
+}
+
+.moveup-10{
+    margin-top: -15px;
+}
+
+.border-bottom-grey{
+    border-bottom: 1px solid $greyColor;
+}
+
+.decoration{
+    text-decoration: underline $greyColor;
+    
+}
+
+.loading-wrapper{
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #15181f56;
+}
+
+.loading-wrapper .logo-section img{
+    width: 70%;
+    height: auto;
+}
+
+.profile-image-wrap{
+    width: 150px;
+    height: 150px;
+    background-color: $greyColor;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.padding-20{
+    padding: 20px;
+}
+
+.padding-10{
+    padding: 10px;
+}
+
+.icon-bottom{
+    width: 100%;
+    position: relative;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+.icon-bottom .page-icon{
+    width: 150px;
+    height: 150px;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.invoice-summary {
+    width: 300px;
+    position: relative;
+}
+.invoice-summary .summary-item{
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.border-left-3-green{
+    border-left: 4px solid $greenColor;
+}
+
+.scrollable{
+    width: 100%;
+    overflow: scroll;
+}
+
+.scrollable::-webkit-scrollbar {
+    display: none;
+}
+
+.pagination-wr{
+    position: relative;
+    border: 1px solid $greyColor;
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+}
+
+.pagination-wr .action{
+    width: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px; 
+    border: 1px solid $greyColor; 
+    transition: all .30s ease-in-out;  
+}
+
+.pagination-wr .action .link{
+    text-decoration: none;
+    font-size: 16px;
+    color: $primaryColor;
+}
+
+.pagination-wr .action:hover{
+    background-color: $primaryColor;
+    color: $blackColor;
+    border: none;
+}
+
+.pagination-wr .action:hover .link{
+    color: $blackColor;
+}
+
+.n-modal-container{
+    width: 100%;
+    position: relative;
+    height: 400px;
+}
+
+.alert-header{
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.border-grey{
+    border: 1px solid $greyColor;
+}
+
+.mbb-5{
+    margin-bottom: 5px;
+}
+
+.hr{
+    height: 2px;
+    position: relative;
+}
+
+.hr_200{
+    width: 200px;
+    margin: auto;
+}
+
+.hr_150{
+    width: 150px;
+    margin: auto;
+}
+
+.hr_danger{
+    background-color: $redColor;
+}
+
+.hr_primary{
+    background-color: $primaryColor;
+}
+
+.border-left{
+    border-left: 1px solid $greyColor;
+}
+
+.border-right{
+    border-right: 1px solid $greyColor;
+}
+
+.ml-10{
+    margin-left: 10px;
+}
+
+.page-title{
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+@media print {
+    /* Hide everything except the invoice content */
+    body * {
+        display: none; /* Hide everything */
+    }
+  
+    #printArea {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    .btable{
+        border: 1px solid black;
+    }
+
+    .btable th {   
+        padding: 10px;
+        color: black;
+    }
+
+    .btable tr td{
+        color: black;
+    }
+}
+
+.badge{
+    position: relative;
+}
+
+.badge .badge-count{
+    color: #fff;
+}
