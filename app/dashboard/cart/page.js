@@ -3,81 +3,45 @@ import React from "react";
 import Link from "next/link";
 import DashboardsFooter from "@/components/DashboardsFooter";
 import { useState, useEffect } from "react";
-import {
-  setCartItem,
-  getCartTotal,
-  removeCartItem,
-  clearCart,
-} from "@/app/libs/CartManager/Cartmanager";
-import { useRouter } from "next/navigation";
+
 import GetCart from "@/app/libs/CartManager/GetCart";
 import RemoveItem from "@/app/libs/CartManager/RemoveItem";
+import { CartTotal } from "@/app/libs/CartManager/CartTotal";
 
 const page = () => {
   const { cart, setcart } = GetCart();
-
   const [total, setTotal] = useState(0);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const router = useRouter();
+
   useEffect(() => {
-    checkoutTotal();
+    setCartTotal();
   }, []);
-
-  function checkoutTotal() {
-    getCartTotal(setTotal);
-  }
-
-  function clearMessages() {
+  function reloadPage() {
     setTimeout(() => {
-      // window.location.reload();
-      setError("");
-      setSuccess("");
+      window.location.reload();
     }, 1500);
   }
 
-  const handleClearCart = () => {
-    if (confirm("You are about to clear your cart?")) {
-      if (clearCart(setcart)) {
-        setSuccess("Cart cleared successfully!");
-      } else {
-        setError("Error encountered.");
-      }
-      clearMessages();
-    }
-  };
+  function setCartTotal() {
+    
+    if (cart && cart.length > 0) setTotal(CartTotal(cart));
+  }
 
-  // const handleRemoveItem = (id) => {
-  //   if (confirm("You wish to continue?")) {
-  //     const newCart = removeCartItem(id, setcart, setTotal);
-
-  //     if (newCart) {
-  //       setSuccess("Cart item removed");
-  //     } else {
-  //       setError("Could not delete the cart item");
-  //     }
-
-  //     clearMessages();
-  //   }
-  // };
+  const handleClearCart = () => {};
 
   const handleRemoveItem = (id) => {
     if (confirm("You wish to continue?")) {
-      const removed = RemoveItem(id, cart, setcart);
-
-      if (removed) {
-        setSuccess("Cart item removed");
+      const success = RemoveItem(id, cart, setcart);
+      if (success) {
+        setSuccess("Item Deleted.");
       } else {
-        setError("Could not delete the cart item");
+        setError("Error encountered");
       }
-      // Triggering the state to update
-      const updatedCart = localStorage.getItem("cart")
-        ? JSON.parse(localStorage.getItem("cart"))
-        : [];
-      setcart(updatedCart);
-      clearMessages();
     }
+    reloadPage();
   };
+
   return (
     <>
       <div className="dash-page">

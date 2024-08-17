@@ -6,7 +6,13 @@ import { getSession } from "@/library/utils/sessionManager";
 import { greetUser } from "@/library/utils/Utility";
 import Cart from "@/components-main/Cart";
 import { NavWelcome } from "@/app/libs/AccountManager/AccountManager";
-const DashboardNav = ({cart}) => {
+import GetCart from "@/app/libs/CartManager/GetCart";
+import RemoveItem from "@/app/libs/CartManager/RemoveItem";
+
+
+const DashboardNav = () => {
+  const { cart, setcart } = GetCart();
+
   const [isScrolled, setisScrolled] = useState(false); 
   const [userName, setUserName] = useState([]);
   const [lastSeen, setLastSeen] = useState([]);
@@ -45,7 +51,11 @@ const DashboardNav = ({cart}) => {
     setLastSeen(user["last-seen"]);
   }
 
-
+  const removeCartItem=(id)=>{
+    if(confirm("You wish to continue?")){
+      return RemoveItem(id,cart,setcart);
+    }
+  }
 
   return (
     <>
@@ -103,7 +113,11 @@ const DashboardNav = ({cart}) => {
                 </div>
               </div>
             </div>
-            <Cart cart={cart} />
+            <Cart 
+              cart={cart} 
+              removeCartItem={removeCartItem}
+              setcart={setcart} 
+            />
           </div>
         </div>
       </div>
