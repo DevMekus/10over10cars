@@ -1,13 +1,13 @@
 <?php
 
-use App\Controllers\AuthController;
+use App\Controllers\UserController;
 use App\Routes\Router;
 
 
-$auth = new AuthController();
+$user = new UserController;
 
-Router::add('POST',  '/auth/login', [$auth, 'login']);
-Router::add('POST',  '/auth/register', [$auth, 'register']);
-Router::add('POST',  '/auth/logout', [$auth, 'logout']);
-Router::add('POST',  '/auth/recover', [$auth, 'recover']);
-Router::add('POST',  '/auth/reset', [$auth, 'reset']);
+Router::add('POST',  '/login', [$user, 'login']);
+Router::add('POST',  'register', [$user, 'register']);
+Router::add('POST',  '/logout', [$user, 'logout']);
+Router::add('POST',  '/auth/recover', [$user, 'recover']);
+Router::add('POST',  '/auth/reset', [$user, 'reset']);

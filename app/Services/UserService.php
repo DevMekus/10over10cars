@@ -2,328 +2,230 @@
 
 namespace App\Services;
 
-use App\Models\ActivityLog;
-use App\Models\User;
-use App\Models\Dealers;
-use App\Models\Report;
 use App\Utils\Response;
+use configs\DB;
+use App\Middleware\AuthMiddleware;
 use App\Services\Activity;
 use App\Utils\Utility;
 use App\Utils\MailClient;
-use App\Models\Support;
-use DateTime;
 
 class UserService
 {
+    protected $db;
+    protected $profile;
+    protected $account;
 
-
-    public static function userManagerOverview() //pass
+    public function __construct()
     {
-        $users = User::usersData();
-        //get total new users for the week
-        $usersThisWeek = self::totalUsersThisWeek($users);
+        $this->db = new DB();
+        $this->profile = "users_tbl";
+        $this->account = "accounts_tbl";
+    }
 
-        //suspended accounts
-        $suspendedUser = array_filter($users, function ($user) {
-            return strtolower($user['account_status']) === 'suspended';
-        });
+    public function attemptLogin($data)
+    {
+        try {
+            $user = $this->db->joinTables(
+                $this->profile,
+                [
+                    [
+                        "type" => "LEFT",
+                        "table" => $this->account,
+                        "on" => "users_tbl.userid = accounts_tbl.userid"
+                    ]
+                ],
+                ["users_tbl.*", "accounts_tbl.*"],
+                ["email_address" => $data['email_address']]
+            );
 
-        //admins
-        $admins = array_filter($users, function ($user) {
-            return strtolower($user['role_id']) === '1';
-        });
-        $overview = [
-            'total users' => count($users),
-            'new this week' => $usersThisWeek,
-            'suspended' => count($suspendedUser),
-            'admins' => count($admins),
-        ];
 
-        $overviewArray = [];
-        foreach ($overview as $key => $value) {
-            $overviewArray[] = [
-                'label' => $key,
-                'value' => $value
+            if (empty($user) || !password_verify($data['user_password'], $user[0]['user_password'])) {
+                Response::error(401, "Invalid email or password");
+            }
+
+            $user = $user[0] ?? null;
+
+            $this->checkUserStatus($user);
+            $token = AuthMiddleware::generateToken([
+                'id' => $user['userid'],
+                'email' => $user['email_address'],
+                'role' => $user['role_id'],
+                'exp' => time() + 3600
+            ]);
+            if (Activity::newActivity([
+                'userid' => $user['userid'],
+                'actions' => "logged In",
+            ])) {
+                Response::success(['token' => $token], "Login successful");
+            }
+            Response::error(500, "An error has occurred");
+        } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'UserService::attemptLogin', ['host' => 'localhost'], $e);
+        }
+    }
+
+    private function checkUserStatus($user) //passed
+    {
+        if (
+            isset($user['account_status']) && $user['account_status'] !== 'active'
+        ) {
+            Response::error(401, "Account is not active");
+        }
+
+        return true;
+    }
+
+    public function registerNewUser($data)
+    {
+        try {
+            $existingUser = $this->db->find("users_tbl", $data['email_address'], 'email_address');
+            if ($existingUser) {
+                Response::error(409, "User already exists");
+            }
+
+            $userid = Utility::generate_uniqueId(10);
+            $profile = [
+                'userid' => $userid,
+                'home_address' => '',
+                'home_state' => '',
+                'home_city' => '',
+                'country' => '',
+                'phone_number' => '',
+                'user_password' => password_hash($data['user_password'], PASSWORD_BCRYPT),
+                'fullname' => $data['fullname'],
+                'email_address' => $data['email_address'],
+                'avatar' => ''
             ];
-        }
-
-        return  [
-            'overview' => $overviewArray,
-            'users' => $users
-        ];
-    }
-
-    private static function totalUsersThisWeek($users) //pass
-    {
-        $now = new DateTime();
-        $startOfWeek = clone $now;
-        $startOfWeek->modify('monday this week')->setTime(0, 0, 0);
-
-        $endOfWeek = clone $startOfWeek;
-        $endOfWeek->modify('sunday this week')->setTime(23, 59, 59);
-
-        $userCount = 0;
-
-        foreach ($users as $user) {
-            $userDate = new DateTime($user['create_date']);
-            if ($userDate >= $startOfWeek && $userDate <= $endOfWeek) {
-                $userCount++;
-            }
-        }
-
-        return $userCount;
-    }
-
-    public static function dealersManagerOverview() //pass
-    {
-        $dealers = Dealers::findDealers();
-
-        $activeDealers = array_filter($dealers, function ($dealer) {
-            return strtolower($dealer['status']) === 'active';
-        });
-
-        $pendingDealers = array_filter($dealers, function ($dealer) {
-            return strtolower($dealer['status']) === 'pending';
-        });
-
-        $overview = [
-            'total dealers' => count($dealers),
-            'active dealers' => count($activeDealers),
-            'pending approval' => count($pendingDealers),
-            'top rated' => '',
-        ];
-
-        $overviewArray = [];
-        foreach ($overview as $key => $value) {
-            $overviewArray[] = [
-                'label' => $key,
-                'value' => $value
+            $account = [
+                'userid' => $userid,
+                'role_id' => $data['role'] ?? '2',
+                'account_status' => $data['role'] == '1' ? 'active' : 'pending',
             ];
-        }
 
-        return  [
-            'overview' => $overviewArray,
-            'dealers' => $dealers
+            if ($this->db->insert($this->profile, $profile) && $this->db->insert($this->account, $account)) {
+                unset($data['user_password']);
+                Activity::newActivity([
+                    'userid' => $userid,
+                    'actions' => "New member",
+                ]);
+                $this->registrationEmail($data['fullname'], $data['email_address']);
+                Response::success(['user' => $data], 'User registration successful');
+            }
+            Response::error(500, "An error has occurred");
+        } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'UserService::registerNewUser', ['host' => 'localhost'], $e);
+        }
+    }
+
+    private function registrationEmail($username, $email)
+    {
+
+        $templateData = [
+            '{{logo_url}}' => BASE_URL . 'assets/images/dark-logo.jpg',
+            '{{banner_image_url}}' => BASE_URL . 'assets/images/emails/registration_banner.jpeg',
+            '{{user_name}}' => $username,
+            '{{platform_name}}' => BRAND_NAME,
+            '{{login_url}}' => BASE_URL . 'auth/login',
+            '{{support_url}}' => BASE_URL . 'contact-us',
+            '{{current_year}}' => date('Y'),
         ];
+
+        MailClient::sendMail(
+            $email,
+            'Welcome to ' . BRAND_NAME,
+            ROOT_PATH . '/app/templates/registration.html',
+            $templateData,
+            $username
+        );
     }
 
-    public static function updateUserAccount($id, $data) //pass
+    public function logoutUser($data)
     {
         try {
-            $user = User::userData($id);
-            if (!$user) Response::error(404, "User not found");
 
-            /**Process Profile Image update */
-            if (
-                isset($_FILES['dp-upload']) &&
-                $_FILES['dp-upload']['error'] === UPLOAD_ERR_OK &&
-                is_uploaded_file($_FILES['dp-upload']['tmp_name'])
-            ) {
-                $target_dir =   "public/UPLOADS/avatars/";
-                $user_avatar = Utility::uploadDocuments('dp-upload', $target_dir);
-                if (!$user_avatar || !$user_avatar['success']) Response::error(500, "Image upload failed");
-
-
-                $data['avatar'] = $user_avatar['files'][0];
-
-                if (isset($user['avatar'])) {
-                    $file = $user['avatar'];
-                    if (file_exists($file))
-                        unlink($file);
-                }
-            }
-
-            if (
-
-                User::updateUserAccount($user, $data)
-                && User::updateUserProfile($user, $data)
-            ) {
-                if (Activity::newActivity([
-                    'userid' => $id,
-                    'actions' => 'account updated',
-                ])) Response::success([], "account updated");
-            }
-            Response::error(500, "An error has occurred");
+            header('Authorization: Bearer null');
+            if (Activity::newActivity([
+                'userid' => $data['userid'],
+                'actions' => 'Logged out',
+            ])) Response::success([], "User logged out");
         } catch (\Throwable $e) {
-            Utility::log($e->getMessage(), 'error', 'UserService::updateUserAccount', ['host' => 'localhost'], $e);
+            Utility::log($e->getMessage(), 'error', 'AuthService::logout', ['host' => 'localhost'], $e);
         }
     }
 
-    public static function deleteUser($id) //pass
+    public function recoverAccount($data)
     {
         try {
-            $user = User::userData($id);
-
-            if (!$user) Response::error(404, "User not found");
-
-            if (User::delete($id)) {
-                $dealer = Dealers::findDealerById($id);
-                if ($dealer) Dealers::delete($id);
-                if (Activity::newActivity([
-                    'userid' => $id,
-                    'actions' => 'account deleted',
-                ])) Response::success([], "account deleted");
-            }
-            Response::error(500, "An error has occurred");
-        } catch (\Throwable $e) {
-            Utility::log($e->getMessage(), 'error', 'UserService::deleteUser', ['host' => 'localhost'], $e);
-        }
-    }
-
-    public static function deleteDealer($id) //pass
-    {
-        try {
-            $dealer = Dealers::findDealerById($id);
-
-            if (!$dealer) Response::error(404, "dealer not found");
-
-            if (Dealers::delete($id)) {
-                if (Activity::newActivity([
-                    'userid' => $dealer['userid'],
-                    'actions' => 'dealer account deleted',
-                ])) Response::success([], "Dealer deleted");
-            }
-            Response::error(500, "An error has occurred");
-        } catch (\Throwable $e) {
-            Utility::log($e->getMessage(), 'error', 'UserService::deleteDealer', ['host' => 'localhost'], $e);
-        }
-    }
-
-    public static function createADealer($data) //pass
-    {
-
-        try {
-            $dealer = Dealers::findDealerById($data['userid']);
-            if ($dealer) Response::error(409, "Dealer already exists");
-            $dealers = Dealers::findDealers();
-            foreach ($dealers as $dealer) {
-                if (trim(strtolower($dealer['dealer_name'])) === strtolower($data['dealerName'])) {
-                    Response::error(409, "Dealer already exists");
-                }
-            }
-            /**Process logo */
-            if (
-                isset($_FILES['dealer-logo']) &&
-                $_FILES['dealer-logo']['error'] === UPLOAD_ERR_OK &&
-                is_uploaded_file($_FILES['dealer-logo']['tmp_name'])
-            ) {
-                $target_dir =   "public/UPLOADS/dealers/";
-                $dealer_avatar = Utility::uploadDocuments('dealer-logo', $target_dir);
-                if (!$dealer_avatar || !$dealer_avatar['success']) Response::error(500, "Image upload failed");
-
-                $data['logo'] = $dealer_avatar['files'][0];
+            $existingUser = $this->db->find($this->profile, $data['email_address'], 'email_address');
+            if (!$existingUser) {
+                Response::error(404, "User not found");
             }
 
-            if (Dealers::create($data)) {
-                if (Activity::newActivity([
-                    'userid' => $data['userid'],
-                    'actions' => 'new dealer',
-                ])) Response::success([], "Dealer account created");
-            }
-            Response::error(500, "An error has occurred");
-        } catch (\Throwable $e) {
-            Utility::log($e->getMessage(), 'error', 'UserService::createADealer', ['host' => 'localhost'], $e);
-        }
-    }
+            $token = bin2hex(random_bytes(32));
 
-    public static function updateDealerInfo($id, $data) //pass
-    {
-        try {
-            $dealer = Dealers::findDealerById($id);
-            if (!$dealer) Response::error(404, "Dealer not found");
+            date_default_timezone_set('UTC');
+            $expiry = (new \DateTime('+2 hour'))->format('Y-m-d H:i:s');
 
-            /**Process logo */
-            if (
-                isset($_FILES['dealer-logo']) &&
-                $_FILES['dealer-logo']['error'] === UPLOAD_ERR_OK &&
-                is_uploaded_file($_FILES['dealer-logo']['tmp_name'])
-            ) {
-                $target_dir =   "public/UPLOADS/dealers/";
-                $dealer_avatar = Utility::uploadDocuments('dealer-logo', $target_dir);
-                if (!$dealer_avatar || !$dealer_avatar['success']) Response::error(500, "Image upload failed");
-
-                $data['logo'] = $dealer_avatar['files'][0];
-
-                if (isset($dealer['logo'])) {
-                    $file = $dealer['logo'];
-                    if (file_exists($file))
-                        unlink($file);
-                }
-            }
+            $data = [
+                'reset_token' => $token,
+                'reset_token_expiration' => $expiry,
+            ];
 
 
-            if (Dealers::update($dealer, $data)) {
+            if ($this->db->update($this->account, $data, ["userid" => $existingUser['userid']])) {
+                $resetLink = BASE_URL . "/auth/reset-password?token=$token";
 
-                if (Activity::newActivity([
-                    'userid' => $id,
-                    'actions' => 'dealer updated',
-                ])) Response::success([], "Dealer account updated");
-            }
-            Response::error(500, "An error has occurred");
-        } catch (\Throwable $e) {
-            Utility::log($e->getMessage(), 'error', 'UserService::updateDealerInfo', ['host' => 'localhost'], $e);
-        }
-    }
+                $templateData = [
+                    '{{logo_url}}' => BASE_URL . 'assets/images/dark-logo.jpg',
+                    '{{user_name}}' => $existingUser['fullname'],
+                    '{{platform_name}}' => BRAND_NAME,
+                    '{{reset_link}}' => $resetLink,
+                    '{{support_url}}' => BASE_URL . 'contact-us',
+                    '{{current_year}}' => date('Y'),
+                    '{{user_email}}' => $existingUser['email_address']
+                ];
 
-    public static function updateAccountPassword($id, $data)
-    {
-        try {
-            $user = User::userData($id);
-            if (!$user) Response::error(404, "User not found");
-
-            if ($user && !password_verify($data['old_password'], $user['user_password'])) {
-                Response::error(401, "Invalid password");
-            }
-            $data['user_password'] = password_hash($data['new_password'], PASSWORD_BCRYPT);
-            $data['userid'] = $id;
-            if (User::updateUserProfile($user, $data)) {
-                if (Activity::newActivity([
-                    'userid' => $id,
-                    'actions' => 'password updated',
-                ])) {
-                    $user = User::userData($id);
-                    Response::success($user, "Account password updated");
+                if (MailClient::sendMail(
+                    $existingUser['email_address'],
+                    'Account Recovery',
+                    ROOT_PATH . '/app/templates/account_recovery_email.html',
+                    $templateData,
+                    $existingUser['fullname']
+                )) {
+                    Response::success([], "A reset link has been sent to your registered email.");
                 }
             }
             Response::error(500, "An error has occurred");
         } catch (\Throwable $e) {
-            Utility::log($e->getMessage(), 'error', 'UserService::updateAccountPassword', ['host' => 'localhost'], $e);
+            Utility::log($e->getMessage(), 'error', 'UserService::recoverAccount', ['host' => 'localhost'], $e);
         }
     }
 
-    public static function securityManagerOverview()
+    public function resetPassword($data)
     {
         try {
-            $logs = ActivityLog::fetchLogs();
-            $users = User::usersData();
-
-            $admins = array_filter($users, function ($user) {
-                return strtolower($user['role_id']) === '1';
-            });
-
-            return  [
-                'logs' => $logs,
-                'admins' => array_values($admins)
+            $validateToken = $this->db->find($this->account, $data['token'], 'reset_token');
+            if (!$validateToken) Response::error(401, "Wrong token presented");
+            $profile = [
+                'user_password' => password_hash($data['new_password'], PASSWORD_BCRYPT),
             ];
+            $account = [
+                'reset_token' => null,
+                'reset_token_expiration' => null,
+            ];
+            if (
+                $this->db->update($this->profile,  $profile, ["userid" => $validateToken['userid']])
+                && $this->db->update($this->account,  $account, ["userid" => $validateToken['userid']])
+            ) {
+                Activity::newActivity([
+                    'userid' => $validateToken['userid'],
+                    'actions' => 'Reset password',
+                ]);
+                Response::success([], "Password reset complete");
+            }
+            Response::error(500, "An error has occurred");
         } catch (\Throwable $e) {
-            Utility::log($e->getMessage(), 'error', 'UserService::securityManagerOverview', ['host' => 'localhost'], $e);
+            Utility::log($e->getMessage(), 'error', 'UserService::resetPassword', ['host' => 'localhost'], $e);
         }
     }
-
-    public static function userSecurityManagement($id)
-    {
-        try {
-            $logs = ActivityLog::fetchLogsById($id);
-
-            return  [
-                'logs' => $logs,
-            ];
-        } catch (\Throwable $e) {
-            Utility::log($e->getMessage(), 'error', 'UserService::userSecurityManagement', ['host' => 'localhost'], $e);
-        }
-    }
-
-   
-
-    
 }

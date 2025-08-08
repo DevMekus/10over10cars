@@ -10,6 +10,5 @@ $user = new UserController();
 //General Routes for the User and Admin
 
 Router::group('/user', function () use ($user) {
-   
-    
+    // Router::add('POST',  '/login', [$user, 'login']);
 }, [UserOnlyMiddleware::class]);

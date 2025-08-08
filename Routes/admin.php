@@ -8,7 +8,4 @@ $admin = new AdminController();
 
 //Admin Only Routes
 
-Router::group('/admin', function () use ($admin) {
-    Router::add('GET',  '/user', [$admin, 'findUsers']);
-   
-}, [AdminOnlyMiddleware::class]);
+Router::group('/admin', function () use ($admin) {}, [AdminOnlyMiddleware::class]);
