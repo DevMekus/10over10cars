@@ -1,0 +1,121 @@
+.thumbnails {
+  width: 100%;
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.thumbnail {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.thumbnail:hover {
+  transform: scale(1.05);
+  border-color: var(--accent);
+}
+
+.thumbnail-container {
+  position: relative;
+  border: 1px solid var(--accent);
+  padding: 2px;
+}
+
+.thumbnail-fixed {
+  height: 130px;
+  width: 130px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.thumbnail-fixed .action {
+  position: absolute;
+  bottom: 5px;
+  z-index: 2px;
+  left: 5px;
+}
+
+.thumbnail-fixed:hover {
+  transform: scale(1.05);
+}
+
+.section-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.report-section {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1rem;
+}
+
+.doc-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.doc-link {
+  padding: 10px 15px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.doc-link:hover,
+.doc-link:focus {
+  background-color: #e9ecef;
+  outline: 2px solid var(--accent);
+}
+
+.card-img-top.object-fit-cover {
+  object-fit: cover;
+  width: 100%;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.delete_images {
+  opacity: 0.85;
+  transition: all 0.2s ease-in-out;
+}
+
+.delete_images:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.btn-outline-danger i,
+.btn-outline-primary i {
+  pointer-events: none;
+}
+
+.card .fa-file-alt {
+  font-size: 1.8rem;
+}
+
+.card-body h6 {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.delete_doc {
+  transition: all 0.2s ease-in-out;
+}
+
+.delete_doc:hover {
+  transform: scale(1.1);
+}

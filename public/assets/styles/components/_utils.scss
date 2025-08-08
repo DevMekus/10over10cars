@@ -1,0 +1,131 @@
+// ==============================
+// Spacing Scale
+// ==============================
+:root {
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.5rem; /* 24px */
+  --space-6: 2rem; /* 32px */
+  --space-8: 2.5rem; /* 40px */
+  --space-10: 3rem; /* 48px */
+}
+
+// ==============================
+// Breakpoints
+// ==============================
+$break-sm: 576px;
+$break-md: 768px;
+$break-lg: 992px;
+$break-xl: 1200px;
+
+@mixin respond($break) {
+  @if $break == sm {
+    @media (min-width: #{$break-sm}) {
+      @content;
+    }
+  } @else if $break == md {
+    @media (min-width: #{$break-md}) {
+      @content;
+    }
+  } @else if $break == lg {
+    @media (min-width: #{$break-lg}) {
+      @content;
+    }
+  } @else if $break == xl {
+    @media (min-width: #{$break-xl}) {
+      @content;
+    }
+  }
+}
+
+// ==============================
+// Utility classes
+// ==============================
+// Margins & paddings
+@mixin space-utils($prop) {
+  @each $i,
+    $space
+      in (
+        1: var(--space-1),
+        2: var(--space-2),
+        3: var(--space-3),
+        4: var(--space-4),
+        5: var(--space-5),
+        6: var(--space-6)
+      )
+  {
+    .#{$prop}-#{$i} {
+      #{$prop}: #{$space};
+    }
+    .#{$prop}x-#{$i} {
+      #{$prop}-left: #{$space};
+      #{$prop}-right: #{$space};
+    }
+    .#{$prop}y-#{$i} {
+      #{$prop}-top: #{$space};
+      #{$prop}-bottom: #{$space};
+    }
+  }
+}
+
+@include space-utils(m);
+@include space-utils(p);
+
+// Text color utilities
+.text-primary {
+  color: var(--primary) !important;
+}
+.text-secondary {
+  color: var(--secondary) !important;
+}
+.text-accent {
+  color: var(--accent) !important;
+}
+.text-error {
+  color: var(--error) !important;
+}
+.text-info {
+  color: var(--info) !important;
+}
+
+// Background color utilities
+.bg-primary {
+  background-color: var(--primary) !important;
+}
+.bg-secondary {
+  background-color: var(--secondary) !important;
+}
+.bg-accent {
+  background-color: var(--accent) !important;
+}
+.bg-error {
+  background-color: var(--error) !important;
+}
+.bg-info {
+  background-color: var(--info) !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+// <html class="theme-light">
+//   <body class="p-4 bg-primary text-dark">
+//     <h1 class="text-secondary">My Vehicle Verification Site</h1>
+//     <p class="m-2 text-accent">This is responsive and themed!</p>
+//   </body>
+// </html>
+
+.page-note {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.page-note.accent {
+  background-color: var(--neutral-100);
+  border-left: 5px solid var(--accent);
+  color: var(--text);
+}

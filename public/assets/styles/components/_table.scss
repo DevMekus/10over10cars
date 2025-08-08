@@ -1,0 +1,79 @@
+.brand-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.brand-table th,
+.brand-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+.brand-table th {
+  background: var(--accent);
+  color: var(--text-light);
+}
+
+.brand-table tbody tr:hover {
+  background-color: var(--neutral-200);
+  cursor: pointer; /* optional: adds hand cursor */
+  transition: background-color 0.3s ease;
+}
+
+.brand-table .status {
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  text-align: center;
+  display: inline-block;
+}
+
+.brand-table .pending {
+  background: var(--warning);
+  color: var(--text-light);
+}
+
+.brand-table .approved,
+.brand-table .active {
+  background: var(--primary);
+  color: var(--text-dark);
+}
+
+.brand-table .rejected,
+.brand-table .suspended {
+  background: var(--error);
+  color: var(--text-light);
+}
+
+.brand-table .active {
+  background-color: $info;
+  color: var(--text-light);
+}
+
+.brand-table .status-tag {
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.brand-table .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+  transition: transform 0.3s ease-out;
+
+  &:hover {
+    transform: translateY(-4px);
+    cursor: pointer;
+  }
+}
