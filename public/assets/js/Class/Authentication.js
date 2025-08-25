@@ -39,7 +39,7 @@ class Authentication {
         const data = Utility.toObject(new FormData(e.target));
 
         const logIn = await Utility.fetchData(
-          `${Utility.API_ROUTE}/auth/login`,
+          `${Utility.API_ROUTE}/login`,
           data,
           "POST"
         );
@@ -69,24 +69,13 @@ class Authentication {
     });
 
     if (session.success) {
-      // const route = token.role == "1" ? "admin" : "user";
-      const user = await User.getUser(token.id, "user");
+      const user = await User.getUser(token.id);
       if (user.status == 200) {
         Utility.encodeUserData(user.data);
-        // Start auto-refresh
         SessionManager.startAutoRefresh();
         window.location.href = `${Utility.APP_ROUTE}/dashboard/overview`;
-        // this.dashboardRedirect(token.role);
       }
     }
-  }
-
-  dashboardRedirect(role) {
-    if (role === "1")
-      window.location.href = `${Utility.APP_ROUTE}/admin/overview`;
-
-    if (role === "2")
-      window.location.href = `${Utility.APP_ROUTE}/dashboard/overview`;
   }
 
   signup() {
@@ -107,7 +96,7 @@ class Authentication {
       if (result.isConfirmed) {
         const data = Utility.toObject(new FormData(e.target));
         const createUser = await Utility.fetchData(
-          `${Utility.API_ROUTE}/auth/register`,
+          `${Utility.API_ROUTE}/register`,
           data,
           "POST"
         );
@@ -150,7 +139,7 @@ class Authentication {
       if (result.isConfirmed) {
         const data = Utility.toObject(new FormData(e.target));
         const response = await Utility.fetchData(
-          `${Utility.API_ROUTE}/auth/recover`,
+          `${Utility.API_ROUTE}/recover`,
           data,
           "POST"
         );
@@ -186,7 +175,7 @@ class Authentication {
       if (result.isConfirmed) {
         const data = Utility.toObject(new FormData(e.target));
         const response = await Utility.fetchData(
-          `${Utility.API_ROUTE}/auth/reset`,
+          `${Utility.API_ROUTE}/reset`,
           data,
           "POST"
         );

@@ -138,6 +138,7 @@ class DB
                 $sql .= " LIMIT {$options['limit']}";
             }
 
+
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($params);
             return $stmt->fetchAll();
@@ -194,30 +195,33 @@ class DB
         }
     }
 
-    /** ---------------- PRIVATE HELPERS ---------------- **/
-
+    /** ---------------- PRIVATE HELPERS ---------------- **/    
 
     private function buildWhere($where, &$params)
     {
-        try {
-            $clauses = [];
+        $clauses = [];
 
-            foreach ($where as $key => $value) {
-                if (is_array($value)) {
-                    // For IN queries
-                    $placeholders = implode(", ", array_fill(0, count($value), "?"));
-                    $clauses[] = "{$key} IN ({$placeholders})";
-                    $params = array_merge($params, $value);
-                } else {
-                    $clauses[] = "{$key} = :w_{$key}";
-                    $params["w_" . $key] = $value;
+        foreach ($where as $key => $value) {
+            if (strtoupper($key) === 'OR' && is_array($value)) {
+                $orParts = [];
+                foreach ($value as $col => $val) {
+                    $paramKey = str_replace('.', '_', $col) . '_' . count($params);
+                    $orParts[] = "{$col} = :w_{$paramKey}";
+                    $params["w_" . $paramKey] = $val;
                 }
+                $clauses[] = '(' . implode(' OR ', $orParts) . ')';
+            } else {
+                $paramKey = str_replace('.', '_', $key);
+                $clauses[] = "{$key} = :w_{$paramKey}";
+                $params["w_" . $paramKey] = $value;
             }
-            return implode(" AND ", $clauses);
-        } catch (PDOException $e) {
-            Utility::log($e->getMessage(), 'error', 'DB::buildWhere', ['host' => 'localhost'], $e);
         }
+
+        return implode(' AND ', $clauses);
     }
+
+
+
 
     /** ---------------- USAGE ---------------- **/
 

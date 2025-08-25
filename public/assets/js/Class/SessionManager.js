@@ -68,6 +68,19 @@ export default class SessionManager {
     }).then((res) => res.json());
   }
 
+  static async unsetProfileSession() {
+    return await fetch(`${Utility.APP_ROUTE}/public/set-session.php`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+      body: JSON.stringify({
+        action: "unset-p",
+      }),
+    }).then((res) => res.json());
+  }
+
   static startAutoRefresh() {
     if (SessionManager._refreshInterval) {
       clearInterval(SessionManager._refreshInterval);

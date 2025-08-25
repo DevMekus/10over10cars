@@ -1,4 +1,4 @@
-class PaystackPayment {
+export default class PaystackPayment {
   constructor({ publicKey }) {
     if (!publicKey) throw new Error("Paystack public key is required");
     this.publicKey = publicKey;

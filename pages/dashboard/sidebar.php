@@ -1,0 +1,33 @@
+<?php
+$role = 'admin';
+?>
+<aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="brand">
+        <div class="mark">10</div>
+        <div><strong>10over10</strong>
+            <div class="muted small">Admin</div>
+        </div>
+    </div>
+    <nav class="nav" style="margin-top:10px">
+        <a href="<?= BASE_URL; ?>dashboard/overview" class="active"><i class="bi bi-grid"></i> Dashboard</a>
+        <a href="<?= BASE_URL; ?>dashboard/verification"><i class="bi bi-search"></i>VIN Verifications</a>
+        <a href="<?= BASE_URL; ?>dashboard/transaction"><i class="bi bi-currency-dollar"></i> Transactions</a>
+        <a href="<?= BASE_URL; ?>dashboard/dealers"><i class="bi bi-people"></i> Dealers</a>
+        <a href="<?= BASE_URL; ?>dashboard/vehicles"><i class="bi bi-car-front"></i> Vehicles</a>
+        <a href="<?= BASE_URL; ?>dashboard/report"><i class="bi bi-file-earmark-text"></i> Reports</a>
+        <a href="<?= BASE_URL; ?>dashboard/profile"><i class="bi bi-person-circle"></i> Profile</a>
+        <a href="<?= BASE_URL; ?>dashboard/settings"><i class="bi bi-gear"></i> Settings</a>
+
+
+    </nav>
+    <div class="account" style="margin-top:auto">
+        <div class="muted small">Signed in</div>
+        <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
+            <div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));display:grid;place-items:center;color:#fff">AD</div>
+            <div>
+                <div style="font-weight:700">Sirchie</div>
+                <div class="small muted">Super Admin</div>
+            </div>
+        </div>
+    </div>
+</aside>

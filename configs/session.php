@@ -34,6 +34,12 @@ switch ($input['action']) {
             exit;
         }
         break;
+    case 'unset-p':
+        if (isset($_SESSION['user_profile'])) {
+            unset($_SESSION['user_profile']);
+        }
+
+        break;
 
     case 'clear':
         session_unset();

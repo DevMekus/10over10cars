@@ -7,6 +7,8 @@ export default class Utility {
   static currentPage = document.body.dataset.page;
   static userid = document.body.dataset.id;
 
+  static verificationFee = 10000;
+
   static buttonLoading() {
     const btns = document.querySelectorAll(".btn");
     if (!btns) return;

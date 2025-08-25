@@ -7,8 +7,14 @@ class Utility
 {
     public static string $API_ROUTE = "/10over10cars/api";
     public static $siteName = '';
-    public static $theft_tbl = 'theft_reports';
+
     public static $profile_tbl = 'users_tbl';
+    public static $account_tbl = 'accounts_tbl';
+    public static $dealers_tbl = 'dealers_tbl';
+    public static $activity_log = 'user_activity_logs';
+
+    public static $theft_tbl = 'theft_reports';
+
     public static $verification_tbl = 'verification_request';
     public static $vinDocs_tbl = 'vehicle_documents';
     public static $vinHistory_tbl = 'vehicle_history';
@@ -18,7 +24,8 @@ class Utility
     public static $vinSpec_tbl = 'vehicle_specs';
     public static $vinValuation_tbl = 'vehicle_valuation';
     public static $vinInspection_tbl = 'inspections';
-    public static $dealers_tbl = 'dealers_tbl';
+    
+    public static $transactions_tbl = 'transactions';
 
     public static function makeDirectory(string $userDir)
     {
@@ -85,99 +92,116 @@ class Utility
     }
 
 
-    public static function uploadDocuments(string $inputName, string $targetDir): array
+    public static function uploadDocuments(string $inputName, string $targetDir)
     {
-        if (!isset($_FILES[$inputName]) || empty($_FILES[$inputName]['name'][0])) {
-            Utility::log("No files uploaded via input: $inputName", 'error');
-            return ['success' => false, 'error' => 'No files uploaded.'];
-        }
+        try {
+            if (!isset($_FILES[$inputName]) || empty($_FILES[$inputName]['name'][0])) {
+                Utility::log("No files uploaded via input: $inputName", 'error');
+                return ['success' => false, 'error' => 'No files uploaded.'];
+            }
 
-        $uploadedPaths = [];
-        $errors = [];
+            $uploadedPaths = [];
+            $errors = [];
 
-        // Normalize input
-        $files = [];
-        foreach ($_FILES[$inputName]['name'] as $i => $name) {
-            $files[] = [
-                'name' => $_FILES[$inputName]['name'][$i],
-                'type' => $_FILES[$inputName]['type'][$i],
-                'tmp_name' => $_FILES[$inputName]['tmp_name'][$i],
-                'error' => $_FILES[$inputName]['error'][$i],
-                'size' => $_FILES[$inputName]['size'][$i]
+
+            // Normalize single vs multiple files
+            if (!is_array($_FILES[$inputName]['name'])) {
+                // Single file → convert to array format
+                $_FILES[$inputName] = [
+                    'name'     => [$_FILES[$inputName]['name']],
+                    'type'     => [$_FILES[$inputName]['type']],
+                    'tmp_name' => [$_FILES[$inputName]['tmp_name']],
+                    'error'    => [$_FILES[$inputName]['error']],
+                    'size'     => [$_FILES[$inputName]['size']]
+                ];
+            }
+
+            $files = [];
+            foreach ($_FILES[$inputName]['name'] as $i => $name) {
+                $files[] = [
+                    'name' => $_FILES[$inputName]['name'][$i],
+                    'type' => $_FILES[$inputName]['type'][$i],
+                    'tmp_name' => $_FILES[$inputName]['tmp_name'][$i],
+                    'error' => $_FILES[$inputName]['error'][$i],
+                    'size' => $_FILES[$inputName]['size'][$i]
+                ];
+            }
+
+            // Prepare absolute target path
+            $absoluteTargetDir = rtrim(BASE_DIR, '/') . '/' . trim($targetDir, '/') . '/';
+            if (!is_dir($absoluteTargetDir)) {
+                mkdir($absoluteTargetDir, 0755, true);
+            }
+
+            foreach ($files as $file) {
+                $name = $file['name'];
+                $tmpName = $file['tmp_name'];
+                $error = $file['error'];
+                $size = $file['size'];
+
+                $extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+                $allowedExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'jpeg', 'jpg', 'png'];
+                $allowedMimeTypes = [
+                    'application/pdf',
+                    'application/msword',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'application/vnd.ms-excel',
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'image/jpeg',
+                    'image/png',
+                ];
+
+                if ($error !== UPLOAD_ERR_OK) {
+                    Utility::log("File upload error ($error) for $name", 'error');
+                    $errors[] = ['file' => $name, 'reason' => 'Upload error'];
+                    continue;
+                }
+
+                if (!in_array($extension, $allowedExtensions)) {
+                    Utility::log("Invalid file extension ($extension) for file: $name", 'error');
+                    $errors[] = ['file' => $name, 'reason' => 'Invalid file extension'];
+                    continue;
+                }
+
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $mime = finfo_file($finfo, $tmpName);
+                finfo_close($finfo);
+
+                if (!in_array($mime, $allowedMimeTypes)) {
+                    Utility::log("Invalid MIME type ($mime) for file: $name", 'error');
+                    $errors[] = ['file' => $name, 'reason' => 'Invalid MIME type'];
+                    continue;
+                }
+
+                if ($size > 10 * 1024 * 1024) {
+                    Utility::log("File too large ($size bytes) for file: $name", 'error');
+                    $errors[] = ['file' => $name, 'reason' => 'File size exceeds 10MB'];
+                    continue;
+                }
+
+                $uniqueName = uniqid('', true) . '.' . $extension;
+                $destinationPath = $absoluteTargetDir . $uniqueName;
+
+                if (!move_uploaded_file($tmpName, $destinationPath)) {
+                    Utility::log("Failed to move file: $name to $destinationPath", 'error');
+                    $errors[] = ['file' => $name, 'reason' => 'Failed to move file'];
+                    continue;
+                }
+
+                // Construct full public URL
+                $publicUrl = rtrim(BASE_URL, '/') . '/' . trim($targetDir, '/') . '/' . $uniqueName;
+                $uploadedPaths[] = $publicUrl;
+            }
+
+            return [
+                'success' => count($uploadedPaths) > 0,
+                'files' => $uploadedPaths,
+                'errors' => $errors
             ];
+        } catch (\Throwable $th) {
+            Response::error(500, "An error occurred while uploading file");
+            Utility::log($th->getMessage(), 'error', 'Utility::uploadDocuments', [], $th);
         }
-
-        // Prepare absolute target path
-        $absoluteTargetDir = rtrim(BASE_DIR, '/') . '/' . trim($targetDir, '/') . '/';
-        if (!is_dir($absoluteTargetDir)) {
-            mkdir($absoluteTargetDir, 0755, true);
-        }
-
-        foreach ($files as $file) {
-            $name = $file['name'];
-            $tmpName = $file['tmp_name'];
-            $error = $file['error'];
-            $size = $file['size'];
-
-            $extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-            $allowedExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'jpeg', 'jpg', 'png'];
-            $allowedMimeTypes = [
-                'application/pdf',
-                'application/msword',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                'application/vnd.ms-excel',
-                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'image/jpeg',
-                'image/png',
-            ];
-
-            if ($error !== UPLOAD_ERR_OK) {
-                Utility::log("File upload error ($error) for $name", 'error');
-                $errors[] = ['file' => $name, 'reason' => 'Upload error'];
-                continue;
-            }
-
-            if (!in_array($extension, $allowedExtensions)) {
-                Utility::log("Invalid file extension ($extension) for file: $name", 'error');
-                $errors[] = ['file' => $name, 'reason' => 'Invalid file extension'];
-                continue;
-            }
-
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mime = finfo_file($finfo, $tmpName);
-            finfo_close($finfo);
-
-            if (!in_array($mime, $allowedMimeTypes)) {
-                Utility::log("Invalid MIME type ($mime) for file: $name", 'error');
-                $errors[] = ['file' => $name, 'reason' => 'Invalid MIME type'];
-                continue;
-            }
-
-            if ($size > 10 * 1024 * 1024) {
-                Utility::log("File too large ($size bytes) for file: $name", 'error');
-                $errors[] = ['file' => $name, 'reason' => 'File size exceeds 10MB'];
-                continue;
-            }
-
-            $uniqueName = uniqid('', true) . '.' . $extension;
-            $destinationPath = $absoluteTargetDir . $uniqueName;
-
-            if (!move_uploaded_file($tmpName, $destinationPath)) {
-                Utility::log("Failed to move file: $name to $destinationPath", 'error');
-                $errors[] = ['file' => $name, 'reason' => 'Failed to move file'];
-                continue;
-            }
-
-            // Construct full public URL
-            $publicUrl = rtrim(BASE_URL, '/') . '/' . trim($targetDir, '/') . '/' . $uniqueName;
-            $uploadedPaths[] = $publicUrl;
-        }
-
-        return [
-            'success' => count($uploadedPaths) > 0,
-            'files' => $uploadedPaths,
-            'errors' => $errors
-        ];
     }
 
 

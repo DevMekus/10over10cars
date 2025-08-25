@@ -1,18 +1,6 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
-
 
 use App\Utils\Utility;
-
-Utility::verifySession();
-
-$role = $_SESSION['role'] == "1" ? "admin" : "user";
-$userid = $_SESSION['userid'];
-$url = BASE_URL  . "api/user/profile/$userid";
-$getProfile = Utility::requestClient($url);
-$user = $getProfile['data'] ?? null;
-
-if (!$user) header('location: ' . BASE_URL . 'auth/login?f-bk=UNAUTHORIZED');
 ?>
 <nav class="navbar dashboard-nav" id="navbar">
     <div class="navbar-brand">
@@ -55,7 +43,7 @@ if (!$user) header('location: ' . BASE_URL . 'auth/login?f-bk=UNAUTHORIZED');
         <?php endif; ?>
 
         <?php if ($_SESSION['role'] == '2'): ?>
-            <a href="<?php echo BASE_URL; ?>dashboard/reports/verification-reports">Verification reports</a>         
+            <a href="<?php echo BASE_URL; ?>dashboard/reports/verification-reports">Verification reports</a>
             <a href="<?php echo BASE_URL; ?>dashboard/account/new-dealer">Dealers</a>
             <a href="<?php echo BASE_URL; ?>dashboard/reports/theft">Reports</a>
         <?php endif; ?>
@@ -73,8 +61,7 @@ if (!$user) header('location: ' . BASE_URL . 'auth/login?f-bk=UNAUTHORIZED');
                 <img src="<?= $user['avatar'] ?? 'https://i.pravatar.cc/150?img=5' ?>" alt="User Avatar" class="user-avatar">
                 <span class="user-name"><?= Utility::truncateText($user['fullname'], 7) ?? 'User'; ?></span>
 
-                <div class="dropdown-menu" id="dropdownMenu">
-                    <a href="/dashboard">Dashboard</a>
+                <div class="dropdown-menu" id="dropdownMenu">               
                     <a href="<?= BASE_URL;  ?>dashboard/settings/my-profile">Profile</a>
                     <a href="<?= BASE_URL;  ?>dashboard/settings/settings">Settings</a>
                     <a href="#" class="logout" data-id="<?= $userid; ?>">Logout <i class="fas fa-power-off"></i></a>
