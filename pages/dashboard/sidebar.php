@@ -3,10 +3,10 @@ $role = 'admin';
 ?>
 <aside class="sidebar" id="sidebar" aria-label="Main navigation">
     <div class="brand">
-        <div class="mark">10</div>
-        <div><strong>10over10</strong>
+        <img class="brande" src="<?= BASE_URL ?>assets/images/dark-logo.jpg" />
+        <!-- <div><strong>10over10</strong>
             <div class="muted small">Admin</div>
-        </div>
+        </div> -->
     </div>
     <nav class="nav" style="margin-top:10px">
         <a href="<?= BASE_URL; ?>dashboard/overview" class="active"><i class="bi bi-grid"></i> Dashboard</a>

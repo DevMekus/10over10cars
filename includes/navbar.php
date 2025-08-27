@@ -19,9 +19,8 @@
 <!-- Navbar -->
 <div class="navbar" role="navigation" aria-label="Main">
     <div class="container nav-inner">
-        <a class="brand" href="#home">
-            <span class="brand-logo">10</span>
-            <span>10over10 Cars</span>
+        <a class="brand" href="<?= BASE_URL ?>">
+            <img class="brand" src="<?= BASE_URL ?>assets/images/dark-logo.jpg" />
         </a>
         <nav class="nav-links" aria-label="Primary">
             <a href="#home">Home</a>

@@ -1,4 +1,5 @@
 <?php
+require_once ROOT_PATH . '/includes/reuse.php';
 require_once ROOT_PATH . '/includes/header.php';
 $dashboarduser = 'user';
 ?>

@@ -1,6 +1,6 @@
 @import "./components/theme";
-// @import "./components/fonts";
-// @import "./components/typography";
+@import "./components/fonts";
+@import "./components/typography";
 // @import "./components/utils";
 // @import "./components/buttons";
 // // @import "./components/forms";
@@ -8,7 +8,7 @@
 // @import "./components/cards";
 // @import "./components/filters";
 // @import "./components/skelectons";
-// @import "./components/pagination";
+@import "./components/pagination";
 @import "./components/navbar";
 @import "./components/verification";
 @import "./components/modals";

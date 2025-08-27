@@ -5,393 +5,420 @@ export default class AppInit {
   static METHODS = ["card", "bank", "ussd", "wallet"];
   static STATUS = ["success", "pending", "failed"];
   static revenueChartInstance = null;
-  static APP_KEY = "over10_app";
+  static DATA = null;
 
-  static initializeData() {
-    AppInit.DATA = sessionStorage.getItem(AppInit.APP_KEY)
-      ? JSON.parse(sessionStorage.getItem(AppInit.APP_KEY))
-      : AppInit.loadApplicationData();
+  // --- INIT ---
+  static async initializeData() {
+    try {
+      // Try load cached AppData
+      const cached = await SessionManager.loadAppData();
+
+      if (cached) {
+        AppInit.DATA = cached;
+        console.log("✅ Using cached AppData:", AppInit.DATA);
+        return;
+      }
+    } catch (err) {
+      console.warn("⚠️ Cached AppData invalid, will fetch fresh:", err);
+    }
+
+    // ❌ Either no cache, expired, or decryption failed → fetch fresh
+    await AppInit.loadApplicationData();
+
+    // Try load again (should succeed now)
+    const fresh = await SessionManager.loadAppData();
+    AppInit.DATA = fresh || null;
   }
 
-  static loadApplicationData() {
-    // ---------- Fetch data from API ----------
-    const fetchData = Utility.fetchData(`${Utility.API_ROUTE}/system/data`);
-    const appData = fetchData.status == 200 ? fetchData.data : null;
+  // --- FETCH ---
+  static async loadApplicationData() {
+    let url = null;
+    const currentLocation = window.location.href;
 
-    //----Remove Existing key and set a new one
-    if (sessionStorage.getItem(AppInit.APP_KEY)) {
-      sessionStorage.removeItem(AppInit.APP_KEY);
+    if (currentLocation.includes("dashboard")) {
+      // TODO: check role and determine if User/Admin
+    } else {
+      // Guest
+      url = `${Utility.API_ROUTE}/application/guest`;
     }
-    sessionStorage.setItem(AppInit.APP_KEY, JSON.stringify(appData));
-    AppInit.DATA = appData;
+
+    const fetchData = await Utility.fetchData(url);
+    const appData = fetchData.status === 200 ? fetchData.data : null;
+
+    // Save encrypted + timestamp via SessionManager
+    if (appData) {
+      await SessionManager.saveAppData(appData);
+    }
+
     return appData;
   }
+
   // ---------- Demo data ----------
 
-  static DATA = {
-    verifications: [
-      {
-        id: "VER-" + Math.random().toString(11).slice(2, 9),
-        vin: "2HGFB2F50DH512345",
-        result: "Clean",
-        source: "NIS",
-        date: "2025-08-20",
-        requestId: "R10001",
-        Vehicle: {
-          image: [
-            "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          ],
-          docs: ["registration.pdf", "insurance.jpg"],
-          title: "Toyota Corolla",
-          dealer: "Ace Motors",
-          notes: "Mileage looks inconsistent.",
-        },
-        status: "approved",
-        plan: "Basic",
-      },
-      {
-        id: "VER-" + Math.random().toString(11).slice(2, 9),
-        vin: "JH4KA8260MC000000",
-        result: "Mileage anomaly",
-        source: "InsuranceDB",
-        date: "2025-08-18",
-        requestId: "R10002",
-        Vehicle: {
-          image: [
-            "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          ],
-          docs: ["registration.pdf", "insurance.jpg"],
-          title: "Toyota Corolla",
-          dealer: "Ace Motors",
-          notes: "Mileage looks inconsistent.",
-        },
-        status: "pending",
-        plan: "Standard",
-      },
-      {
-        id: "VER-" + Math.random().toString(11).slice(2, 9),
-        vin: "1FTFW1E11AKD00000",
-        result: "Stolen (flagged)",
-        source: "Police",
-        date: "2025-08-15",
-        requestId: "R10003",
-        Vehicle: {
-          image: [
-            "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          ],
-          docs: ["registration.pdf", "insurance.jpg"],
-          title: "Toyota Corolla",
-          dealer: "Ace Motors",
-          notes: "Mileage looks inconsistent.",
-        },
-        status: "declined",
-        plan: "Pro",
-      },
-      {
-        id: "VER-" + Math.random().toString(11).slice(2, 9),
-        vin: "3FA6P0H74HR000000",
-        result: "Clean",
-        source: "Auction",
-        date: "2025-08-12",
-        requestId: "R10004",
-        Vehicle: {
-          image: [
-            "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          ],
-          docs: ["registration.pdf", "insurance.jpg"],
-          title: "Toyota Corolla",
-          dealer: "Ace Motors",
-          notes: "Mileage looks inconsistent.",
-        },
-        status: "approved",
-        plan: "Basic",
-      },
-      {
-        id: "VER-" + Math.random().toString(11).slice(2, 9),
-        vin: "KMHCT4AE1DU000000",
-        result: "Accident history",
-        source: "InsuranceDB",
-        date: "2025-08-09",
-        requestId: "R10005",
-        Vehicle: {
-          image: [
-            "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          ],
-          docs: ["registration.pdf", "insurance.jpg"],
-          title: "Toyota Corolla",
-          dealer: "Ace Motors",
-          notes: "Mileage looks inconsistent.",
-        },
-        status: "approved",
-        plan: "Pro",
-      },
-    ],
-    vehicles: [
-      {
-        id: "VH-" + Math.random().toString(11),
-        title: "2016 Toyota Corolla",
-        price: 7800000,
-        mileage: 72000,
-        state: "Lagos",
-        vin: "2HGFB2F50DH512345",
-        status: "rejected",
-        image: "https://source.unsplash.com/600x400/?toyota,corolla",
-        make: "Toyota",
-        model: "Corolla",
-        year: "2012",
-        owner: "AutoHub",
-        notes: "Clean title, verified mileage.",
-        date: "2025-08-20",
-      },
-      {
-        id: "VH-" + Math.random().toString(11),
-        title: "2018 Honda Accord",
-        price: 11500000,
-        mileage: 54000,
-        state: "Abuja (FCT)",
-        vin: "JH4KA8260MC000000",
-        status: "approved",
-        image: "https://source.unsplash.com/600x400/?honda,accord",
-        make: "Toyota",
-        model: "Corolla",
-        year: "2012",
-        date: "2025-08-20",
-        owner: "AutoHub",
-        notes: "Clean title, verified mileage.",
-      },
-      {
-        id: "VH-" + Math.random().toString(11),
-        title: "2015 Lexus RX 350",
-        price: 17500000,
-        mileage: 88000,
-        state: "Oyo",
-        vin: "1FTFW1E11AKD00000",
-        status: "sold",
-        image: "https://source.unsplash.com/600x400/?lexus,rx350",
-        make: "Toyota",
-        model: "Corolla",
-        year: "2012",
-        owner: "AutoHub",
-        notes: "Clean title, verified mileage.",
-        date: "2025-08-20",
-      },
-      {
-        id: "VH-" + Math.random().toString(11),
-        title: "2015 Lexus RX 350",
-        price: 17500000,
-        mileage: 88000,
-        state: "Oyo",
-        vin: "1FTFW1E11AKD00000",
-        status: "sold",
-        image: "https://source.unsplash.com/600x400/?lexus,rx350",
-        make: "Toyota",
-        model: "Corolla",
-        year: "2012",
-        owner: "AutoHub",
-        notes: "Clean title, verified mileage.",
-        date: "2025-08-20",
-      },
-      {
-        id: "VH-" + Math.random().toString(11),
-        title: "2015 Lexus RX 350",
-        price: 17500000,
-        mileage: 88000,
-        state: "Oyo",
-        vin: "1FTFW1E11AKD00000",
-        status: "sold",
-        image: "https://source.unsplash.com/600x400/?lexus,rx350",
-        make: "Toyota",
-        model: "Corolla",
-        year: "2012",
-        owner: "AutoHub",
-        notes: "Clean title, verified mileage.",
-        date: "2025-08-20",
-      },
-    ],
-    dealers: [
-      {
-        id: "d1",
-        company: "Ace Motors",
-        contact: "ace@example.com",
-        status: "pending",
-        phone: "273633838",
-        state: "Enugu",
-        listings: Math.floor(Math.random() * 38),
-        rating: (3 + Math.random() * 2).toFixed(1),
-        banner: `https://images.unsplash.com/photo-1549921296-3b4a4f6d6df8?q=80&w=1200&auto=format&fit=crop`,
-        avatar: `https://i.pravatar.cc/150?img=${
-          ((3 + Math.random() * 2).toFixed(1) % 70) + 1
-        }`,
-        about:
-          "Trusted dealer with nationwide delivery and transparent history checks.",
-        joined: new Date(
-          Date.now() - (3 + Math.random() * 2).toFixed(1) * 86400000 * 7
-        )
-          .toISOString()
-          .slice(0, 10),
-        revenue: 13000,
-        active: true,
-      },
-      {
-        id: "d2",
-        company: "Prime Autos",
-        contact: "prime@example.com",
-        status: "pending",
-        phone: "273633838",
-        state: "Enugu",
-        listings: Math.floor(Math.random() * 38),
-        rating: (3 + Math.random() * 2).toFixed(1),
-        banner: `https://images.unsplash.com/photo-1549921296-3b4a4f6d6df8?q=80&w=1200&auto=format&fit=crop`,
-        avatar: `https://i.pravatar.cc/150?img=${
-          ((3 + Math.random() * 2).toFixed(1) % 70) + 1
-        }`,
-        about:
-          "Trusted dealer with nationwide delivery and transparent history checks.",
-        joined: new Date(
-          Date.now() - (3 + Math.random() * 2).toFixed(1) * 86400000 * 7
-        )
-          .toISOString()
-          .slice(0, 10),
-        revenue: 15000,
-        active: false,
-      },
-    ],
-    txns: [
-      {
-        id: "TXN-490676-4325",
-        amount: 2500,
-        status: "success",
-        date: "2025-08-20",
-        user: "Dealer 0",
-        method: "card",
-        notes: "Refunded previously",
-        logs: "Logs and receipt links (demo)",
-        desc: "VIN verification",
-      },
-      {
-        id: "TXN-490676-4324",
-        amount: 4500,
-        status: "success",
-        date: "2025-08-19",
-        user: "Dealer 0",
-        method: "card",
-        notes: "Refunded previously",
-        logs: "Logs and receipt links (demo)",
-        desc: "VIN verification",
-      },
-      {
-        id: "TXN-490676-4323",
-        amount: 7000,
-        status: "pending",
-        date: "2025-08-17",
-        user: "Dealer 0",
-        method: "wallet",
-        notes: "Refunded previously",
-        logs: "Logs and receipt links (demo)",
-        desc: "Dealer subscription",
-      },
-      {
-        id: "TXN-490676-4322",
-        amount: 2500,
-        status: "failed",
-        date: "2025-08-10",
-        user: "Dealer 0",
-        method: "ussd",
-        notes: "Refunded previously",
-        logs: "Logs and receipt links (demo)",
-        desc: "Premium report",
-      },
-      {
-        id: "TXN-490676-4321",
-        amount: 2500,
-        status: "failed",
-        date: "2025-07-30",
-        user: "Dealer 0",
-        method: "bank",
-        notes: "Refunded previously",
-        logs: "Logs and receipt links (demo)",
-        desc: "Dealer subscription",
-      },
-    ],
-    loginActivity: [
-      {
-        id: "288HJS",
-        type: "VIN",
-        title: "Verified VIN 2HGFB2F...",
-        status: "success",
-        when: "2025-08-20 09:12",
-        ip: "41.242.12.5",
-        device: "Chrome on Windows",
-      },
-      {
-        id: "288HJS",
-        type: "VIN",
-        title: "Verified VIN 2HGFB2F...",
-        status: "success",
-        when: "2025-08-18 22:01",
-        ip: "197.210.12.9",
-        device: "Safari on iPhone",
-      },
-      {
-        id: "288HJS",
-        type: "VIN",
-        title: "Verified VIN 2HGFB2F...",
-        status: "success",
-        when: "2025-08-14 11:12",
-        ip: "41.242.45.1",
-        device: "Firefox on MacOS",
-      },
-    ],
-    profile: {
-      fullname: "Nnaemeka N.",
-      email: "nnaemeka@example.com",
-      phone: "+2348100000000",
-      location: "Lagos, NG",
-      avatar: "https://placehold.co/600x400?text=Profile+photo",
-      role: "User",
-      memberSince: 2024,
-    },
-    notification: [
-      {
-        id: AppInit.uid("N"),
-        title: "system",
-        message: "This is a demo notification #",
-        type: "system",
-        priority: "high",
-        source: "system",
-        timestamp: new Date(new Date()).toISOString(),
-        read: 0,
-        archived: false,
-      },
-      {
-        id: AppInit.uid("N"),
-        title: "dealer",
-        message: "This is a demo notification #",
-        type: "system",
-        priority: "low",
-        source: "system",
-        timestamp: new Date(new Date()).toISOString(),
-        read: 0,
-        archived: false,
-      },
-      {
-        id: AppInit.uid("N"),
-        title: "user",
-        message: "This is a demo notification #",
-        type: "system",
-        priority: "normal",
-        source: "system",
-        timestamp: new Date(new Date()).toISOString(),
-        read: 0,
-        archived: false,
-      },
-    ],
-  };
+  // static DATA = {
+  //   verifications: [
+  //     {
+  //       id: "VER-" + Math.random().toString(11).slice(2, 9),
+  //       vin: "2HGFB2F50DH512345",
+  //       result: "Clean",
+  //       source: "NIS",
+  //       date: "2025-08-20",
+  //       requestId: "R10001",
+  //       Vehicle: {
+  //         image: [
+  //           "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //           "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //         ],
+  //         docs: ["registration.pdf", "insurance.jpg"],
+  //         title: "Toyota Corolla",
+  //         dealer: "Ace Motors",
+  //         notes: "Mileage looks inconsistent.",
+  //       },
+  //       status: "approved",
+  //       plan: "Basic",
+  //     },
+  //     {
+  //       id: "VER-" + Math.random().toString(11).slice(2, 9),
+  //       vin: "JH4KA8260MC000000",
+  //       result: "Mileage anomaly",
+  //       source: "InsuranceDB",
+  //       date: "2025-08-18",
+  //       requestId: "R10002",
+  //       Vehicle: {
+  //         image: [
+  //           "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //           "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //         ],
+  //         docs: ["registration.pdf", "insurance.jpg"],
+  //         title: "Toyota Corolla",
+  //         dealer: "Ace Motors",
+  //         notes: "Mileage looks inconsistent.",
+  //       },
+  //       status: "pending",
+  //       plan: "Standard",
+  //     },
+  //     {
+  //       id: "VER-" + Math.random().toString(11).slice(2, 9),
+  //       vin: "1FTFW1E11AKD00000",
+  //       result: "Stolen (flagged)",
+  //       source: "Police",
+  //       date: "2025-08-15",
+  //       requestId: "R10003",
+  //       Vehicle: {
+  //         image: [
+  //           "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //           "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //         ],
+  //         docs: ["registration.pdf", "insurance.jpg"],
+  //         title: "Toyota Corolla",
+  //         dealer: "Ace Motors",
+  //         notes: "Mileage looks inconsistent.",
+  //       },
+  //       status: "declined",
+  //       plan: "Pro",
+  //     },
+  //     {
+  //       id: "VER-" + Math.random().toString(11).slice(2, 9),
+  //       vin: "3FA6P0H74HR000000",
+  //       result: "Clean",
+  //       source: "Auction",
+  //       date: "2025-08-12",
+  //       requestId: "R10004",
+  //       Vehicle: {
+  //         image: [
+  //           "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //           "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //         ],
+  //         docs: ["registration.pdf", "insurance.jpg"],
+  //         title: "Toyota Corolla",
+  //         dealer: "Ace Motors",
+  //         notes: "Mileage looks inconsistent.",
+  //       },
+  //       status: "approved",
+  //       plan: "Basic",
+  //     },
+  //     {
+  //       id: "VER-" + Math.random().toString(11).slice(2, 9),
+  //       vin: "KMHCT4AE1DU000000",
+  //       result: "Accident history",
+  //       source: "InsuranceDB",
+  //       date: "2025-08-09",
+  //       requestId: "R10005",
+  //       Vehicle: {
+  //         image: [
+  //           "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //           "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //         ],
+  //         docs: ["registration.pdf", "insurance.jpg"],
+  //         title: "Toyota Corolla",
+  //         dealer: "Ace Motors",
+  //         notes: "Mileage looks inconsistent.",
+  //       },
+  //       status: "approved",
+  //       plan: "Pro",
+  //     },
+  //   ],
+  //   vehicles: [
+  //     {
+  //       id: "VH-" + Math.random().toString(11),
+  //       title: "2016 Toyota Corolla",
+  //       price: 7800000,
+  //       mileage: 72000,
+  //       state: "Lagos",
+  //       vin: "2HGFB2F50DH512345",
+  //       status: "rejected",
+  //       image: "https://source.unsplash.com/600x400/?toyota,corolla",
+  //       make: "Toyota",
+  //       model: "Corolla",
+  //       year: "2012",
+  //       owner: "AutoHub",
+  //       notes: "Clean title, verified mileage.",
+  //       date: "2025-08-20",
+  //     },
+  //     {
+  //       id: "VH-" + Math.random().toString(11),
+  //       title: "2018 Honda Accord",
+  //       price: 11500000,
+  //       mileage: 54000,
+  //       state: "Abuja (FCT)",
+  //       vin: "JH4KA8260MC000000",
+  //       status: "approved",
+  //       image: "https://source.unsplash.com/600x400/?honda,accord",
+  //       make: "Toyota",
+  //       model: "Corolla",
+  //       year: "2012",
+  //       date: "2025-08-20",
+  //       owner: "AutoHub",
+  //       notes: "Clean title, verified mileage.",
+  //     },
+  //     {
+  //       id: "VH-" + Math.random().toString(11),
+  //       title: "2015 Lexus RX 350",
+  //       price: 17500000,
+  //       mileage: 88000,
+  //       state: "Oyo",
+  //       vin: "1FTFW1E11AKD00000",
+  //       status: "sold",
+  //       image: "https://source.unsplash.com/600x400/?lexus,rx350",
+  //       make: "Toyota",
+  //       model: "Corolla",
+  //       year: "2012",
+  //       owner: "AutoHub",
+  //       notes: "Clean title, verified mileage.",
+  //       date: "2025-08-20",
+  //     },
+  //     {
+  //       id: "VH-" + Math.random().toString(11),
+  //       title: "2015 Lexus RX 350",
+  //       price: 17500000,
+  //       mileage: 88000,
+  //       state: "Oyo",
+  //       vin: "1FTFW1E11AKD00000",
+  //       status: "sold",
+  //       image: "https://source.unsplash.com/600x400/?lexus,rx350",
+  //       make: "Toyota",
+  //       model: "Corolla",
+  //       year: "2012",
+  //       owner: "AutoHub",
+  //       notes: "Clean title, verified mileage.",
+  //       date: "2025-08-20",
+  //     },
+  //     {
+  //       id: "VH-" + Math.random().toString(11),
+  //       title: "2015 Lexus RX 350",
+  //       price: 17500000,
+  //       mileage: 88000,
+  //       state: "Oyo",
+  //       vin: "1FTFW1E11AKD00000",
+  //       status: "sold",
+  //       image: "https://source.unsplash.com/600x400/?lexus,rx350",
+  //       make: "Toyota",
+  //       model: "Corolla",
+  //       year: "2012",
+  //       owner: "AutoHub",
+  //       notes: "Clean title, verified mileage.",
+  //       date: "2025-08-20",
+  //     },
+  //   ],
+  //   dealers: [
+  //     {
+  //       id: "d1",
+  //       company: "Ace Motors",
+  //       contact: "ace@example.com",
+  //       status: "pending",
+  //       phone: "273633838",
+  //       state: "Enugu",
+  //       listings: Math.floor(Math.random() * 38),
+  //       rating: (3 + Math.random() * 2).toFixed(1),
+  //       banner: `https://images.unsplash.com/photo-1549921296-3b4a4f6d6df8?q=80&w=1200&auto=format&fit=crop`,
+  //       avatar: `https://i.pravatar.cc/150?img=${
+  //         ((3 + Math.random() * 2).toFixed(1) % 70) + 1
+  //       }`,
+  //       about:
+  //         "Trusted dealer with nationwide delivery and transparent history checks.",
+  //       joined: new Date(
+  //         Date.now() - (3 + Math.random() * 2).toFixed(1) * 86400000 * 7
+  //       )
+  //         .toISOString()
+  //         .slice(0, 10),
+  //       revenue: 13000,
+  //       active: true,
+  //     },
+  //     {
+  //       id: "d2",
+  //       company: "Prime Autos",
+  //       contact: "prime@example.com",
+  //       status: "pending",
+  //       phone: "273633838",
+  //       state: "Enugu",
+  //       listings: Math.floor(Math.random() * 38),
+  //       rating: (3 + Math.random() * 2).toFixed(1),
+  //       banner: `https://images.unsplash.com/photo-1549921296-3b4a4f6d6df8?q=80&w=1200&auto=format&fit=crop`,
+  //       avatar: `https://i.pravatar.cc/150?img=${
+  //         ((3 + Math.random() * 2).toFixed(1) % 70) + 1
+  //       }`,
+  //       about:
+  //         "Trusted dealer with nationwide delivery and transparent history checks.",
+  //       joined: new Date(
+  //         Date.now() - (3 + Math.random() * 2).toFixed(1) * 86400000 * 7
+  //       )
+  //         .toISOString()
+  //         .slice(0, 10),
+  //       revenue: 15000,
+  //       active: false,
+  //     },
+  //   ],
+  //   txns: [
+  //     {
+  //       id: "TXN-490676-4325",
+  //       amount: 2500,
+  //       status: "success",
+  //       date: "2025-08-20",
+  //       user: "Dealer 0",
+  //       method: "card",
+  //       notes: "Refunded previously",
+  //       logs: "Logs and receipt links (demo)",
+  //       desc: "VIN verification",
+  //     },
+  //     {
+  //       id: "TXN-490676-4324",
+  //       amount: 4500,
+  //       status: "success",
+  //       date: "2025-08-19",
+  //       user: "Dealer 0",
+  //       method: "card",
+  //       notes: "Refunded previously",
+  //       logs: "Logs and receipt links (demo)",
+  //       desc: "VIN verification",
+  //     },
+  //     {
+  //       id: "TXN-490676-4323",
+  //       amount: 7000,
+  //       status: "pending",
+  //       date: "2025-08-17",
+  //       user: "Dealer 0",
+  //       method: "wallet",
+  //       notes: "Refunded previously",
+  //       logs: "Logs and receipt links (demo)",
+  //       desc: "Dealer subscription",
+  //     },
+  //     {
+  //       id: "TXN-490676-4322",
+  //       amount: 2500,
+  //       status: "failed",
+  //       date: "2025-08-10",
+  //       user: "Dealer 0",
+  //       method: "ussd",
+  //       notes: "Refunded previously",
+  //       logs: "Logs and receipt links (demo)",
+  //       desc: "Premium report",
+  //     },
+  //     {
+  //       id: "TXN-490676-4321",
+  //       amount: 2500,
+  //       status: "failed",
+  //       date: "2025-07-30",
+  //       user: "Dealer 0",
+  //       method: "bank",
+  //       notes: "Refunded previously",
+  //       logs: "Logs and receipt links (demo)",
+  //       desc: "Dealer subscription",
+  //     },
+  //   ],
+  //   loginActivity: [
+  //     {
+  //       id: "288HJS",
+  //       type: "VIN",
+  //       title: "Verified VIN 2HGFB2F...",
+  //       status: "success",
+  //       when: "2025-08-20 09:12",
+  //       ip: "41.242.12.5",
+  //       device: "Chrome on Windows",
+  //     },
+  //     {
+  //       id: "288HJS",
+  //       type: "VIN",
+  //       title: "Verified VIN 2HGFB2F...",
+  //       status: "success",
+  //       when: "2025-08-18 22:01",
+  //       ip: "197.210.12.9",
+  //       device: "Safari on iPhone",
+  //     },
+  //     {
+  //       id: "288HJS",
+  //       type: "VIN",
+  //       title: "Verified VIN 2HGFB2F...",
+  //       status: "success",
+  //       when: "2025-08-14 11:12",
+  //       ip: "41.242.45.1",
+  //       device: "Firefox on MacOS",
+  //     },
+  //   ],
+  //   profile: {
+  //     fullname: "Nnaemeka N.",
+  //     email: "nnaemeka@example.com",
+  //     phone: "+2348100000000",
+  //     location: "Lagos, NG",
+  //     avatar: "https://placehold.co/600x400?text=Profile+photo",
+  //     role: "User",
+  //     memberSince: 2024,
+  //   },
+  //   notification: [
+  //     {
+  //       id: AppInit.uid("N"),
+  //       title: "system",
+  //       message: "This is a demo notification #",
+  //       type: "system",
+  //       priority: "high",
+  //       source: "system",
+  //       timestamp: new Date(new Date()).toISOString(),
+  //       read: 0,
+  //       archived: false,
+  //     },
+  //     {
+  //       id: AppInit.uid("N"),
+  //       title: "dealer",
+  //       message: "This is a demo notification #",
+  //       type: "system",
+  //       priority: "low",
+  //       source: "system",
+  //       timestamp: new Date(new Date()).toISOString(),
+  //       read: 0,
+  //       archived: false,
+  //     },
+  //     {
+  //       id: AppInit.uid("N"),
+  //       title: "user",
+  //       message: "This is a demo notification #",
+  //       type: "system",
+  //       priority: "normal",
+  //       source: "system",
+  //       timestamp: new Date(new Date()).toISOString(),
+  //       read: 0,
+  //       archived: false,
+  //     },
+  //   ],
+  // };
 
   static fmtNGN(n) {
     return "NGN " + Number(n).toLocaleString();
@@ -515,6 +542,7 @@ export default class AppInit {
 class Application {
   constructor() {
     this.initialize();
+    //AppInit.initializeData();
   }
 
   initialize() {

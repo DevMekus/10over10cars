@@ -1,5 +1,7 @@
 import Utility from "./Utility.js";
 import SessionManager from "./SessionManager.js";
+import AppInit from "./Application.js";
+
 export default class AuthStatic {
   static submitBtn = document.getElementById("submitBtn");
   static btnText = document.getElementById("btnText");
@@ -100,34 +102,41 @@ class Auth {
     AuthStatic.emailInput.addEventListener("input", validateEmail);
     AuthStatic.password.addEventListener("input", validatePassword);
 
-    AuthStatic.form.addEventListener("submit", (e) => {
+    AuthStatic.form.addEventListener("submit", async (e) => {
       e.preventDefault();
+
       const ok = validateEmail() & validatePassword();
       if (!ok) {
         AuthStatic.showToast("Please fix the errors in the form", "error");
         return;
       }
 
-      // mock login process
       AuthStatic.setLoading(true);
-      setTimeout(() => {
+      const data = Utility.toObject(new FormData(e.target));
+
+      const response = await Utility.fetchData(
+        `${Utility.API_ROUTE}/login`,
+        data,
+        "POST"
+      );
+
+      if (response) {
         AuthStatic.setLoading(false);
-        // pretend success
-        AuthStatic.showToast("Welcome back! Redirecting...", "success");
-        // If "remember me" checked -> persist demo token
-        if (document.getElementById("remember").checked)
-          localStorage.setItem(
-            "demo_auth",
-            JSON.stringify({
-              token: "demo-token",
-              ts: Date.now(),
-            })
-          );
-        // redirect simulation
-        setTimeout(() => {
-          window.location.href = "#dashboard";
-        }, 900);
-      }, 1200);
+
+        if (response.status !== 200) {
+          AuthStatic.showToast(`${response.message}`, "error");
+          return;
+        }
+
+        const session = await SessionManager.setSession(response.data.token);
+
+        if (session.success) {
+          AuthStatic.showToast("Welcome back! Redirecting...", "success");
+          setTimeout(() => {
+            window.location.href = `${Utility.APP_ROUTE}/dashboard/overview`;
+          }, Utility.loadTimeout);
+        }
+      }
     });
   }
 
@@ -145,7 +154,20 @@ class Auth {
     });
   }
 
-  
+  pageFeedback() {
+    const params = new URLSearchParams(document.location.search);
+    const urlParam = params.get("f-bk");
+    if (!urlParam) return;
+    console.log("feedback runs");
+    urlParam == "UNAUTHORIZED" &&
+      AuthStatic.showToast("UNAUTHORIZED! Please sign in", "error");
+
+    urlParam == "logout" &&
+      AuthStatic.showToast("Logout successful", "success");
+
+    urlParam == "new" &&
+      AuthStatic.showToast("Registration Successful", "success");
+  }
 }
 
 new Auth();

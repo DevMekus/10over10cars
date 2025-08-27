@@ -3,42 +3,31 @@
 namespace App\Services;
 
 use App\Utils\Response;
-use configs\DB;
 use App\Middleware\AuthMiddleware;
 use App\Services\Activity;
 use App\Utils\Utility;
 use App\Utils\MailClient;
+use configs\Database;
 
 class UserService
 {
-    protected $db;
-    protected $profile;
-    protected $account;
-    protected $dealer;
-    protected $logs;
 
-    public function __construct()
+    public static function attemptLogin($data)
     {
-        $this->db = new DB();
-        $this->profile = Utility::$profile_tbl;
-        $this->account = Utility::$account_tbl;
-        $this->logs = Utility::$activity_log;
-        $this->dealer = Utility::$dealers_tbl;
-    }
 
-    public function attemptLogin($data)
-    {
+        $profile = Utility::$profile_tbl;
+        $accounts = Utility::$accounts_tbl;
         try {
-            $user = $this->db->joinTables(
-                $this->profile,
+            $user = Database::joinTables(
+                $profile,
                 [
                     [
                         "type" => "LEFT",
-                        "table" => $this->account,
-                        "on" => "users_tbl.userid = accounts_tbl.userid"
+                        "table" => $accounts,
+                        "on" => "$profile.userid = $accounts.userid"
                     ]
                 ],
-                ["users_tbl.*", "accounts_tbl.*"],
+                ["$profile.*", "$accounts.*"],
                 ["email_address" => $data['email_address']]
             );
 
@@ -49,27 +38,29 @@ class UserService
 
             $user = $user[0] ?? null;
 
-            $this->checkUserStatus($user);
+            self::checkUserStatus($user);
             $token = AuthMiddleware::generateToken([
-                'id' => $user['userid'],
+                'userid' => $user['userid'],
                 'email' => $user['email_address'],
-                'role' => $user['role_id'],
+                'role' => $user['role'],
                 'exp' => time() + 3600
             ]);
-            if (Activity::newActivity([
+            if (Activity::activity([
                 'userid' => $user['userid'],
-                'actions' => "logged In",
+                'type' => 'login',
+                'title' => 'login successful',
             ])) {
                 Response::success(['token' => $token], "Login successful");
             }
-            Response::error(500, "An error has occurred");
         } catch (\Throwable $e) {
             Utility::log($e->getMessage(), 'error', 'UserService::attemptLogin', ['host' => 'localhost'], $e);
+            Response::error(500, "An error has occurred");
         }
     }
 
-    private function checkUserStatus($user) //passed
+    private static function checkUserStatus($user) //passed
     {
+        //----Check if the 2F Authentication is ON
         if (
             isset($user['account_status']) && $user['account_status'] !== 'active'
         ) {
@@ -79,49 +70,53 @@ class UserService
         return true;
     }
 
-    public function registerNewUser($data)
+    public static function createAccount($data)
     {
+        $profile = Utility::$profile_tbl;
+        $accounts = Utility::$accounts_tbl;
         try {
-            $existingUser = $this->db->find("users_tbl", $data['email_address'], 'email_address');
+            $existingUser = Database::find($profile, $data['email_address'], 'email_address');
             if ($existingUser) {
                 Response::error(409, "User already exists");
             }
 
             $userid = Utility::generate_uniqueId(10);
-            $profile = [
+
+            $userProfile = [
                 'userid' => $userid,
-                'home_address' => '',
-                'home_state' => '',
-                'home_city' => '',
-                'country' => '',
-                'phone_number' => '',
-                'user_password' => password_hash($data['user_password'], PASSWORD_BCRYPT),
                 'fullname' => $data['fullname'],
                 'email_address' => $data['email_address'],
+                'user_password' => password_hash($data['user_password'], PASSWORD_BCRYPT),
+                'phone' => '',
+                'location' => '',
+                'city_state' => '',
+                'country' => '',
                 'avatar' => ''
             ];
-            $account = [
+
+            $userAccount = [
                 'userid' => $userid,
-                'role_id' => $data['role'] ?? '2',
-                'account_status' => $data['role'] == '1' ? 'active' : 'pending',
+                'status' => $data['role'] !== 'dealer' ? 'active' : 'pending',
+                'role' => $data['role'] ?? 'user',
             ];
 
-            if ($this->db->insert($this->profile, $profile) && $this->db->insert($this->account, $account)) {
+            if (Database::insert($profile, $userProfile) && Database::insert($accounts, $userAccount)) {
                 unset($data['user_password']);
-                Activity::newActivity([
+                Activity::activity([
                     'userid' => $userid,
-                    'actions' => "New member",
+                    'type' => 'register',
+                    'title' => 'registration successful',
                 ]);
-                $this->registrationEmail($data['fullname'], $data['email_address']);
+                //self::registrationEmail($data['fullname'], $data['email_address']);
                 Response::success(['user' => $data], 'User registration successful');
             }
-            Response::error(500, "An error has occurred");
         } catch (\Throwable $e) {
             Utility::log($e->getMessage(), 'error', 'UserService::registerNewUser', ['host' => 'localhost'], $e);
+            Response::error(500, "An error has occurred");
         }
     }
 
-    private function registrationEmail($username, $email)
+    private static function registrationEmail($username, $email)
     {
 
         $templateData = [
@@ -143,24 +138,28 @@ class UserService
         );
     }
 
-    public function logoutUser($data)
+    public static function logoutUser($data)
     {
         try {
 
             header('Authorization: Bearer null');
-            if (Activity::newActivity([
+            if (Activity::activity([
                 'userid' => $data['userid'],
-                'actions' => 'Logged out',
+                'type' => 'logout',
+                'title' => 'logout successful',
             ])) Response::success([], "User logged out");
         } catch (\Throwable $e) {
             Utility::log($e->getMessage(), 'error', 'AuthService::logout', ['host' => 'localhost'], $e);
+            Response::error(500, "An error has occurred");
         }
     }
 
-    public function recoverAccount($data)
+    public static function recoverAccount($data)
     {
+        $profile = Utility::$profile_tbl;
+        $accounts = Utility::$accounts_tbl;
         try {
-            $existingUser = $this->db->find($this->profile, $data['email_address'], 'email_address');
+            $existingUser = Database::find($profile, $data['email_address'], 'email_address');
             if (!$existingUser) {
                 Response::error(404, "User not found");
             }
@@ -176,7 +175,7 @@ class UserService
             ];
 
 
-            if ($this->db->update($this->account, $data, ["userid" => $existingUser['userid']])) {
+            if (Database::update($accounts, $data, ["userid" => $existingUser['userid']])) {
                 $resetLink = BASE_URL . "/auth/reset-password?token=$token";
 
                 $templateData = [
@@ -199,70 +198,105 @@ class UserService
                     Response::success([], "A reset link has been sent to your registered email.");
                 }
             }
-            Response::error(500, "An error has occurred");
         } catch (\Throwable $e) {
             Utility::log($e->getMessage(), 'error', 'UserService::recoverAccount', ['host' => 'localhost'], $e);
+            Response::error(500, "An error has occurred");
         }
     }
 
-    public function resetPassword($data)
+    public static function resetPassword($data)
     {
+        $profile = Utility::$profile_tbl;
+        $accounts = Utility::$accounts_tbl;
         try {
-            $validateToken = $this->db->find($this->account, $data['token'], 'reset_token');
+            $validateToken = Database::find($accounts, $data['token'], 'reset_token');
             if (!$validateToken) Response::error(401, "Wrong token presented");
-            $profile = [
+            $userProfile = [
                 'user_password' => password_hash($data['new_password'], PASSWORD_BCRYPT),
             ];
-            $account = [
+            $userAccount = [
                 'reset_token' => null,
                 'reset_token_expiration' => null,
             ];
             if (
-                $this->db->update($this->profile,  $profile, ["userid" => $validateToken['userid']])
-                && $this->db->update($this->account,  $account, ["userid" => $validateToken['userid']])
+                Database::update($profile,  $userProfile, ["userid" => $validateToken['userid']])
+                && Database::update($accounts,  $userAccount, ["userid" => $validateToken['userid']])
             ) {
-                Activity::newActivity([
+                Activity::activity([
                     'userid' => $validateToken['userid'],
-                    'actions' => 'Reset password',
+                    'type' => 'update',
+                    'title' => 'password reset successful',
                 ]);
                 Response::success([], "Password reset complete");
             }
-            Response::error(500, "An error has occurred");
         } catch (\Throwable $e) {
             Utility::log($e->getMessage(), 'error', 'UserService::resetPassword', ['host' => 'localhost'], $e);
+            Response::error(500, "An error has occurred");
         }
     }
 
-    public function userDetail($id)
+    public static function fetchUserDetails($id)
     {
-
+        $profile = Utility::$profile_tbl;
+        $accounts = Utility::$accounts_tbl;
+        $dealer = Utility::$dealers_tbl;
         try {
-            return $this->db->joinTables(
-                "$this->profile u",
+            return Database::joinTables(
+                "$profile u",
                 [
                     [
                         "type" => "LEFT",
-                        "table" => "$this->account a",
+                        "table" => "$accounts a",
                         "on" => "u.userid = a.userid"
                     ],
                     [
                         "type" => "LEFT",
-                        "table" => "$this->dealer d",
+                        "table" => "$dealer d",
+                        "on" => "u.userid = d.userid"
+                    ]
+                ],
+                ["u.*", "a.*", "d.company"],
+                ["u.userid" => $id]
+            );
+        } catch (\Throwable $th) {
+
+            Utility::log($th->getMessage(), 'error', 'UserService::userDetail', ['userid' => $id], $th);
+            Response::error(500, "An error occurred while fetching user details");
+        }
+    }
+
+    public static function fetchAllUsersAndData()
+    {
+        $profile = Utility::$profile_tbl;
+        $accounts = Utility::$accounts_tbl;
+        $dealer = Utility::$dealers_tbl;
+        try {
+            return Database::joinTables(
+                "$profile u",
+                [
+                    [
+                        "type" => "LEFT",
+                        "table" => "$accounts a",
+                        "on" => "u.userid = a.userid"
+                    ],
+                    [
+                        "type" => "LEFT",
+                        "table" => "$dealer d",
                         "on" => "u.userid = d.userid"
                     ]
                 ],
                 ["u.*", "a.*", "d.dealer_name"],
-                ["u.userid" => $id]
             );
         } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'UserService::userDetail', ['userid' => $_SESSION['userid']], $th);
             Response::error(500, "An error occurred while fetching user details");
-            Utility::log($th->getMessage(), 'error', 'UserService::userDetail', ['userid' => $id], $th);
         }
     }
 
-    public function getUserData($id)
+
+    public static function sendUserDetails($id)
     {
-        $user = $this->userDetail($id);
+        $user = self::fetchUserDetails($id);
 
         if (!empty($user)) {
             Response::success($user[0], "User found");
@@ -271,35 +305,9 @@ class UserService
         }
     }
 
-    public function usersDetail()
+    public static function sendAllUserInformation()
     {
-
-        try {
-            return $this->db->joinTables(
-                "$this->profile u",
-                [
-                    [
-                        "type" => "LEFT",
-                        "table" => "$this->account a",
-                        "on" => "u.userid = a.userid"
-                    ],
-                    [
-                        "type" => "LEFT",
-                        "table" => "$this->dealer d",
-                        "on" => "u.userid = d.userid"
-                    ]
-                ],
-                ["u.*", "a.*", "d.dealer_name"],
-            );
-        } catch (\Throwable $th) {
-            Response::error(500, "An error occurred while fetching user details");
-            Utility::log($th->getMessage(), 'error', 'UserService::userDetail', ['userid' => $_SESSION['userid']], $th);
-        }
-    }
-
-    public function getUsersData()
-    {
-        $users = $this->usersDetail();
+        $users = self::fetchAllUsersAndData();
         if (!empty($users)) {
             Response::success($users, "Users found");
         } else {
@@ -307,29 +315,30 @@ class UserService
         }
     }
 
-
-
-    public function updateUserInformation($id, $data)
+    public static function updateUserInformation($id, $data)
     {
+        $profile = Utility::$profile_tbl;
+        $accounts = Utility::$accounts_tbl;
         try {
-            $userData = $this->userDetail($id);
+            $userData = self::fetchUserDetails($id);
 
             if (empty($userData)) Response::error(404, "User not found");
             $user = $userData[0];
 
 
-            $profile = [
+            $profileInfo = [
                 'fullname' => $data['fullname'] ?? $user['fullname'],
-                'home_address' => $data['home_address'] ?? $user['home_address'],
-                'home_state' => $data['home_state'] ?? $user['home_state'],
-                'home_city' => $data['home_city'] ?? $user['home_city'],
-                'country' => $data['country'] ?? $user['country'],
-                'phone_number' => $data['phone_number'] ?? $user['phone_number'],
+                'fullname' => $data['email_address'] ?? $user['email_address'],
                 'user_password' => isset($data['user_password']) ? password_hash($data['user_password'], PASSWORD_BCRYPT) : $user['user_password'],
+                'phone' => $data['phone'] ?? $user['phone'],
+                'location' => $data['location'] ?? $user['location'],
+                'city_state' => $data['city_state'] ?? $user['city_state'],
+                'country' => $data['country'] ?? $user['country'],
             ];
 
-            $account = [
-                'account_status' => $data['account_status'] ?? $user['account_status'],
+            $accountInfo = [
+                'status' => $data['status'] ?? $user['status'],
+                'role' => $data['role'] ?? $user['role'],
             ];
 
             if (
@@ -338,13 +347,13 @@ class UserService
                 is_uploaded_file($_FILES['dp-upload']['tmp_name'])
             ) {
 
-                $target_dir =   "public/UPLOADS/avatars/";
+                $target_dir =   "public/UPLOADS/avatar/";
 
                 $user_avatar = Utility::uploadDocuments('dp-upload', $target_dir);
 
                 if (!$user_avatar || !$user_avatar['success']) Response::error(500, "Image upload failed");
 
-                $profile['avatar'] = $user_avatar['files'][0];
+                $profileInfo['avatar'] = $user_avatar['files'][0];
 
                 if (isset($user['avatar'])) {
                     $filenameFromUrl = basename($user['avatar']);
@@ -355,28 +364,30 @@ class UserService
             }
 
             if (
-                $this->db->update($this->profile,  $profile, ["userid" => $id])
-                && $this->db->update($this->account,  $account, ["userid" => $id])
+                Database::update($profile,  $profileInfo, ["userid" => $id])
+                && Database::update($accounts,  $accountInfo, ["userid" => $id])
 
             ) {
-                Activity::newActivity([
+                Activity::activity([
                     'userid' => $user['userid'],
-                    'actions' => 'account updated',
+                    'type' => 'update',
+                    'title' => 'logout successful',
                 ]);
-                $userData = $this->userDetail($id);
-                Response::success($userData, "Account update successful");
+                $currentUserData = self::fetchUserDetails($id);
+                Response::success($currentUserData, "Account update successful");
             }
-            Response::error(500, "An error has occurred");
         } catch (\Throwable $th) {
-            Response::error(500, "An error occurred while updating user details");
             Utility::log($th->getMessage(), 'error', 'UserService::updateUserInformation', ['userid' => $id], $th);
+            Response::error(500, "An error occurred while updating user details");
         }
     }
 
-    public function deleteUserAccount($id)
+    public static function deleteUserAccount($id)
     {
+        $profile = Utility::$profile_tbl;
+        $accounts = Utility::$accounts_tbl;
         try {
-            $user = $this->userDetail($id);
+            $user = self::fetchUserDetails($id);
 
             if (empty($user)) Response::error(404, "User not found");
 
@@ -392,37 +403,36 @@ class UserService
                 }
             }
 
-            echo json_encode($id);
-            exit;
+
 
             if (
-                $this->db->delete($this->profile, ["userid" => $id])
-                && $this->db->delete($this->account, ["userid" => $id])
+                Database::delete($profile, ["userid" => $id])
+                && Database::delete($accounts, ["userid" => $id])
             ) {
-                Activity::newActivity([
-                    'userid' => $id ?? $_SESSION['userid'],
-                    'actions' => 'account deleted',
+                Activity::activity([
+                    'userid' => $_SESSION['userid'],
+                    'type' => 'delete',
+                    'title' => 'account deleted',
                 ]);
                 Response::success([], "Account deleted successful");
             }
         } catch (\Throwable $th) {
-            Response::error(500, "An error occurred while deleting user account");
             Utility::log($th->getMessage(), 'error', 'UserService::deleteUserAccount', ['userid' => $id], $th);
+            Response::error(500, "An error occurred while deleting user account");
         }
     }
-
-
-
-    public function activityLogs($id = null)
+    public static function fetchActivityLogs($id = null)
     {
+        $logs = Utility::$loginactivity;
+        $profile = Utility::$profile_tbl;
 
         try {
-            $logs = $this->db->joinTables(
-                "$this->logs l",
+            return Database::joinTables(
+                "$logs l",
                 [
                     [
                         "type" => "LEFT",
-                        "table" => "$this->profile p",
+                        "table" => "$profile p",
                         "on" => "l.userid = p.userid"
                     ]
                 ],
@@ -433,8 +443,28 @@ class UserService
             if (empty($logs)) Response::error(404, "Activity logs not found");
             Response::success($logs, "Activity logs found");
         } catch (\Throwable $th) {
-            Response::error(500, "An error occurred while fetching user details");
-            Utility::log($th->getMessage(), 'error', 'UserService::activityLogs', ['userid' => $_SESSION['userid']], $th);
+            Utility::log($th->getMessage(), 'error', 'UserService::fetchActivityLogs', ['userid' => $_SESSION['userid']], $th);
+            Response::error(500, "An error occurred while fetching activity logs");
         }
+    }
+
+
+
+    public static function sendActivityLog($id)
+    {
+        $log = self::fetchActivityLogs($id);
+        if (empty($log)) {
+            Response::error(404, "Activity log not found");
+        }
+        Response::success($log[0], "Activity log found");
+    }
+
+    public static function sendAllActivityLog()
+    {
+        $log = self::fetchActivityLogs();
+        if (empty($log)) {
+            Response::error(404, "Activity log not found");
+        }
+        Response::success($log[0], "Activity log found");
     }
 }

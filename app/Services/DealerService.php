@@ -3,41 +3,32 @@
 namespace App\Services;
 
 use App\Utils\Response;
-use configs\DB;
+use configs\Database;
 use App\Services\Activity;
 use App\Utils\Utility;
 
 
 class DealerService
 {
-    protected $db;
-    protected $dealer;
-    protected $profile;
-    protected $account;
 
 
-    public function __construct()
+    public static function fetchAllDealersInfo()
     {
-        $this->db = new DB();
-        $this->dealer = Utility::$dealers_tbl;
-        $this->profile = Utility::$profile_tbl;
-        $this->account = Utility::$account_tbl;
-    }
-
-    public function findDealers()
-    {
+        $dealer = Utility::$dealers_tbl;
+        $profile = Utility::$profile_tbl;
+        $account = Utility::$accounts_tbl;
         try {
-            return $this->db->joinTables(
-                "$this->dealer d",
+            return Database::joinTables(
+                "$dealer d",
                 [
                     [
                         "type" => "LEFT",
-                        "table" => "$this->profile u",
+                        "table" => "$profile u",
                         "on" => "u.userid = d.userid"
                     ],
                     [
                         "type" => "LEFT",
-                        "table" => "$this->account a",
+                        "table" => "$account a",
                         "on" => "u.userid = a.userid"
                     ]
                 ],
@@ -45,25 +36,28 @@ class DealerService
 
             );
         } catch (\Throwable $th) {
-            Response::error(500, "An error occurred while updating user details");
             Utility::log($th->getMessage(), 'error', 'DealerService::findDealers', ['userid' => $_SESSION['userid']], $th);
+            Response::error(500, "An error occurred while fetching dealers");
         }
     }
 
-    private function findDealer($id)
+    public static function fetchDealerInformation($id)
     {
+        $dealer = Utility::$dealers_tbl;
+        $profile = Utility::$profile_tbl;
+        $account = Utility::$accounts_tbl;
         try {
-            return $this->db->joinTables(
-                "$this->dealer d",
+            return Database::joinTables(
+                "$dealer d",
                 [
                     [
                         "type" => "LEFT",
-                        "table" => "$this->profile u",
+                        "table" => "$profile u",
                         "on" => "u.userid = d.userid"
                     ],
                     [
                         "type" => "LEFT",
-                        "table" => "$this->account a",
+                        "table" => "$account a",
                         "on" => "u.userid = a.userid"
                     ]
                 ],
@@ -71,23 +65,24 @@ class DealerService
                 ["d.userid" => $id]
             );
         } catch (\Throwable $th) {
-            Response::error(500, "An error occurred while updating user details");
+
             Utility::log($th->getMessage(), 'error', 'DealerService::getDealerAccount', ['userid' => $id], $th);
+            Response::error(500, "An error occurred while fetching dealer");
         }
     }
 
-    public function getDealerAccount($id)
+    public static function sendDealerInformation($id)
     {
-        $dealersData = $this->findDealer($id);
+        $dealersData = self::fetchDealerInformation($id);
         if (empty($dealersData)) {
             Response::error(404, "Dealer account not found");
         }
         Response::success($dealersData[0], "Dealer found");
     }
 
-    public function getDealersAccounts()
+    public static function sendAllDealerInformation()
     {
-        $dealersData = $this->findDealers();
+        $dealersData = self::fetchAllDealersInfo();
 
         if (empty($dealersData)) {
             Response::error(404, "Dealer account not found");
@@ -95,17 +90,17 @@ class DealerService
         Response::success($dealersData, "Dealers found");
     }
 
-    public function createADealer($data)
+    public static function saveNewDealerInformation($data)
     {
 
-
+        $dealerTable = Utility::$dealers_tbl;
         try {
-            $dealersData = $this->findDealers();
+            $dealersData = self::fetchAllDealersInfo();
 
             if (!empty($dealersData)) {
                 foreach ($dealersData as $dealer) {
                     if (
-                        trim(strtolower($dealer['dealer_name'])) === strtolower($data['dealerName'])
+                        trim(strtolower($dealer['company'])) === strtolower($data['company'])
                         || $dealer['userid'] === $data['userid']
                     ) {
                         Response::error(409, "Dealer already exists");
@@ -115,102 +110,159 @@ class DealerService
 
             $dealerInfo = [
                 'userid' => $data['userid'],
-                'dealer_name' => $data['dealerName'],
-                'business_address' => $data['address'],
-                'city' => $data['city'],
-                'state_' => $data['state'],
-                'country' => $data['country'],
+                'company' => $data['company'],
+                'contact' => $data['contact'],
+                'status' => 'pending',
+                'phone' => $data['phone'],
+                'state' => $data['state'],
+                'listings' => 0,
+                'rating' => 0,
+                'banner' => null,
+                'avatar' => null,
+                'about' => $data['about'] ?? '',
+                'revenue' => 0,
             ];
 
             if (
-                isset($_FILES['dealer-logo']) &&
-                $_FILES['dealer-logo']['error'] === UPLOAD_ERR_OK &&
-                is_uploaded_file($_FILES['dealer-logo']['tmp_name'])
+                isset($_FILES['banner']) &&
+                $_FILES['banner']['error'] === UPLOAD_ERR_OK &&
+                is_uploaded_file($_FILES['banner']['tmp_name'])
             ) {
                 $target_dir =   "public/UPLOADS/dealers/";
-                $dealer_avatar = Utility::uploadDocuments('dealer-logo', $target_dir);
-                if (!$dealer_avatar || !$dealer_avatar['success']) Response::error(500, "Image upload failed");
+                $dealer_banner = Utility::uploadDocuments('banner', $target_dir);
+                if (!$dealer_banner || !$dealer_banner['success']) Response::error(500, "Image upload failed");
 
-                $dealerInfo['logo'] = $dealer_avatar['files'][0];
+                $dealerInfo['banner'] = $dealer_banner['files'][0];
             }
 
-            if ($this->db->insert($this->dealer, $dealerInfo)) {
-                Activity::newActivity([
+            if (
+                isset($_FILES['avatar']) &&
+                $_FILES['avatar']['error'] === UPLOAD_ERR_OK &&
+                is_uploaded_file($_FILES['avatar']['tmp_name'])
+            ) {
+                $target_dir =   "public/UPLOADS/avatar/";
+                $dealer_avatar = Utility::uploadDocuments('avatar', $target_dir);
+                if (!$dealer_avatar || !$dealer_avatar['success']) Response::error(500, "Image upload failed");
+
+                $dealerInfo['avatar'] = $dealer_avatar['files'][0];
+            }
+
+            if (Database::insert($dealerTable, $dealerInfo)) {
+                Activity::activity([
                     'userid' => $data['userid'],
-                    'actions' => "New dealer",
+                    'type' => 'register',
+                    'title' => 'dealer register successful',
                 ]);
                 Response::success(
                     ['dealer' => $data['userid']],
                     'dealer registration successful'
                 );
             }
-            Response::error(500, "An error has occurred");
         } catch (\Throwable $th) {
-            Response::error(500, "An error occurred while creating dealer account");
             Utility::log($th->getMessage(), 'error', 'DealerService::createADealer', ['userid' => $data['userid']], $th);
+            Response::error(500, "An error occurred while creating dealer account");
         }
     }
 
-    public function updateDealerAccount($id, $data)
+    public static function updateDealerAccount($id, $data)
     {
+        $dealerTable = Utility::$dealers_tbl;
         try {
-            $dealersData = $this->findDealer($id);
+            $dealersData = self::fetchDealerInformation($id);
             if (empty($dealersData)) Response::error(404, "Dealer account not found");
 
             $dealer = $dealersData[0];
 
             $dealerInfo = [
-                'dealer_name' => $data['dealerName'] ?? $dealer['dealer_name'],
-                'business_address' => $data['address'] ?? $dealer['business_address'],
-                'state_' => $data['state'] ?? $dealer['state_'],
-                'country' => $data['country'] ?? $dealer['country'],
+                'company' => $data['company'] ?? $dealer['company'],
+                'contact' => $data['contact'] ?? $dealer['contact'],
                 'status' => $data['status'] ?? $dealer['status'],
+                'phone' => $data['phone'] ?? $dealer['phone'],
+                'state' => $data['state'] ?? $dealer['state'],
+                'listings' => intval($data['listings']) ?? intval($dealer['listings']),
+                'rating' => intval($data['rating']) ?? intval($dealer['rating']),
+                'about' => $data['about'] ?? $dealer['about'],
+                'revenue' => intval($data['revenue']) ?? intval($dealer['revenue']),
+                'active' => intval($data['active']) ?? intval($dealer['active']),
             ];
 
             if (
-                isset($_FILES['dealer-logo']) &&
-                $_FILES['dealer-logo']['error'] === UPLOAD_ERR_OK &&
-                is_uploaded_file($_FILES['dealer-logo']['tmp_name'])
+                isset($_FILES['banner']) &&
+                $_FILES['banner']['error'] === UPLOAD_ERR_OK &&
+                is_uploaded_file($_FILES['banner']['tmp_name'])
             ) {
                 $target_dir =   "public/UPLOADS/dealers/";
-                $dealer_avatar = Utility::uploadDocuments('dealer-logo', $target_dir);
+
+                $dealer_banner = Utility::uploadDocuments('banner', $target_dir);
+                if (!$dealer_banner || !$dealer_banner['success']) Response::error(500, "Image upload failed");
+
+                $dealerInfo['banner'] = $dealer_banner['files'][0];
+
+                if (isset($dealer['banner'])) {
+                    $filenameFromUrl = basename($dealer['banner']);
+                    $file = "../" . $target_dir  . $filenameFromUrl;
+                    if (file_exists($file))
+                        unlink($file);
+                }
+            }
+
+
+            if (
+                isset($_FILES['avatar']) &&
+                $_FILES['avatar']['error'] === UPLOAD_ERR_OK &&
+                is_uploaded_file($_FILES['avatar']['tmp_name'])
+            ) {
+                $target_dir =   "public/UPLOADS/avatar/";
+
+                $dealer_avatar = Utility::uploadDocuments('avatar', $target_dir);
                 if (!$dealer_avatar || !$dealer_avatar['success']) Response::error(500, "Image upload failed");
 
-                $dealerInfo['logo'] = $dealer_avatar['files'][0];
+                $dealerInfo['avatar'] = $dealer_avatar['files'][0];
 
-                if (isset($dealer['logo'])) {
-                    $file = $dealer['logo'];
+                if (isset($dealer['avatar'])) {
+                    $filenameFromUrl = basename($dealer['avatar']);
+                    $file = "../" . $target_dir  . $filenameFromUrl;
                     if (file_exists($file))
                         unlink($file);
                 }
             }
 
             if (
-                $this->db->update($this->dealer,  $dealerInfo, ["userid" => $id])
+                Database::update($dealerTable,  $dealerInfo, ["userid" => $id])
             ) {
-                Activity::newActivity([
+                Activity::activity([
                     'userid' => $dealer['userid'],
-                    'actions' => 'dealer account updated',
+                    'type' => 'update',
+                    'title' => 'dealer updates successful',
                 ]);
                 Response::success([], "Dealer Account update successful");
             }
-            Response::error(500, "An error has occurred");
         } catch (\Throwable $th) {
-            Response::error(500, "An error occurred while updating dealer details");
             Utility::log($th->getMessage(), 'error', 'DealerService::updateDealerAccount', ['userid' => $data['userid']], $th);
+            Response::error(500, "An error occurred while updating dealer details");
         }
     }
 
-    public function deleteDealerAccount($id)
+    public static function deleteDealerAccount($id)
     {
+        $dealerTable = Utility::$dealers_tbl;
         try {
-            $dealersData = $this->findDealer($id);
+            $dealersData = self::fetchDealerInformation($id);
             if (empty($dealersData)) Response::error(404, "Dealer account not found");
 
             $dealer = $dealersData[0];
 
-            if (isset($dealer['logo'])) {
-                $filenameFromUrl = basename($dealer['logo']);
+            if (isset($dealer['avatar'])) {
+                $filenameFromUrl = basename($dealer['avatar']);
+                $target_dir = "../public/UPLOADS/avatar/" . $filenameFromUrl;
+
+                if (file_exists($target_dir)) {
+                    unlink($target_dir);
+                }
+            }
+
+            if (isset($dealer['banner'])) {
+                $filenameFromUrl = basename($dealer['banner']);
                 $target_dir = "../public/UPLOADS/dealers/" . $filenameFromUrl;
 
                 if (file_exists($target_dir)) {
@@ -218,18 +270,18 @@ class DealerService
                 }
             }
 
-            if ($this->db->delete($this->dealer, ["userid" => $id])) {
-                if (Activity::newActivity([
-                    'userid' => $dealer['userid'] ?? $_SESSION['userid'],
-                    'actions' => 'dealer account deleted',
+            if (Database::delete($dealerTable, ["userid" => $id])) {
+                if (Activity::activity([
+                    'userid' =>  $_SESSION['userid'],
+                    'type' => 'delete',
+                    'title' => 'dealer delete successful',
                 ]));
                 Response::success([], "Dealer account deleted");
             }
-
-            Response::error(500, "An error has occurred");
         } catch (\Throwable $th) {
-            Response::error(500, "An error occurred while deleting dealer details");
+
             Utility::log($th->getMessage(), 'error', 'DealerService::deleteDealerAccount', ['userid' => $id], $th);
+            Response::error(500, "An error occurred while deleting dealer account");
         }
     }
 }

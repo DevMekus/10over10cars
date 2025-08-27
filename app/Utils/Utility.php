@@ -8,24 +8,60 @@ class Utility
     public static string $API_ROUTE = "/10over10cars/api";
     public static $siteName = '';
 
-    public static $profile_tbl = 'users_tbl';
-    public static $account_tbl = 'accounts_tbl';
+    public static $accounts_tbl = 'accounts_tbl';
+    public static $profile_tbl = 'profile_tbl';
     public static $dealers_tbl = 'dealers_tbl';
-    public static $activity_log = 'user_activity_logs';
+    public static $loginactivity = 'loginactivity';
+    public static $notification = 'notification';
+    public static $plans = 'plans';
+    public static $transaction_tbl = 'transaction_tbl';
+    public static $vehicles_tbl = 'vehicles_tbl';
+    public static $verifications_tbl = 'verifications_tbl';
+    public static $accident_tbl = 'accident';
+    public static $insurance_tbl = 'insurance';
+    public static $ownership_tbl = 'ownership';
+    public static $specifications_tbl = 'specifications';
 
-    public static $theft_tbl = 'theft_reports';
 
-    public static $verification_tbl = 'verification_request';
-    public static $vinDocs_tbl = 'vehicle_documents';
-    public static $vinHistory_tbl = 'vehicle_history';
-    public static $vinImages_tbl = 'vehicle_image';
-    public static $vinInfo_tbl = 'vehicle_information';
-    public static $vinOwnership_tbl = 'vehicle_ownerships';
-    public static $vinSpec_tbl = 'vehicle_specs';
-    public static $vinValuation_tbl = 'vehicle_valuation';
-    public static $vinInspection_tbl = 'inspections';
-    
-    public static $transactions_tbl = 'transactions';
+    private const ENCRYPTION_METHOD = 'AES-256-CBC';
+
+    public static $activities = [
+        '1' => 'login',
+        '2' => 'register',
+        '3' => 'logout',
+        '4' => 'create',
+        '5' => 'update',
+        '6' => 'delete',
+    ];
+
+
+    private static function getKey(): string
+    {
+        return hex2bin('0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef');
+        // 64 hex characters = 32 bytes = 256-bit key
+    }
+    public static function encrypt(string $plaintext): string
+    {
+        $key = self::getKey();
+        $ivLength = openssl_cipher_iv_length(self::ENCRYPTION_METHOD);
+        $iv = openssl_random_pseudo_bytes($ivLength);
+
+        $cipherText = openssl_encrypt($plaintext, self::ENCRYPTION_METHOD, $key, 0, $iv);
+
+        return base64_encode($iv . $cipherText); // Store IV + ciphertext
+    }
+
+    public static function decrypt(string $ciphertext): string
+    {
+        $key = self::getKey();
+        $data = base64_decode($ciphertext);
+
+        $ivLength = openssl_cipher_iv_length(self::ENCRYPTION_METHOD);
+        $iv = substr($data, 0, $ivLength);
+        $encryptedData = substr($data, $ivLength);
+
+        return openssl_decrypt($encryptedData, self::ENCRYPTION_METHOD, $key, 0, $iv);
+    }
 
     public static function makeDirectory(string $userDir)
     {
@@ -209,7 +245,9 @@ class Utility
 
     public static function verifySession()
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         if (!isset($_SESSION['role'], $_SESSION['token'])) {
             header("Location: " . BASE_URL . "auth/login?f-bk=UNAUTHORIZED");
             exit;
@@ -243,6 +281,7 @@ class Utility
         if ($token) {
             $headers[] = 'Authorization: Bearer ' . $token;
         }
+        $headers[] = 'Origin: ' . BASE_URL;
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -256,5 +295,20 @@ class Utility
             return $text;
         }
         return mb_substr($text, 0, $limit) . '...';
+    }
+    public static function currentRoute()
+    {
+
+        $requestUri = $_SERVER['REQUEST_URI'];
+
+        $baseFolder = '/10over10cars';
+        if (strpos($requestUri, $baseFolder) === 0) {
+            $requestUri = substr($requestUri, strlen($baseFolder));
+        }
+
+        $path = parse_url($requestUri, PHP_URL_PATH);
+        $currentRoute = trim($path, '/');
+
+        return $currentRoute;
     }
 }

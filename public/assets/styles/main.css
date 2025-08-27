@@ -164,6 +164,108 @@ a {
     grid-template-columns: 1fr;
   }
 }
+@font-face {
+  font-family: "HelveticaFont";
+  src: url("../fonts/Helvetica-Bold.ttf") format("woff2");
+  font-weight: 700; /* Light */
+  font-style: normal;
+}
+@font-face {
+  font-family: "HelveticaFont";
+  src: url("../fonts/helvetica-light-587ebe5a59211.ttf") format("woff2");
+  font-weight: 400; /* Normal */
+  font-style: normal;
+}
+@font-face {
+  font-family: "HelveticaFont";
+  src: url("../fonts/Helvetica.ttf") format("woff2");
+  font-weight: 400; /* Normal */
+  font-style: normal;
+}
+@font-face {
+  font-family: "MyCustomFont";
+  src: url("../fonts/Helvetica.ttf") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap; /* Renders fallback font until custom font loads */
+}
+:root {
+  /* Base size is 1rem = 16px by default */
+  --font-size-xs: clamp(0.75rem, 0.7vw, 0.875rem); /* 12px - 14px */
+  --font-size-sm: clamp(0.875rem, 0.8vw, 1rem); /* 14px - 16px */
+  --font-size-base: clamp(1rem, 1vw, 1.125rem); /* 16px - 18px */
+  --font-size-md: clamp(1.125rem, 1.2vw, 1.25rem); /* 18px - 20px */
+  --font-size-lg: clamp(1.25rem, 1.5vw, 1.5rem); /* 20px - 24px */
+  --font-size-xl: clamp(1.5rem, 2vw, 2rem); /* 24px - 32px */
+  --font-size-2xl: clamp(2rem, 3vw, 2.5rem); /* 32px - 40px */
+  --font-size-3xl: clamp(2.5rem, 4vw, 3rem); /* 40px - 48px */
+}
+
+body {
+  font-family: "HelveticaFont", sans-serif;
+  transition: background 0.3s, color 0.3s;
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: var(--font-size-2xl);
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+}
+
+h4 {
+  font-size: var(--font-size-lg);
+}
+
+p {
+  font-size: var(--font-size-base);
+}
+
+small {
+  font-size: var(--font-size-xs);
+}
+
+a {
+  cursor: pointer;
+}
+
+.pagination {
+  margin-top: 2rem;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination-group {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.pagination-ellipsis {
+  padding: 6px 10px;
+  color: #888;
+}
+
+.pagination-btn.active {
+  background: var(--accent);
+  color: white;
+  font-weight: bold;
+}
+
 /* Topbar */
 .topbar {
   background: var(--bg-soft);

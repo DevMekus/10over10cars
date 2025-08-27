@@ -4,10 +4,96 @@ export default class Utility {
   static APP_ROUTE = Utility.BASEURL;
   static loadTimeout = 500;
   static btnLoadingRegistry = {};
-  static currentPage = document.body.dataset.page;
+  static userRole = document.body.dataset.role;
   static userid = document.body.dataset.id;
-
   static verificationFee = 10000;
+  static passPhrase =
+    "d10b86de4e86d5f6636b96f041f10ded5346a6c760d8d981a6690fbef7c87132";
+
+  // --- Helpers ---
+  static strToBuffer(str) {
+    return new TextEncoder().encode(str);
+  }
+
+  static bufToBase64(buf) {
+    return btoa(String.fromCharCode(...new Uint8Array(buf)));
+  }
+
+  static base64ToBuf(b64) {
+    return Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+  }
+
+  static async deriveKey(passphrase, salt) {
+    const baseKey = await crypto.subtle.importKey(
+      "raw",
+      Utility.strToBuffer(passphrase),
+      { name: "PBKDF2" },
+      false,
+      ["deriveKey"]
+    );
+
+    return crypto.subtle.deriveKey(
+      {
+        name: "PBKDF2",
+        salt: salt,
+        iterations: 100000,
+        hash: "SHA-256",
+      },
+      baseKey,
+      { name: "AES-GCM", length: 256 },
+      false,
+      ["encrypt", "decrypt"]
+    );
+  }
+
+  // --- Encrypt + Store ---
+  static async encryptAndStoreArray(keyName, arrayData, passphrase, meta = {}) {
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const aesKey = await Utility.deriveKey(passphrase, salt);
+
+    const encoded = new TextEncoder().encode(JSON.stringify(arrayData));
+    const ciphertext = await crypto.subtle.encrypt(
+      { name: "AES-GCM", iv },
+      aesKey,
+      encoded
+    );
+
+    const payload = {
+      ct: Utility.bufToBase64(ciphertext),
+      iv: Utility.bufToBase64(iv),
+      salt: Utility.bufToBase64(salt),
+      ...meta,
+    };
+
+    sessionStorage.setItem(keyName, JSON.stringify(payload));
+  }
+
+  // --- Decrypt + Get ---
+  static async decryptAndGetArray(keyName, passphrase) {
+    const stored = sessionStorage.getItem(keyName);
+    if (!stored) return null;
+
+    try {
+      const { ct, iv, salt } = JSON.parse(stored);
+      const aesKey = await Utility.deriveKey(
+        passphrase,
+        Utility.base64ToBuf(salt)
+      );
+
+      const decrypted = await crypto.subtle.decrypt(
+        { name: "AES-GCM", iv: Utility.base64ToBuf(iv) },
+        aesKey,
+        Utility.base64ToBuf(ct)
+      );
+
+      const decoded = new TextDecoder().decode(decrypted);
+      return JSON.parse(decoded);
+    } catch (e) {
+      console.error("Decryption failed:", e);
+      return null;
+    }
+  }
 
   static buttonLoading() {
     const btns = document.querySelectorAll(".btn");

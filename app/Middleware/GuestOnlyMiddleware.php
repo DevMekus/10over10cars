@@ -10,8 +10,8 @@ class GuestOnlyMiddleware
     {
         // Only check the origin / referer
         $allowedDomains = [
-            'http://localhost/10over10cars/',           
-            'https://nice-app.io'       // Production
+            'http://localhost/10over10cars/',
+            ''       // Production
         ];
 
         $referer = $_SERVER['HTTP_REFERER'] ?? '';
