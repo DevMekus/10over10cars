@@ -11,7 +11,7 @@ class AdminOnlyMiddleware
     {
         $userData = AuthMiddleware::verifyToken();
 
-        if (!isset($userData['role']) || (string)$userData['role'] !== '1') {
+        if (!isset($userData['role']) || (string)$userData['role'] !== 'admin') {
             Response::error(403, 'Access denied: Admin role required');
         }
 
@@ -19,7 +19,7 @@ class AdminOnlyMiddleware
             session_start();
         }
 
-        $_SESSION['userid'] = $userData['id'];
+        $_SESSION['userid'] = $userData['userid'];
 
         return true;
     }

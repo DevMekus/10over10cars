@@ -1,10 +1,11 @@
 <?php
 require_once ROOT_PATH . '/siteConfig.php';
+require_once ROOT_PATH . '/includes/reuse.php';
 require_once ROOT_PATH . '/includes/header.php';
 
 ?>
 
-<body id="Dashboard" class="dealersPage">
+<body id="Dashboard" class="dealersPage" data-role="<?= $role; ?>" data-userid="<?= $userid; ?>">
     <div class="app">
         <!-- Sidebar -->
         <?php require_once "sidebar.php"; ?>
@@ -92,6 +93,7 @@ require_once ROOT_PATH . '/includes/header.php';
                     </div>
                     <div class="small muted" id="pgInfo" style="padding:10px;text-align:center"></div>
                 </section>
+                <div id="no-data"></div>
                 <?php require "footer.php"; ?>
 
             </main>

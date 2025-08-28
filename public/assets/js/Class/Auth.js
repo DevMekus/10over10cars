@@ -1,6 +1,7 @@
 import Utility from "./Utility.js";
 import SessionManager from "./SessionManager.js";
 import AppInit from "./Application.js";
+import { CONFIG } from "../config.js";
 
 export default class AuthStatic {
   static submitBtn = document.getElementById("submitBtn");
@@ -115,7 +116,7 @@ class Auth {
       const data = Utility.toObject(new FormData(e.target));
 
       const response = await Utility.fetchData(
-        `${Utility.API_ROUTE}/login`,
+        `${CONFIG.API}/auth/login`,
         data,
         "POST"
       );
@@ -127,14 +128,16 @@ class Auth {
           AuthStatic.showToast(`${response.message}`, "error");
           return;
         }
-
-        const session = await SessionManager.setSession(response.data.token);
+        SessionManager.clearAppData();
+        const session = await SessionManager.startUserSession(
+          response.data.token
+        );
 
         if (session.success) {
           AuthStatic.showToast("Welcome back! Redirecting...", "success");
           setTimeout(() => {
-            window.location.href = `${Utility.APP_ROUTE}/dashboard/overview`;
-          }, Utility.loadTimeout);
+            window.location.href = `${CONFIG.BASE_URL}/dashboard/overview`;
+          }, CONFIG.TIMEOUT);
         }
       }
     });
@@ -158,7 +161,7 @@ class Auth {
     const params = new URLSearchParams(document.location.search);
     const urlParam = params.get("f-bk");
     if (!urlParam) return;
-    console.log("feedback runs");
+
     urlParam == "UNAUTHORIZED" &&
       AuthStatic.showToast("UNAUTHORIZED! Please sign in", "error");
 

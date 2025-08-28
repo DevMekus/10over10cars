@@ -167,7 +167,8 @@ class Verification {
     this.initialize();
   }
 
-  initialize() {
+  async initialize() {
+    await AppInit.initializeData();
     Utility.runClassMethods(this, ["initialize"]);
   }
 
@@ -380,6 +381,7 @@ class Verification {
   renderDashPageStats() {
     const domEl = document.querySelector(".verificationPage");
     if (!domEl) return;
+
     const total = AppInit.DATA.verifications.length;
     const approved = AppInit.DATA.verifications.filter(
       (r) => r.status === "approved"

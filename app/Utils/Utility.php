@@ -29,9 +29,11 @@ class Utility
         '1' => 'login',
         '2' => 'register',
         '3' => 'logout',
-        '4' => 'create',
-        '5' => 'update',
-        '6' => 'delete',
+        '4' => 'Dealer',
+        '5' => 'Notification',
+        '6' => 'Transaction',
+        '6' => 'Vehicle',
+        '6' => 'Verification',
     ];
 
 

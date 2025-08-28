@@ -1,5 +1,7 @@
 import Utility from "./Utility.js";
 import AppInit from "./Application.js";
+import { CONFIG } from "../config.js";
+import SessionManager from "./SessionManager.js";
 
 export default class DealerInit {
   static VIEW = "grid";
@@ -40,15 +42,26 @@ export default class DealerInit {
   // ------ Grid view
   static renderGrid() {
     const mount = DealerInit.el("gridView");
+    const notFound = DealerInit.el("no-data");
     mount.innerHTML = "";
+    notFound.innerHTML = "";
+
     const rows = DealerInit.getFiltered();
+    if (rows.length == 0) {
+      notFound.innerHTML = `
+      <div style="width:100%; display:flex; justify-content:center;">
+          <p class="muted">Dealers not available</p>
+      </div>
+    `;
+    }
+
     rows.forEach((d) => {
       const card = document.createElement("div");
       card.className = "dealer";
       card.setAttribute("data-aos", "fade-up");
       card.innerHTML = `
         <div class='banner'>
-          <img src='${d.banner}&sat=-20' alt='banner of ${d.company}'/>
+          <img src='${d.banner}' alt='banner of ${d.company}'/>
           <div class='avatar'><img src='${d.avatar}' alt='${d.company}'/></div>
         </div>
         <div class='body' style='margin-top:12px'>
@@ -57,14 +70,17 @@ export default class DealerInit {
               <div class='name'>${d.company}</div>
               <div class='small muted'>${d.state} • ${d.contact}</div>
             </div>
-            <span class='tag ${d.status}'>${d.status}</span>
+            <span class='tag ${d.status}'>
+            ${Utility.toTitleCase(d.status)}</span>
           </div>
           <div style='display:flex;gap:12px;margin-top:8px' class='small muted'>
             <span><i class='bi bi-car-front'></i> ${AppInit.fmt(
               d.listings
             )} listings</span>
             <span><i class='bi bi-star-fill'></i> ${d.rating}</span>
-            <span><i class='bi bi-calendar3'></i> Joined ${d.joined}</span>
+            <span><i class='bi bi-calendar3'></i> Joined ${
+              d.joined.split(" ")[0]
+            }</span>
           </div>
           <div class='actions'>
             <button class='ghost' data-view='${d.id}'>View</button>
@@ -87,8 +103,18 @@ export default class DealerInit {
 
   static renderTable() {
     const wrap = document.querySelector("#dealersTable tbody");
+    const notFound = DealerInit.el("no-data");
     wrap.innerHTML = "";
+    notFound.innerHTML = "";
+
     const rows = DealerInit.getFiltered();
+    if (rows.length == 0) {
+      notFound.innerHTML = `
+      <div style="width:100%; display:flex; justify-content:center;">
+          <p class="muted">Dealers not available</p>
+      </div>
+    `;
+    }
     const start = (AppInit.PAGE - 1) * AppInit.PER_PAGE;
     const slice = rows.slice(start, start + AppInit.PER_PAGE);
     slice.forEach((d) => {
@@ -156,14 +182,6 @@ export default class DealerInit {
     DealerInit.el("deleteBtn").dataset.id = id;
     DealerInit.el("detailModalDealer").classList.add("open");
     DealerInit.el("detailModalDealer").setAttribute("aria-hidden", "false");
-
-    document
-      .querySelectorAll("[data-close]")
-      .forEach((b) =>
-        b.addEventListener("click", () =>
-          document.querySelector(".modal.open").classList.remove("open")
-        )
-      );
   }
 
   static openModal(id) {
@@ -174,26 +192,28 @@ export default class DealerInit {
     DealerInit.el(id).classList.remove("open");
   }
 
-  static approve(id) {
+  static async updateStatus(id, newStatus) {
     const d = AppInit.DATA.dealers.find((x) => x.id === id);
     if (!d) return;
-    d.status = "approved";
-    AppInit.toast("Dealer approved", "success");
-    new Dealer().renderStats();
-    DealerInit.VIEW === "grid"
-      ? DealerInit.renderGrid()
-      : DealerInit.renderTable();
-  }
 
-  static suspend(id) {
-    const d = AppInit.DATA.dealers.find((x) => x.id === id);
-    if (!d) return;
-    d.status = "suspended";
-    AppInit.toast("Dealer suspended", "info");
-    new Dealer().renderStats();
-    DealerInit.VIEW === "grid"
-      ? DealerInit.renderGrid()
-      : DealerInit.renderTable();
+    //---Send to Server
+    const { status, message } = await Utility.fetchData(
+      `${CONFIG.API}/admin/dealer/${id}`,
+      { status: newStatus },
+      "PATCH"
+    );
+
+    AppInit.toast(`${message}`, `${status == 200 ? "success" : "error"}`);
+
+    if (status == 200) {
+      SessionManager.clearAppData();
+      await AppInit.initializeData();
+
+      DealerInit.renderStats();
+      DealerInit.VIEW === "grid"
+        ? DealerInit.renderGrid()
+        : DealerInit.renderTable();
+    }
   }
 
   static removeDealer(id) {
@@ -201,11 +221,26 @@ export default class DealerInit {
     if (idx > -1) {
       AppInit.DATA.dealers.splice(idx, 1);
       AppInit.toast("Dealer deleted", "success");
-      new Dealer().renderStats();
+      DealerInit.renderStats();
       DealerInit.VIEW === "grid"
         ? DealerInit.renderGrid()
         : DealerInit.renderTable();
     }
+  }
+
+  static renderStats() {
+    const domEl = document.getElementById("sTotal");
+    if (!domEl) return;
+    DealerInit.el("sTotal").textContent = AppInit.DATA.dealers.length;
+    DealerInit.el("sApproved").textContent = AppInit.DATA.dealers.filter(
+      (d) => d.status === "approved"
+    ).length;
+    DealerInit.el("sPending").textContent = AppInit.DATA.dealers.filter(
+      (d) => d.status === "pending"
+    ).length;
+    DealerInit.el("sSuspended").textContent = AppInit.DATA.dealers.filter(
+      (d) => d.status === "suspended"
+    ).length;
   }
 }
 
@@ -214,8 +249,15 @@ class Dealer {
     this.initialize();
   }
 
-  initialize() {
+  async initialize() {
+    await AppInit.initializeData();
     Utility.runClassMethods(this, ["initialize"]);
+  }
+
+  renderDealerStats() {
+    const domEl = document.getElementById("sTotal");
+    if (!domEl) return;
+    DealerInit.renderStats();
   }
 
   renderDealerOverview() {
@@ -244,27 +286,12 @@ class Dealer {
     });
   }
 
-  renderStats() {
-    const domEl = document.getElementById("sTotal");
-    if (!domEl) return;
-    DealerInit.el("sTotal").textContent = AppInit.DATA.dealers.length;
-    DealerInit.el("sApproved").textContent = AppInit.DATA.dealers.filter(
-      (d) => d.status === "approved"
-    ).length;
-    DealerInit.el("sPending").textContent = AppInit.DATA.dealers.filter(
-      (d) => d.status === "pending"
-    ).length;
-    DealerInit.el("sSuspended").textContent = AppInit.DATA.dealers.filter(
-      (d) => d.status === "suspended"
-    ).length;
-  }
-
   renderDataSwitchView() {
     const toggleViewBtn = DealerInit.el("toggleView");
     if (!toggleViewBtn) return;
 
     DealerInit.renderGrid();
-    console.log("running");
+
     toggleViewBtn.addEventListener("click", () => {
       DealerInit.VIEW = DealerInit.VIEW === "grid" ? "table" : "grid";
       DealerInit.el("gridView").style.display =
@@ -300,12 +327,12 @@ class Dealer {
       }
       const ap = e.target.closest("[data-approve]");
       if (ap) {
-        DealerInit.approve(ap.dataset.approve);
+        DealerInit.updateStatus(ap.dataset.approve, "approved");
         return;
       }
       const sp = e.target.closest("[data-suspend]");
       if (sp) {
-        DealerInit.suspend(sp.dataset.suspend);
+        DealerInit.updateStatus(sp.dataset.suspend, "suspended");
         return;
       }
       const del = e.target.closest("[data-delete]");
@@ -395,61 +422,7 @@ class Dealer {
     });
   }
 
-  // createADealer() {
-  //   // ------ Add dealer flow (demo)
-  //   const domEl = document.getElementById("addDealerBtn");
-  //   if (!domEl) return;
-  //   document
-  //     .getElementById("addDealerBtn")
-  //     .addEventListener("click", () =>
-  //       DealerInit.el("addModal").classList.add("open")
-  //     );
-  //   DealerInit.el("addForm").addEventListener("submit", (e) => {
-  //     e.preventDefault();
-  //     const f = new FormData(e.target);
-  //     const id = "DL-" + (1000 + AppInit.DATA.dealers.length + 1);
-  //     AppInit.DATA.dealers.unshift({
-  //       id,
-  //       company: f.get("name"),
-  //       contact: f.get("email"),
-  //       phone: f.get("phone"),
-  //       state: f.get("state"),
-  //       listings: 0,
-  //       rating: "4.0",
-  //       status: "pending",
-  //       banner:
-  //         "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop",
-  //       avatar: `https://i.pravatar.cc/150?img=${
-  //         Math.floor(Math.random() * 70) + 1
-  //       }`,
-  //       about: f.get("about") || "Newly added dealer",
-  //       joined: new Date().toISOString().slice(0, 10),
-  //     });
-  //     AppInit.toast("Dealer added (pending approval)", "success");
-  //     DealerInit.el("addModal").classList.remove("open");
-  //     e.target.reset();
-  //     new Dealer().renderStats();
-  //     DealerInit.VIEW === "grid"
-  //       ? DealerInit.renderGrid()
-  //       : DealerInit.renderTable();
-  //   });
-  // }
   //_______Dealer Page
-  openApplyRequirement() {
-    const domEl = document.querySelector(".dealerPage");
-    if (!domEl) return;
-    document
-      .getElementById("openApply")
-      .addEventListener("click", () => DealerInit.openModal("editFormModal"));
-    document
-      .getElementById("viewReqs")
-      .addEventListener("click", () => DealerInit.openModal("reqModal"));
-
-    // There is no editFormModal defined — using confirm flow directly
-    document
-      .getElementById("openApply")
-      .addEventListener("click", () => DealerInit.openModal("confirmModal"));
-  }
 
   fileInputPreview() {
     // file input preview
@@ -482,38 +455,51 @@ class Dealer {
   newDealerFormSubmitFlow() {
     // form submit flow
     const form = document.getElementById("dealerForm");
+    let fd = null;
     if (!form) return;
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       DealerInit.openModal("confirmModal");
       // store form temporarily in dataset for confirm
-      const fd = new FormData(form);
+      fd = new FormData(form);
       const tmp = {};
       fd.forEach((v, k) => (tmp[k] = v));
       document.body.dataset._dealer_tmp = JSON.stringify(tmp);
     });
 
-    document.getElementById("confirmSubmit").addEventListener("click", () => {
-      const tmp = JSON.parse(document.body.dataset._dealer_tmp || "{}");
-      if (!tmp.fullname || !tmp.business || !tmp.email || !tmp.phone) {
-        AppInit.toast("Please complete required fields", "error");
+    document
+      .getElementById("confirmSubmit")
+      .addEventListener("click", async () => {
+        const tmp = JSON.parse(document.body.dataset._dealer_tmp || "{}");
+        if (!tmp.company || !tmp.contact || !tmp.about || !tmp.phone) {
+          AppInit.toast("Please complete required fields", "error");
+          DealerInit.closeModal("confirmModal");
+          return;
+        }
+
+        //--- Send
+        const response = await Utility.fetchData(
+          `${CONFIG.API}/dealer`,
+          fd,
+          "POST"
+        );
+
+        AppInit.toast(
+          `${response.message}`,
+          `${response.status == 200 ? "success" : "error"}`
+        );
+
+        if (response.status == 200) {
+          SessionManager.clearAppData();
+          await AppInit.initializeData();
+        }
+
+        this.renderApps();
+
         DealerInit.closeModal("confirmModal");
-        return;
-      }
-      const app = {
-        id: "A" + Math.random().toString(36).slice(2, 9).toUpperCase(),
-        status: "Pending",
-        submitted: new Date().toISOString(),
-        data: tmp,
-      };
-      DealerInit.apps.unshift(app);
-      localStorage.setItem(DealerInit.KEY, JSON.stringify(DealerInit.apps));
-      this.renderApps();
-      AppInit.toast("Application submitted (demo)", "success");
-      DealerInit.closeModal("confirmModal");
-      // update status badge
-      DealerInit.el("statusBadge").textContent = "Pending review";
-    });
+        // update status badge
+        DealerInit.el("statusBadge").textContent = "Pending review";
+      });
   }
   saveToDraft() {
     // save draft
@@ -543,6 +529,7 @@ class Dealer {
 
   renderApps() {
     const mount = DealerInit.el("applications");
+    if (!mount) return;
     const data = JSON.parse(localStorage.getItem(DealerInit.KEY) || "[]");
     if (!data.length) {
       mount.innerHTML = '<div class="muted small">No applications yet</div>';
@@ -579,6 +566,16 @@ class Dealer {
         "Demo: Verification typically includes document review, KYC and contract execution."
       );
     });
+  }
+
+  closeModalAction() {
+    document
+      .querySelectorAll("[data-close]")
+      .forEach((b) =>
+        b.addEventListener("click", () =>
+          document.querySelector(".modal.open").classList.remove("open")
+        )
+      );
   }
 }
 

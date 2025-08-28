@@ -1,7 +1,7 @@
 <?php
 require_once ROOT_PATH . '/includes/reuse.php';
 require_once ROOT_PATH . '/includes/header.php';
-$dashboarduser = 'user';
+
 ?>
 
 <body id="Dashboard" class="overviewPage">
@@ -12,6 +12,8 @@ $dashboarduser = 'user';
         <div class="main">
             <?php require_once "navbar.php"; ?>
             <main class="content">
+
+
                 <!-- Overview -->
                 <section class="grid-4">
                     <div class="card" data-aos="fade-up">
@@ -53,7 +55,7 @@ $dashboarduser = 'user';
                     </div>
                 </section>
 
-                <?php if ($dashboarduser == 'admin'): ?>
+                <?php if ($role == 'admin'): ?>
                     <!-- Verifications table -->
                     <section class="card" data-aos="fade-up">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><strong>Recent verifications</strong>
@@ -92,7 +94,7 @@ $dashboarduser = 'user';
                     </section>
                 <?php endif; ?>
 
-                <?php if ($dashboarduser == 'user'): ?>
+                <?php if ($role == 'user'): ?>
                     <!-- Tables -->
                     <section style="display:grid;grid-template-columns:2fr 1fr;gap:2px">
 
@@ -159,10 +161,10 @@ $dashboarduser = 'user';
     </div>
     <?php require "modals.php"; ?>
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Verification.js"></script>
+    <!-- <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Verification.js"></script>
     <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Vehicle.js"></script>
     <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Dealers.js"></script>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Dashboard.js"></script>
+    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Dashboard.js"></script> -->
 
 </body>
 

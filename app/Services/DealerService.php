@@ -32,7 +32,7 @@ class DealerService
                         "on" => "u.userid = a.userid"
                     ]
                 ],
-                ["u.*", "d.*", "a.*"]
+                ["u.fullname", "d.*", "a.role"]
 
             );
         } catch (\Throwable $th) {
@@ -61,7 +61,13 @@ class DealerService
                         "on" => "u.userid = a.userid"
                     ]
                 ],
-                ["u.*", "d.*", "a.*"],
+                ["u.fullname", "d.*", "a.role"],
+                [
+                    "OR" => [
+                        "d.id" => $id,
+                        "d.userid" => $id,
+                    ]
+                ],
                 ["d.userid" => $id]
             );
         } catch (\Throwable $th) {
@@ -71,7 +77,7 @@ class DealerService
         }
     }
 
-    public static function sendDealerInformation($id)
+    public static function sendDealerInformation($id) //remove
     {
         $dealersData = self::fetchDealerInformation($id);
         if (empty($dealersData)) {
@@ -80,7 +86,7 @@ class DealerService
         Response::success($dealersData[0], "Dealer found");
     }
 
-    public static function sendAllDealerInformation()
+    public static function sendAllDealerInformation() //remove
     {
         $dealersData = self::fetchAllDealersInfo();
 
@@ -120,6 +126,8 @@ class DealerService
                 'banner' => null,
                 'avatar' => null,
                 'about' => $data['about'] ?? '',
+                'documents' => null,
+                'rc_number' => $data['rc_number'] ?? null,
                 'revenue' => 0,
             ];
 
@@ -133,6 +141,18 @@ class DealerService
                 if (!$dealer_banner || !$dealer_banner['success']) Response::error(500, "Image upload failed");
 
                 $dealerInfo['banner'] = $dealer_banner['files'][0];
+            }
+
+            if (
+                isset($_FILES['docInput']) &&
+                $_FILES['docInput']['error'] === UPLOAD_ERR_OK &&
+                is_uploaded_file($_FILES['docInput']['tmp_name'])
+            ) {
+                $target_dir =   "public/UPLOADS/dealers/docs/";
+                $dealer_docInput = Utility::uploadDocuments('docInput', $target_dir);
+                if (!$dealer_docInput || !$dealer_docInput['success']) Response::error(500, "Image upload failed");
+
+                $dealerInfo['documents'] = json_encode($dealer_banner['files'][0]);
             }
 
             if (
@@ -153,10 +173,7 @@ class DealerService
                     'type' => 'register',
                     'title' => 'dealer register successful',
                 ]);
-                Response::success(
-                    ['dealer' => $data['userid']],
-                    'dealer registration successful'
-                );
+                return true;
             }
         } catch (\Throwable $th) {
             Utility::log($th->getMessage(), 'error', 'DealerService::createADealer', ['userid' => $data['userid']], $th);
@@ -173,18 +190,21 @@ class DealerService
 
             $dealer = $dealersData[0];
 
+
+
             $dealerInfo = [
                 'company' => $data['company'] ?? $dealer['company'],
                 'contact' => $data['contact'] ?? $dealer['contact'],
                 'status' => $data['status'] ?? $dealer['status'],
                 'phone' => $data['phone'] ?? $dealer['phone'],
                 'state' => $data['state'] ?? $dealer['state'],
-                'listings' => intval($data['listings']) ?? intval($dealer['listings']),
-                'rating' => intval($data['rating']) ?? intval($dealer['rating']),
+                'listings' => isset($data['listings']) ? intval($data['listings']) : intval($dealer['listings']),
+                'rating' => isset($data['rating']) ? intval($data['rating']) : intval($dealer['rating']),
                 'about' => $data['about'] ?? $dealer['about'],
-                'revenue' => intval($data['revenue']) ?? intval($dealer['revenue']),
-                'active' => intval($data['active']) ?? intval($dealer['active']),
+                'revenue' => isset($data['revenue']) ? intval($data['revenue']) : intval($dealer['revenue']),
+                'active' => isset($data['active']) ? intval($data['active']) : intval($dealer['active']),
             ];
+
 
             if (
                 isset($_FILES['banner']) &&
@@ -228,14 +248,15 @@ class DealerService
             }
 
             if (
-                Database::update($dealerTable,  $dealerInfo, ["userid" => $id])
+                Database::update($dealerTable,  $dealerInfo, ["id" => $id])
             ) {
                 Activity::activity([
                     'userid' => $dealer['userid'],
                     'type' => 'update',
                     'title' => 'dealer updates successful',
                 ]);
-                Response::success([], "Dealer Account update successful");
+
+                return true;
             }
         } catch (\Throwable $th) {
             Utility::log($th->getMessage(), 'error', 'DealerService::updateDealerAccount', ['userid' => $data['userid']], $th);

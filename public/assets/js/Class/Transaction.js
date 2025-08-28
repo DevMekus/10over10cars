@@ -53,7 +53,8 @@ class Transaction {
     this.revenueChartInstance = null;
   }
 
-  initialize() {
+  async initialize() {
+    await AppInit.initializeData();
     Utility.runClassMethods(this, ["initialize"]);
   }
   changeSearchPlacholder() {
@@ -97,8 +98,6 @@ class Transaction {
       const method = document.getElementById("methodFilter").value;
       const from = document.getElementById("fromDate").value;
       const to = document.getElementById("toDate").value;
-
-    
 
       let filtered = AppInit.DATA.txns.filter((t) => {
         if (

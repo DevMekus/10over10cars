@@ -23,7 +23,6 @@ class AuthMiddleware
     {
         $headers = getallheaders();
 
-
         if (!isset($headers['Authorization'])) {
             Response::error(401, 'Authorization header is missing');
         }

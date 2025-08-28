@@ -1,22 +1,21 @@
 <?php
 
-
+use App\Controllers\AuthController;
 use App\Controllers\UserController;
 use App\Routes\Router;
 use App\Middleware\GuestOnlyMiddleware;
 
+$auth = new AuthController();
 $user = new UserController();
 
-Router::group('', function () use ($user) {
+
+Router::group('v1', function () use ($auth, $user) {
     #Authentication
-    // Router::add('POST', '/register/user', [$user, 'newUser']);
-    // Router::add('POST', '/register/business', [$user, 'newBusiness']);
-    // Router::add('POST', '/login', [$user, 'login']);
-    // Router::add('POST', '/logout', [$user, 'logout']);
-    // Router::add('POST', '/recover-account', [$user, 'recover_account']);
-    // Router::add('POST', '/reset-password', [$user, 'reset_password']);
-    // Router::add('POST', '/profile/{id}', [$user, 'updateUserProfile']);
-    // Router::add('PATCH', '/password/{id}', [$user, 'updateUserPassword']);
+    Router::add('POST', '/auth/login', [$auth, 'login']);
+    // Router::add('POST', '/auth/register', [$auth, 'register']);
+    // Router::add('POST', '/auth/logout', [$auth, 'logout']);
+    // Router::add('POST', '/auth/recover', [$auth, 'recoverAccount']);
+    // Router::add('POST', '/auth/reset', [$auth, 'resetAccountPassword']);
 
     #Application
     Router::add('GET', '/application/guest', [$user, 'guestApplicationData']);

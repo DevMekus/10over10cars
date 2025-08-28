@@ -26,7 +26,6 @@ switch ($input['action']) {
             exit;
         }
         break;
-
     case 'refresh':
         if (isset($_SESSION['token'])) {
             $_SESSION['last_refresh'] = time(); // Just update refresh time
@@ -38,7 +37,16 @@ switch ($input['action']) {
         if (isset($_SESSION['user_profile'])) {
             unset($_SESSION['user_profile']);
         }
-
+        break;
+    case 'config':
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 200,
+            'message' => 'Application data',
+            'ENCRYPTION_KEY' => 'd10b86de4e86d5f6636b96f041f10ded5346a6c760d8d981a6690fbef7c87132',
+            'success' => true,
+        ]);
+        exit;
         break;
 
     case 'clear':
@@ -46,6 +54,7 @@ switch ($input['action']) {
         session_destroy();
         echo json_encode(["success" => true, "message" => "Session cleared"]);
         exit;
+        break;
 }
 
 // Default response if nothing else matched

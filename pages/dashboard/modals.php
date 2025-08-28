@@ -153,36 +153,24 @@
      </div>
  </div>
 
-
- <!-- Requirements modal -->
- <div class="modal" id="reqModal" aria-hidden="true">
-     <div class="modal-card" data-aos="zoom-in">
-         <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid rgba(15,23,36,0.06)"><strong>Dealer requirements</strong><button class="icon-btn" onclick="closeModal('reqModal')"><i class="bi bi-x-lg"></i></button></div>
-         <div style="padding:16px">
-             <ul>
-                 <li>Valid ID (passport or national ID)</li>
-                 <li>Business registration (RC) for companies</li>
-                 <li>Proof of address (utility bill) not older than 3 months</li>
-                 <li>Bank account details for payouts</li>
-             </ul>
-             <div style="margin-top:12px" class="muted small">These are demo requirements — adjust per your compliance needs in production.</div>
-         </div>
-     </div>
- </div>
-
  <!-- Confirmation modal -->
  <div class="modal" id="confirmModal" aria-hidden="true">
      <div class="modal-card" data-aos="zoom-in">
          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid rgba(15,23,36,0.06)"><strong>Submit application?</strong><button class="icon-btn"><i class="bi bi-x-lg"></i></button></div>
          <div style="padding:16px">
-             <p class="muted">You are about to submit your dealer application. This demo will store the submission locally. Continue?</p>
+             <p class="muted">
+                 You are about to submit your dealer application. Please ensure all details are correct. Our verification team will review your submission and contact you with the next steps.
+             </p>
+
              <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-                 <button class="ghost-btn">Cancel</button>
-                 <button id="confirmSubmit" class="action-btn">Yes, submit</button>
+                 <button class="btn btn-ghost">Cancel</button>
+                 <button id="confirmSubmit" class="btn btnpro
+                 ">Yes, submit</button>
              </div>
          </div>
      </div>
  </div>
+
 
  <!-- Detail Modal -->
  <div class="modal" id="detailModalVehi" aria-hidden="true">

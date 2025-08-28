@@ -11,6 +11,7 @@ class GuestOnlyMiddleware
         // Only check the origin / referer
         $allowedDomains = [
             'http://localhost/10over10cars/',
+            'http://localhost/10over10cars/dashboard/',
             ''       // Production
         ];
 

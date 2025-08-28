@@ -126,8 +126,8 @@ class  VerificationService
                 'txnsid' => $paymentReference,
                 'amount' => $amount,
                 'vin' => $data['vin'],
-                'status ' => $paymentData['status'] ?? 'pending',
-                'user  ' => $data['userid'],
+                'status' => $paymentData['status'] ?? 'pending',
+                'user' => $data['userid'],
                 'method' => $paymentData['method'] ?? 'card',
                 'notes' => $paymentData['metadata'] ?? '',
                 'logs' => $data['logs'] ?? '',
@@ -136,7 +136,7 @@ class  VerificationService
 
             if (
                 Database::insert($verificationTable, $verificationData)
-                && Database::insert($transactionTable, $transactionData)
+                && TransactionService::saveNewTransaction($transactionData)
             ) {
 
                 Activity::activity([

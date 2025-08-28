@@ -4,7 +4,7 @@ use App\Utils\Utility;
 
 Utility::verifySession();
 
-$role = $_SESSION['role'] == "1" ? "admin" : "user";
+$role = $_SESSION['role'];
 $userid = $_SESSION['userid'];
 
 // // Only fetch profile if not already in session

@@ -1,14 +1,10 @@
+import { CONFIG } from "../config.js";
+
 export default class Utility {
-  static BASEURL = "http://localhost/10over10cars";
-  static API_ROUTE = Utility.BASEURL + "/api";
-  static APP_ROUTE = Utility.BASEURL;
   static loadTimeout = 500;
   static btnLoadingRegistry = {};
   static userRole = document.body.dataset.role;
   static userid = document.body.dataset.id;
-  static verificationFee = 10000;
-  static passPhrase =
-    "d10b86de4e86d5f6636b96f041f10ded5346a6c760d8d981a6690fbef7c87132";
 
   // --- Helpers ---
   static strToBuffer(str) {
@@ -133,7 +129,9 @@ export default class Utility {
   }
 
   static async fetchData(url, data = {}, method = "GET") {
-    const token = sessionStorage.getItem("token") ?? "";
+    const token = sessionStorage.getItem(CONFIG.TOKEN_KEY_NAME)
+      ? sessionStorage.getItem(CONFIG.TOKEN_KEY_NAME)
+      : "";
 
     const options = {
       method: method,

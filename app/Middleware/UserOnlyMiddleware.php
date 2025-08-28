@@ -15,6 +15,12 @@ class UserOnlyMiddleware
             Response::error(403, 'Access denied: Authentication required');
         }
 
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $_SESSION['userid'] = $userData['userid'];
+
         return true;
     }
 }
