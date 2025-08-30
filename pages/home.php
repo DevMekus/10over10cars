@@ -4,7 +4,7 @@ require_once ROOT_PATH . '/includes/header.php';
 require_once ROOT_PATH . '/includes/navbar.php';
 ?>
 
-<body>
+<body id="LANDINGPAGE">
     <!-- Hero -->
     <header id="home" class="hero" aria-labelledby="hero-title">
         <div class="container grid grid-2 hero-grid">
@@ -15,8 +15,8 @@ require_once ROOT_PATH . '/includes/navbar.php';
                 <form id="vinForm" class="vin-form" autocomplete="off" novalidate>
                     <label for="vin" class="sr-only">Enter VIN</label>
                     <input id="vin" class="vin-input" name="vin" maxlength="17" placeholder="Enter 17-character VIN (e.g., 2HGFB2F50DH512345)" inputmode="latin" aria-describedby="vinHint" />
-                    <button class="btn btn-primary" type="submit"><i class="bi bi-shield-check"></i> Verify Now</button>
-                    <a class="btn btn-outline" href="#market"><i class="bi bi-search"></i> Browse Cars</a>
+                    <button class="btn btn-primary btn-pill" type="submit"><i class="bi bi-shield-check"></i> Verify Now</button>
+                    <a class="btn btn-outline-accent btn-pill" href="#market"><i class="bi bi-search"></i> Browse Cars</a>
                     <div id="vinHint" class="vin-hint">VIN must be 17 characters, letters & numbers only. (I, O, Q not allowed)</div>
                 </form>
                 <div id="vinMsg" role="alert" aria-live="polite" style="margin-top:10px; color: var(--muted);"></div>
@@ -37,7 +37,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
         </div>
     </header>
     <!-- How It Works -->
-    <section class="section how-it-works" aria-labelledby="how-title">
+    <section class="section how-it-works" aria-labelledby="how-title" data-aos="fade-up">
         <div class="container">
             <h2 id="how-title" class="section-title">How it works</h2>
             <p class="section-sub">Enter VIN → We check multiple sources → Get instant report → Make informed decisions.</p>
@@ -74,7 +74,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
         </div>
     </section>
     <!-- Verification Features -->
-    <section class="section" aria-labelledby="features-title">
+    <section class="section" aria-labelledby="features-title" data-aos="zoom-in">
         <div class="container">
             <h2 id="features-title" class="section-title">Verification features</h2>
             <p class="section-sub">All the checks you need before buying or importing a car.</p>
@@ -126,7 +126,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
     </section>
 
     <!-- Sample Report Preview -->
-    <section id="verify" class="section" aria-labelledby="report-title">
+    <section id="verify" class="section" aria-labelledby="report-title" data-aos="fade-down">
         <div class="container">
             <h2 id="report-title" class="section-title">Sample VIN report</h2>
             <p class="section-sub">A quick look at what you get after verification.</p>
@@ -165,7 +165,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
     </section>
 
     <!-- Pricing -->
-    <section id="pricing" class="section" aria-labelledby="pricing-title">
+    <section id="pricing" class="section" aria-labelledby="pricing-title" data-aos="zoom-in">
         <div class="container">
             <h2 id="pricing-title" class="section-title">Simple pricing in NGN</h2>
             <p class="section-sub">Pay securely via Paystack or Flutterwave. No hidden fees.</p>
@@ -174,7 +174,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
     </section>
 
     <!-- Marketplace -->
-    <section id="market" class="section" aria-labelledby="market-title">
+    <section id="market" class="section" aria-labelledby="market-title" data-aos="zoom-out">
         <div class="container">
             <h2 id="market-title" class="section-title">Featured cars</h2>
             <p class="section-sub">Search verified listings. Negotiate confidently.</p>

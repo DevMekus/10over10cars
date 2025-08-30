@@ -148,7 +148,7 @@ require_once ROOT_PATH . '/includes/header.php';
                             <div>
                                 <label>Upload verification documents</label><br />
                                 <small class="muted">Accepted: ID, RC, proof of address (PDF or image)</small><br />
-                                <input id="docInput" name="docInput" type="file" multiple accept="image/*,application/pdf" style="margin-top: 6px;" />
+                                <input id="docInput" name="docInput" type="file" multiple accept="application/pdf" style="margin-top: 6px;" />
                                 <div id="preview" class="file-preview"></div>
                             </div>
                             <div>

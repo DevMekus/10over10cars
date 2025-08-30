@@ -17,7 +17,7 @@ class AdminController
 {
 
 
-    public function adminApplicationData()
+    public function adminApplicationData($id)
     {
         //----Returning all the application data
         $data = [
@@ -26,7 +26,8 @@ class AdminController
             'dealers' => DealerService::fetchAllDealersInfo(),
             'txns' => TransactionService::fetchAllTransactions(),
             'loginActivity' => UserService::fetchActivityLogs(),
-            'profile' => UserService::fetchAllUsersAndData(),
+            'users' => UserService::fetchAllUsersAndData(),
+            'profile' => UserService::fetchUserDetails($id),
             'notification' => NotificationService::fetchAllNotification(),
             'plans' => PlansService::fetchAllVerificationPlans(),
         ];

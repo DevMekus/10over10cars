@@ -315,12 +315,14 @@ class ReportManager {
     this.initialize();
   }
 
-  initialize() {
+  async initialize() {
+    await AppInit.initializeData();
     Utility.runClassMethods(this, ["initialize"]);
   }
 
   renderTopDealers() {
     const ul = ReportStatic.el("topDealers");
+    if (!ul) return;
     ul.innerHTML = "";
     const top = [...AppInit.DATA.dealers]
       .sort((a, b) => b.revenue - a.revenue)

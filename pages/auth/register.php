@@ -5,12 +5,14 @@ require_once ROOT_PATH . '/includes/header.php';
 ?>
 
 <body id="AUTHContainer">
-    <main class="card" role="main" aria-labelledby="loginTitle">
+    <main class="card-auth" role="main" aria-labelledby="loginTitle">
 
         <!-- Left / Branding -->
         <aside class="side-brand" aria-hidden="false" data-aos="fade-right">
             <div class="logo">
-                <img class="brand" src="<?= BASE_URL ?>assets/images/dark-logo.jpg" />
+                <a href="<?= BASE_URL  ?>">
+                    <img class="brand" src="<?= BASE_URL ?>assets/images/dark-logo.jpg" />
+                </a>
                 <div>
                     <div style="font-weight:800">10over10 Cars</div>
                     <div style="font-size:13px;color:var(--muted)">VIN verification & verified marketplace</div>

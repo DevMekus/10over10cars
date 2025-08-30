@@ -216,15 +216,38 @@ export default class DealerInit {
     }
   }
 
-  static removeDealer(id) {
+  static async removeDealer(id) {
     const idx = AppInit.DATA.dealers.findIndex((x) => x.id === id);
     if (idx > -1) {
-      AppInit.DATA.dealers.splice(idx, 1);
-      AppInit.toast("Dealer deleted", "success");
-      DealerInit.renderStats();
-      DealerInit.VIEW === "grid"
-        ? DealerInit.renderGrid()
-        : DealerInit.renderTable();
+      //---Send to Server
+      const result = await Swal.fire({
+        title: "Delete Dealer",
+        text: "Do you wish to continue?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Continue!",
+      });
+      if (result.isConfirmed) {
+        const { status, message } = await Utility.fetchData(
+          `${CONFIG.API}/admin/dealer/${id}`,
+          {},
+          "DELETE"
+        );
+        AppInit.toast(`${message}`, `${status == 200 ? "success" : "error"}`);
+
+        console.log(message);
+        if (status == 200) {
+          SessionManager.clearAppData();
+          await AppInit.initializeData();
+
+          DealerInit.renderStats();
+          DealerInit.VIEW === "grid"
+            ? DealerInit.renderGrid()
+            : DealerInit.renderTable();
+        }
+      }
     }
   }
 
@@ -368,6 +391,8 @@ class Dealer {
         if (e.target.checked) DealerInit.SELECTED.add(cb.dataset.sel);
         else DealerInit.SELECTED.delete(cb.dataset.sel);
       });
+
+      console.log(DealerInit.SELECTED);
     });
     DealerInit.el("bulkApprove")?.addEventListener("click", () => {
       if (!DealerInit.SELECTED.size)
@@ -391,8 +416,8 @@ class Dealer {
     DealerInit.el("exportCsv")?.addEventListener("click", () => {
       const headers = [
         "id",
-        "name",
-        "email",
+        "company",
+        "contact",
         "phone",
         "state",
         "listings",
@@ -418,7 +443,7 @@ class Dealer {
       a.download = "dealers.csv";
       a.click();
       URL.revokeObjectURL(url);
-      toast("CSV downloaded (demo)", "success");
+      AppInit.toast("CSV downloaded", "success");
     });
   }
 

@@ -1,10 +1,11 @@
 <?php
 require_once ROOT_PATH . '/siteConfig.php';
+require_once ROOT_PATH . '/includes/reuse.php';
 require_once ROOT_PATH . '/includes/header.php';
 
 ?>
 
-<body id="Dashboard" class="reportPage">
+<body id="Dashboard" class="reportPage" data-role="<?= $role; ?>" data-userid="<?= $userid; ?>">
     <div class="app">
         <!-- Sidebar -->
         <?php require_once "sidebar.php"; ?>
@@ -13,7 +14,7 @@ require_once ROOT_PATH . '/includes/header.php';
             <?php require_once "navbar.php"; ?>
             <main class="content">
                 <!-- Filters / Controls -->
-                <section class="card filters" data-aos="fade-up" aria-label="Report filters">
+                <section class="card-brand filters" data-aos="fade-up" aria-label="Report filters">
                     <div>
                         <label class="small muted">Date from</label><br>
                         <input type="date" id="fromDate" />
@@ -42,28 +43,28 @@ require_once ROOT_PATH . '/includes/header.php';
 
                 <!-- KPI Tiles -->
                 <section class="kpis">
-                    <div class="card kpi" data-aos="fade-up">
+                    <div class="card-brand kpi" data-aos="fade-up">
                         <div class="badge" style="background:linear-gradient(135deg,#60a5fa,#34d399)"><i class="bi bi-bar-chart"></i></div>
                         <div>
                             <div class="small muted">Total Verifications</div>
                             <div id="kVerifs" class="value">0</div>
                         </div>
                     </div>
-                    <div class="card kpi" data-aos="fade-up">
+                    <div class="card-brand kpi" data-aos="fade-up">
                         <div class="badge" style="background:linear-gradient(135deg,#34d399,#22c55e)"><i class="bi bi-currency-dollar"></i></div>
                         <div>
                             <div class="small muted">Revenue (NGN)</div>
                             <div id="kRevenue" class="value">0</div>
                         </div>
                     </div>
-                    <div class="card kpi" data-aos="fade-up">
+                    <div class="card-brand kpi" data-aos="fade-up">
                         <div class="badge" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)"><i class="bi bi-people"></i></div>
                         <div>
                             <div class="small muted">Active Dealers</div>
                             <div id="kDealers" class="value">0</div>
                         </div>
                     </div>
-                    <div class="card kpi" data-aos="fade-up">
+                    <div class="card-brand kpi" data-aos="fade-up">
                         <div class="badge" style="background:linear-gradient(135deg,#f87171,#ef4444)"><i class="bi bi-car-front"></i></div>
                         <div>
                             <div class="small muted">Vehicles Listed</div>

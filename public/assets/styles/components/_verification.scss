@@ -1,14 +1,10 @@
 #VERIFIEDContainer {
   height: 100%;
   margin: 0;
-  background: var(--surface);
+  background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
-  padding: 28px;
-
-  .topbar {
-    background: var(--surface);
-  }
+  //   padding: 28px;
 
   .container {
     max-width: 1200px;
@@ -25,7 +21,7 @@
 
   /* Summary Card */
   .summary {
-    background: var(--surface);
+    background: var(--bg);
     border-radius: 18px;
     padding: 20px;
     box-shadow: var(--shadow);
@@ -95,7 +91,7 @@
 
   /* Carousel */
   .carousel {
-    background: var(--surface);
+    background: var(--bg);
     border-radius: 18px;
     padding: 14px;
     box-shadow: var(--shadow);
@@ -124,7 +120,7 @@
     width: 72px;
     height: 48px;
     border-radius: 8px;
-    background: #fff;
+    background: var(--bg);
     border: 1px solid rgba(15, 23, 36, 0.04);
     display: grid;
     place-items: center;
@@ -133,10 +129,11 @@
 
   /* Tabs */
   .tabs {
-    background: var(--surface);
+    background: var(--bg);
     border-radius: 18px;
     padding: 16px;
     box-shadow: var(--shadow);
+    color: var(--text);
   }
   .tab-nav {
     display: flex;
@@ -183,7 +180,7 @@
   }
   .related-card {
     min-width: 210px;
-    background: var(--surface);
+    background: var(--bg);
     border-radius: 12px;
     padding: 12px;
     border: 1px solid rgba(15, 23, 36, 0.04);
@@ -202,7 +199,7 @@
 
   /* Footer & cookie */
   footer {
-    background-color: var(--surface);
+    background-color: var(--bg);
     margin-top: 18px;
     text-align: center;
     color: var(--muted);
@@ -212,7 +209,7 @@
     left: 16px;
     right: 16px;
     bottom: 16px;
-    background: var(--surface);
+    background: var(--bg);
     padding: 12px;
     border-radius: 12px;
     box-shadow: var(--shadow);

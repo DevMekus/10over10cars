@@ -7,13 +7,10 @@ export default class SettingsInit {
   static PROFILE_KEY = "tenoverten_profile_v1";
   static ACT_KEY = "tenoverten_activity_v1";
 
-  static profile =
-    JSON.parse(localStorage.getItem(SettingsInit.PROFILE_KEY) || "null") ||
-    AppInit.DATA.profile;
+  static profile = null;
 
-  static activity =
-    JSON.parse(localStorage.getItem(SettingsInit.ACT_KEY) || "null") ||
-    AppInit.DATA.loginActivity.slice();
+  static activity = null;
+  // static activity = AppInit.DATA.loginActivity.slice();
 
   static logAction(s) {
     SettingsInit.audit.unshift({
@@ -54,11 +51,15 @@ class Settings {
     this.initialize();
     window.closeModal = SettingsInit.closeModal;
     window.openModal = SettingsInit.openModal;
-    SettingsInit.saveProfile();
-    SettingsInit.saveActivity();
+    // SettingsInit.saveProfile();
+    // SettingsInit.saveActivity();
   }
 
-  initialize() {
+  async initialize() {
+    await AppInit.initializeData();
+    SettingsInit.profile = AppInit.DATA.profile[0];
+    SettingsInit.activity = AppInit.DATA.loginActivity;
+    console.log(SettingsInit.profile);
     Utility.runClassMethods(this, ["initialize"]);
   }
 
@@ -342,7 +343,7 @@ class Settings {
   //_____User profile Activity
   populateProfile() {
     const profile = SettingsInit.profile;
-
+    if (!SettingsInit.el("displayName")) return;
     SettingsInit.el("displayName").textContent = profile.fullname;
     SettingsInit.el("displayEmail").textContent = profile.email;
     SettingsInit.el("displayPhone").textContent = profile.phone;
@@ -359,6 +360,7 @@ class Settings {
 
   renderUserActivity(list = SettingsInit.activity) {
     const mount = SettingsInit.el("activityList");
+    if (!mount) return;
     mount.innerHTML = "";
     list.slice(0, 20).forEach((a) => {
       const div = document.createElement("div");
@@ -390,6 +392,8 @@ class Settings {
       AppInit.toast("Profile saved", "success");
     });
 
+    if (!SettingsInit.el("resetProfile")) return;
+
     SettingsInit.el("resetProfile").addEventListener("click", () => {
       this.populateProfile();
       AppInit.toast("Changes reverted", "info");
@@ -397,6 +401,8 @@ class Settings {
   }
 
   editProfileButtonClick() {
+    if (!SettingsInit.el("editProfileBtn")) return;
+
     SettingsInit.el("editProfileBtn").addEventListener("click", () => {
       window.scrollTo({
         top: document.querySelector("#profileForm").offsetTop - 80,
@@ -409,6 +415,7 @@ class Settings {
   }
 
   userChangePassword() {
+    if (!SettingsInit.el("changePassBtn")) return;
     SettingsInit.el("changePassBtn").addEventListener("click", () =>
       SettingsInit.openModal("passModal")
     );
@@ -433,6 +440,7 @@ class Settings {
   }
 
   userDeleteAccount() {
+    if (!SettingsInit.el("deleteAccount")) return;
     SettingsInit.el("deleteAccount").addEventListener("click", () =>
       SettingsInit.openModal("delModal")
     );
@@ -458,6 +466,7 @@ class Settings {
         )
       );
     });
+    if (!SettingsInit.el("clearActivity")) return;
     SettingsInit.el("clearActivity").addEventListener("click", () => {
       if (!confirm("Clear activity (demo)?")) return;
       activity.length = 0;
@@ -467,12 +476,13 @@ class Settings {
     });
   }
 
-  avatarUploadViaURL() {
-    SettingsInit.el("profileForm").avatar.addEventListener("change", (e) => {
-      const v = e.target.value.trim();
-      if (v) SettingsInit.el("avatarImg").src = v;
-    });
-  }
+  // avatarUploadViaURL() {
+  //   if (!SettingsInit.el("profileForm")) return;
+  //   SettingsInit.el("profileForm")?.avatar.addEventListener("change", (e) => {
+  //     const v = e.target.value.trim();
+  //     if (v) SettingsInit.el("avatarImg").src = v;
+  //   });
+  // }
 }
 
 new Settings();

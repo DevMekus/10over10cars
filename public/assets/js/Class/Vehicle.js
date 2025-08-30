@@ -1,5 +1,7 @@
 import Utility from "./Utility.js";
 import AppInit from "./Application.js";
+import SessionManager from "./SessionManager.js";
+import { CONFIG } from "../config.js";
 
 export default class VehicleStatic {
   static VIEW = "grid";
@@ -34,23 +36,37 @@ export default class VehicleStatic {
     return rows;
   }
 
-  static renderGrid() {
+  static async renderGrid() {
     const mount = VehicleStatic.el("gridView");
+    const notFound = VehicleStatic.el("no-data");
     mount.innerHTML = "";
+    notFound.innerHTML = "";
     const rows = VehicleStatic.getFiltered();
+
+    if (rows.length == 0) {
+      notFound.innerHTML = `
+      <div style="width:100%; display:flex; justify-content:center;">
+          <p class="muted">Vehicle not available</p>
+      </div>
+    `;
+    }
+    const token = await SessionManager.decryptAndGetToken();
+    const role = token.role;
+
     rows.forEach((v) => {
       const card = document.createElement("div");
       card.className = "v-card";
+      const images = JSON.parse(v.images);
       card.setAttribute("data-aos", "fade-up");
       card.innerHTML = `
         <div class='media'>
-          <img src='${v.image}' alt='${v.year} ${v.make} ${v.model}'/>
-          <span class='status'>${v.status}</span>
+          <img src='${images[0]}' alt='${v.title}'/>
+          <span class='status'>${Utility.toTitleCase(v.status)}</span>
         </div>
         <div class='body'>
           <div style='display:flex;justify-content:space-between;align-items:center'>
             <div>
-              <div style='font-weight:800'>${v.year} ${v.make} ${v.model}</div>
+              <div style='font-weight:800'>${v.title}</div>
               <div class='small muted'>VIN ${v.vin}</div>
             </div>
             <div class='price'>${AppInit.fmtNGN(v.price)}</div>
@@ -59,69 +75,128 @@ export default class VehicleStatic {
             <span><i class='bi bi-speedometer2'></i> ${AppInit.fmt(
               v.mileage
             )} km</span>
-            <span><i class='bi bi-person-badge'></i> ${v.owner}</span>
+            <span><i class='bi bi-person-badge'></i> ${
+              v.company ?? "---"
+            }</span>
           </div>
           <div style='display:flex;gap:6px;margin-top:10px'>
-            <span class='pill ${v.status}'>${v.status}</span>
+            <span class='pill ${v.status}'>${Utility.toTitleCase(
+        v.status
+      )}</span>
           </div>
-          <div style='display:flex;gap:6px;margin-top:10px'>
-            <button class='toolbar btn' data-view='${v.id}'>View</button>
+          <div class="action_btns">
+            <button class='toolbar icon-btn' data-view='${
+              v.id
+            }'><i class="fas fa-eye"></i></button>
+
+       
             ${
-              v.status !== "approved"
-                ? `<button class='toolbar btn' data-approve='${v.id}'>Approve</button>`
-                : ""
-            }
+              role == "admin"
+                ? `
+                    <button class='toolbar icon-btn' data-edit='${
+                      v.id
+                    }'><i class="fas fa-pencil"></i></button>
+            <button class='toolbar icon-btn' data-delete='${
+              v.id
+            }'><i class="fas fa-trash danger"></i>
+            </button>
+               ${
+                 v.status !== "approved"
+                   ? `<button class='toolbar icon-btn' data-approve='${v.id}'><i class="fas fa-check-circle approve"></i></button>`
+                   : ""
+               }
             ${
               v.status !== "rejected"
-                ? `<button class='toolbar btn' data-reject='${v.id}'>Reject</button>`
+                ? `<button class='toolbar icon-btn' data-reject='${v.id}'><i class="fas fa-times danger"></i></button>`
                 : ""
+            }          
+              
+              `
+                : ``
             }
-            <button class='toolbar btn' data-edit='${v.id}'>Edit</button>
-            <button class='toolbar btn' data-delete='${v.id}'>Delete</button>
+           
           </div>
         </div>`;
       mount.appendChild(card);
     });
   }
 
-  static renderTable() {
+  static async renderTable() {
     const wrap = document.querySelector("#vehiclesTable tbody");
+    const notFound = VehicleStatic.el("no-data");
     wrap.innerHTML = "";
+    notFound.innerHTML = "";
     const rows = VehicleStatic.getFiltered();
+    if (rows.length == 0) {
+      notFound.innerHTML = `
+      <div style="width:100%; display:flex; justify-content:center;">
+          <p class="muted">Vehicles not available</p>
+      </div>
+    `;
+    }
+    const token = await SessionManager.decryptAndGetToken();
+    const role = token.role;
+
     const start = (AppInit.PAGE - 1) * AppInit.PER_PAGE;
     const slice = rows.slice(start, start + AppInit.PER_PAGE);
     slice.forEach((v) => {
       const tr = document.createElement("tr");
+      const images = JSON.parse(v.images);
       tr.innerHTML = `
         <td><input type='checkbox' data-sel='${v.id}' ${
         VehicleStatic.SELECTED.has(v.id) ? "checked" : ""
       }></td>
         <td><div style='display:flex;gap:8px;align-items:center'><img src='${
-          v.image
+          images[0]
         }' style='width:48px;height:34px;border-radius:8px;object-fit:cover' alt='${
-        v.make
-      } ${v.model}'/><div><div style='font-weight:700'>${v.year} ${v.make} ${
-        v.model
-      }</div><div class='small muted'>${v.owner}</div></div></div></td>
+        v.title
+      }'/><div><div style='font-weight:700'>${
+        v.title
+      }</div><div class='small muted'>${
+        v.owner ?? "not available"
+      }</div></div></div></td>
         <td><code>${v.vin}</code></td>
-        <td>${v.owner}</td>
+        <td>${v.company ?? "---"}</td>
         <td>${v.year}</td>
         <td>${AppInit.fmt(v.mileage)}</td>
         <td>${AppInit.fmtNGN(v.price)}</td>
-        <td><span class='pill ${v.status}'>${v.status}</span></td>
-        <td><button class='toolbar btns' data-view='${
-          v.id
-        }'>View</button><button class='toolbar btns' data-edit='${
-        v.id
-      }'>Edit</button>${
-        v.status !== "approved"
-          ? `<button class='toolbar btns' data-approve='${v.id}'>Approve</button>`
-          : ""
-      }${
-        v.status !== "rejected"
-          ? `<button class='toolbar btns' data-reject='${v.id}'>Reject</button>`
-          : ""
-      }<button class='toolbar btns' data-delete='${v.id}'>Delete</button></td>`;
+        <td><span class='pill ${v.status}'>${Utility.toTitleCase(
+        v.status
+      )}</span></td>
+        <td>
+           <div class="action_btns">
+            <button class='toolbar icon-btn' data-view='${
+              v.id
+            }'><i class="fas fa-eye"></i></button>
+
+       
+            ${
+              role == "admin"
+                ? `
+                    <button class='toolbar icon-btn' data-edit='${
+                      v.id
+                    }'><i class="fas fa-pencil"></i></button>
+            <button class='toolbar icon-btn' data-delete='${
+              v.id
+            }'><i class="fas fa-trash danger"></i>
+            </button>
+               ${
+                 v.status !== "approved"
+                   ? `<button class='toolbar icon-btn' data-approve='${v.id}'><i class="fas fa-check-circle approve"></i></button>`
+                   : ""
+               }
+            ${
+              v.status !== "rejected"
+                ? `<button class='toolbar icon-btn' data-reject='${v.id}'><i class="fas fa-times danger"></i></button>`
+                : ""
+            }          
+              
+              `
+                : ``
+            }
+           
+          </div>
+       </td>`;
       wrap.appendChild(tr);
     });
     VehicleStatic.el(
@@ -133,90 +208,160 @@ export default class VehicleStatic {
   static openDetail(id) {
     const v = AppInit.DATA.vehicles.find((x) => x.id === id);
     if (!v) return;
-    const body = VehicleStatic.el("detailBodyVehi");
+    const images = JSON.parse(v.images);
+    const body = VehicleStatic.el("detailModalBody");
+    const btns = VehicleStatic.el("detailModalButtons");
+    VehicleStatic.el("detailModalLabel").textContent = v.title;
     body.innerHTML = `
       <div style='display:grid;grid-template-columns:220px 1fr;gap:12px'>
         <img src='${
-          v.image
+          images[0]
         }' style='width:100%;height:160px;border-radius:12px;object-fit:cover' alt='${
-      v.year
-    } ${v.make} ${v.model}'/>
+      v.title
+    }'/>
         <div>
-          <div style='font-weight:800;font-size:18px'>${v.year} ${v.make} ${
-      v.model
-    }</div>
+          <div style='font-weight:800;font-size:18px'>${v.title}</div>
           <div class='small muted'>VIN ${v.vin}</div>
-          <div class='small muted'>Owner: ${v.owner}</div>
+          <div class='small muted'>Owner: ${v.company ?? "not available"}</div>
           <div class='small muted'>${AppInit.fmt(
             v.mileage
           )} km • ${AppInit.fmtNGN(v.price)}</div>
           <div style='margin-top:8px' class='small'>${v.notes || ""}</div>
           <div style='display:flex;gap:12px;margin-top:8px' class='small muted'><span>Status: <span class='pill ${
             v.status
-          }'>${v.status}</span></span></div>
+          }'>${Utility.toTitleCase(v.status)}</span></span></div>
         </div>
       </div>`;
-    VehicleStatic.el("approveBtn").dataset.id = id;
-    VehicleStatic.el("rejectBtn").dataset.id = id;
-    VehicleStatic.el("deleteBtn").dataset.id = id;
-    VehicleStatic.el("detailModalVehi").classList.add("open");
-    VehicleStatic.el("detailModalVehi").setAttribute("aria-hidden", "false");
+    btns.innerHTML = `    
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+             <button id="approveBtn" data-id=${id} class="btn btn-sm btn-primary">Approve</button>
+             <button id="rejectBtn" data-id=${id} class="btn btn-sm btn-ghost">Reject</button>
+             <button id="deleteBtn" data-id=${id} class="btn btn-sm btn-ghost">Delete</button>
+         </div>`;
+    $("#displayDetails").modal("show");
   }
-
-  static openForm(v) {
-    VehicleStatic.el("formTitle").textContent = v
-      ? "Edit vehicle"
-      : "Add vehicle";
+  static async vehicleCoreInformation(v) {
+    //--Get the upload Form and add to the overviewId
     const f = VehicleStatic.el("vehForm");
     f.reset();
-    VehicleStatic.EDITING_ID = v?.id || null;
     if (v) {
-      f.make.value = v.make;
-      f.model.value = v.model;
-      f.year.value = v.year;
-      f.vin.value = v.vin;
-      f.mileage.value = v.mileage;
-      f.price.value = v.price;
-      f.owner.value = v.owner;
-      f.status.value = v.status;
-      f.image.value = v.image;
+      f.title.value = v.title || "";
+      f.price.value = v.price || "";
+      f.mileage.value = v.mileage || "";
+      f.vin.value = v.vin || "";
+      f.make.value = v.make || "";
+      f.model.value = v.model || "";
+      f.trim.value = v.trim || "";
+      f.body_type.value = v.body_type || "";
+      f.fuel.value = v.fuel || "";
+      f.drive_type.value = v.drive_type || "";
+      f.engine_number.value = v.engine_number || "";
+      f.transmission.value = v.transmission || "";
+      f.exterior_color.value = v.exterior_color || "";
+      f.interior_color.value = v.interior_color || "";
+      f.year.value = v.year || "";
       f.notes.value = v.notes || "";
     }
-    VehicleStatic.el("formModal").classList.add("open");
+  }
+  static async vehicleOwnershipInformation(v, f) {}
+  static async vehicleSpecsInformation(v) {}
+
+  static openForm(v) {
+    VehicleStatic.el("manageVehicleTitle").textContent = v
+      ? v.title
+      : "Add vehicle";
+
+    VehicleStatic.EDITING_ID = v?.id || null;
+    if (v) {
+      VehicleStatic.vehicleCoreInformation(v);
+    }
+
+    $("#manageVehicle").modal("show");
   }
 
-  static approve(id) {
+  static async updateInformation(id, data) {
     const v = AppInit.DATA.vehicles.find((x) => x.id === id);
     if (!v) return;
-    v.status = "approved";
-    AppInit.toast("Vehicle approved", "success");
-    new Vehicle().renderStats();
-    VehicleStatic.VIEW === "grid"
-      ? VehicleStatic.renderGrid()
-      : VehicleStatic.renderTable();
+
+    //---Send to Server
+    const result = await Swal.fire({
+      title: "Update vehicle",
+      text: "Do you wish to continue?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Continue!",
+    });
+    if (result.isConfirmed) {
+      const update = new FormData();
+      update.append("data", JSON.stringify(data));
+      update.append("vin", v.vin);
+      const { message, status } = await Utility.fetchData(
+        `${CONFIG.API}/admin/car/${id}`,
+        update,
+        "POST"
+      );
+
+      AppInit.toast(`${message}`, `${status == 200 ? "success" : "error"}`);
+
+      if (status == 200) {
+        SessionManager.clearAppData();
+        await AppInit.initializeData();
+
+        VehicleStatic.renderStats();
+        VehicleStatic.VIEW === "grid"
+          ? VehicleStatic.renderGrid()
+          : VehicleStatic.renderTable();
+      }
+    }
   }
 
-  static reject(id) {
-    const v = AppInit.DATA.vehicles.find((x) => x.id === id);
-    if (!v) return;
-    v.status = "rejected";
-    AppInit.toast("Vehicle rejected", "info");
-    new Vehicle().renderStats();
-    VehicleStatic.VIEW === "grid"
-      ? VehicleStatic.renderGrid()
-      : VehicleStatic.renderTable();
-  }
-
-  static removeVehicle(id) {
+  static async removeVehicle(id) {
     const idx = AppInit.DATA.vehicles.findIndex((x) => x.id === id);
     if (idx > -1) {
-      AppInit.DATA.vehicles.splice(idx, 1);
-      AppInit.toast("Vehicle deleted", "success");
-      new Vehicle().renderStats();
-      VehicleStatic.VIEW === "grid"
-        ? VehicleStatic.renderGrid()
-        : VehicleStatic.renderTable();
+      const result = await Swal.fire({
+        title: "Delete vehicle",
+        text: "Do you wish to continue?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Continue!",
+      });
+      if (result.isConfirmed) {
+        const { message, status } = await Utility.fetchData(
+          `${CONFIG.API}/admin/car/${id}`,
+          {},
+          "DELETE"
+        );
+
+        AppInit.toast(`${message}`, `${status == 200 ? "success" : "error"}`);
+
+        if (status == 200) {
+          SessionManager.clearAppData();
+          await AppInit.initializeData();
+
+          VehicleStatic.renderStats();
+          VehicleStatic.VIEW === "grid"
+            ? VehicleStatic.renderGrid()
+            : VehicleStatic.renderTable();
+        }
+      }
     }
+  }
+
+  static renderStats() {
+    VehicleStatic.el("sTotal").textContent = AppInit.DATA.vehicles.length;
+    VehicleStatic.el("sApproved").textContent = AppInit.DATA.vehicles.filter(
+      (v) => v.status === "approved"
+    ).length;
+    VehicleStatic.el("sPending").textContent = AppInit.DATA.vehicles.filter(
+      (v) => v.status === "pending"
+    ).length;
+    VehicleStatic.el("sRejected").textContent = AppInit.DATA.vehicles.filter(
+      (v) => v.status === "rejected"
+    ).length;
   }
 }
 
@@ -225,8 +370,14 @@ class Vehicle {
     this.initialize();
   }
 
-  initialize() {
+  async initialize() {
+    await AppInit.initializeData();
     Utility.runClassMethods(this, ["initialize"]);
+  }
+
+  renderVehicleStats() {
+    if (!VehicleStatic.el("sTotal")) return;
+    VehicleStatic.renderStats();
   }
 
   renderVehiclesHomePageGrid() {
@@ -339,29 +490,24 @@ class Vehicle {
 
   saveNewVehicle() {
     // save form
-    VehicleStatic.el("vehForm").addEventListener("submit", (e) => {
+    VehicleStatic.el("vehForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+      const uploadData = new FormData(e.target);
+
       const f = e.target;
       const data = {
-        make: f.make.value.trim(),
-        model: f.model.value.trim(),
-        year: Number(f.year.value),
         vin: f.vin.value.trim().toUpperCase(),
-        mileage: Number(f.mileage.value),
-        price: Number(f.price.value),
-        owner: f.owner.value.trim(),
-        status: f.status.value,
-        image:
-          f.image.value ||
-          `https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?q=80&w=1200&auto=format&fit=crop&sat=-20&sig=${Math.floor(
-            Math.random() * 1000
-          )}`,
-        notes: f.notes.value.trim(),
       };
+
       if (!/^[A-HJ-NPR-Z0-9]{11,17}$/.test(data.vin)) {
         AppInit.toast("VIN must be 11–17 chars (no I,O,Q)", "error");
+        document.querySelector(
+          "#vin_error"
+        ).innerHTML = `<p class="small" style="color:red">VIN must be 11–17 chars (no I,O,Q)</p>`;
+        document.querySelector(".vin_border").classList.add("is-invalid");
         return;
       }
+
       if (VehicleStatic.EDITING_ID) {
         const v = AppInit.DATA.vehicles.find(
           (x) => x.id === VehicleStatic.EDITING_ID
@@ -369,32 +515,38 @@ class Vehicle {
         Object.assign(v, data);
         AppInit.toast("Vehicle updated", "success");
       } else {
-        AppInit.DATA.vehicles.unshift({
-          id: "VH-" + (1000 + AppInit.DATA.vehicles.length + 1),
-          ...data,
+        $(".modal").modal("hide");
+        const result = await Swal.fire({
+          title: "Upload vehicle",
+          text: "Do you wish to continue?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Continue!",
         });
-        AppInit.toast("Vehicle added", "success");
+        if (result.isConfirmed) {
+          uploadData.append("vin", data.vin);
+          const { status, message } = await Utility.fetchData(
+            `${CONFIG.API}/car`,
+            uploadData,
+            "POST"
+          );
+
+          AppInit.toast(`${message}`, `${status == 200 ? "success" : "error"}`);
+
+          if (status == 200) {
+            SessionManager.clearAppData();
+            await AppInit.initializeData();
+          }
+        }
       }
-      VehicleStatic.el("formModal").classList.remove("open");
-      this.renderStats();
+
+      VehicleStatic.renderStats();
       VehicleStatic.VIEW === "grid"
         ? VehicleStatic.renderGrid()
         : VehicleStatic.renderTable();
     });
-  }
-
-  openAndCloseModal() {
-    // open add form
-    document
-      .getElementById("addVehicleBtn")
-      .addEventListener("click", () => VehicleStatic.openForm(null));
-    document
-      .querySelectorAll("[data-close]")
-      .forEach((b) =>
-        b.addEventListener("click", () =>
-          document.getElementById(b.dataset.close).classList.remove("open")
-        )
-      );
   }
 
   eventDelegation() {
@@ -406,12 +558,18 @@ class Vehicle {
       }
       const ap = e.target.closest("[data-approve]");
       if (ap) {
-        VehicleStatic.approve(ap.dataset.approve);
+        VehicleStatic.updateInformation(ap.dataset.approve, {
+          status: "approved",
+          table: "vehicles_tbl",
+        });
         return;
       }
       const rj = e.target.closest("[data-reject]");
       if (rj) {
-        VehicleStatic.reject(rj.dataset.reject);
+        VehicleStatic.updateInformation(rj.dataset.reject, {
+          status: "rejected",
+          table: "vehicles_tbl",
+        });
         return;
       }
       const ed = e.target.closest("[data-edit]");

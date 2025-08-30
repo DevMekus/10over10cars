@@ -34,8 +34,8 @@ class Database
             $placeholders = ":" . implode(", :", array_keys($data));
             $sql = "INSERT INTO {$table} ({$fields}) VALUES ({$placeholders})";
             $stmt = self::$pdo->prepare($sql);
-            $stmt->execute($data);
-            return self::$pdo->lastInsertId();
+            return $stmt->execute($data);
+            // return self::$pdo->lastInsertId();
         } catch (PDOException $e) {
             Utility::log($e->getMessage(), 'error', 'DB::insert', ['host' => 'localhost'], $e);
         }

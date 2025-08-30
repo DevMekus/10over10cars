@@ -14,7 +14,9 @@ require_once ROOT_PATH . '/includes/header.php';
 
             <section class="summary" aria-labelledby="summaryTitle" data-aos="zoom-in">
                 <div class="brand">
-                    <div class="mark">10</div>
+                    <a href="<?= BASE_URL  ?>">
+                        <img class="brand" src="<?= BASE_URL ?>assets/images/dark-logo.jpg" />
+                    </a>
                     <div>
                         <div style="font-weight:800">2016 Toyota Corolla</div>
                         <div class="muted">VIN verification summary</div>

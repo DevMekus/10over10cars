@@ -1,10 +1,11 @@
 <?php
 require_once ROOT_PATH . '/siteConfig.php';
+require_once ROOT_PATH . '/includes/reuse.php';
 require_once ROOT_PATH . '/includes/header.php';
 
 ?>
 
-<body id="Dashboard" class="profilePage">
+<body id="Dashboard" class="profilePage" data-role="<?= $role; ?>" data-userid="<?= $userid; ?>">
     <div class="app">
         <!-- Sidebar -->
         <?php require_once "sidebar.php"; ?>

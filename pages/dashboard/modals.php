@@ -187,34 +187,716 @@
      </div>
  </div>
 
- <!-- Add/Edit Modal -->
- <div class="modal" id="formModal" aria-hidden="true">
-     <div class="modal-card">
-         <div style="display:flex;justify-content:space-between;align-items:center">
-             <h3 id="formTitle">Add vehicle</h3><button class="toolbar btn" data-close="formModal">✕</button>
-         </div>
-         <form id="vehForm" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px">
-             <div><label class="small muted">Make</label><input required name="make" style="width:100%;padding:8px;border:1px solid rgba(15,23,36,.1);border-radius:10px" /></div>
-             <div><label class="small muted">Model</label><input required name="model" style="width:100%;padding:8px;border:1px solid rgba(15,23,36,.1);border-radius:10px" /></div>
-             <div><label class="small muted">Year</label><input required type="number" min="1980" max="2030" name="year" style="width:100%;padding:8px;border:1px solid rgba(15,23,36,.1);border-radius:10px" /></div>
-             <div><label class="small muted">VIN</label><input required minlength="11" maxlength="17" name="vin" style="width:100%;padding:8px;border:1px solid rgba(15,23,36,.1);border-radius:10px" /></div>
-             <div><label class="small muted">Mileage (km)</label><input required type="number" name="mileage" style="width:100%;padding:8px;border:1px solid rgba(15,23,36,.1);border-radius:10px" /></div>
-             <div><label class="small muted">Price (NGN)</label><input required type="number" name="price" style="width:100%;padding:8px;border:1px solid rgba(15,23,36,.1);border-radius:10px" /></div>
-             <div><label class="small muted">Owner/Dealer</label><input required name="owner" style="width:100%;padding:8px;border:1px solid rgba(15,23,36,.1);border-radius:10px" /></div>
-             <div><label class="small muted">Status</label>
-                 <select name="status" style="width:100%;padding:8px;border:1px solid rgba(15,23,36,.1);border-radius:10px">
-                     <option value="pending">Pending</option>
-                     <option value="approved">Approved</option>
-                     <option value="rejected">Rejected</option>
-                     <option value="draft">Draft</option>
-                 </select>
+ <div class="modal fade" id="displayDetails" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-lg">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h1 class="modal-title fs-5" id="detailModalLabel">Modal title</h1>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
              </div>
-             <div style="grid-column:1/-1"><label class="small muted">Image URL</label><input name="image" placeholder="https://..." style="width:100%;padding:8px;border:1px solid rgba(15,23,36,.1);border-radius:10px" /></div>
-             <div style="grid-column:1/-1"><label class="small muted">Notes</label><textarea name="notes" rows="3" style="width:100%;padding:8px;border:1px solid rgba(15,23,36,.1);border-radius:10px"></textarea></div>
-             <div style="grid-column:1/-1;display:flex;gap:8px;justify-content:flex-end"><button type="submit" class="btn primary">Save</button></div>
-         </form>
+             <div class="modal-body">
+                 <div id="detailModalBody"></div>
+                 <div id="detailModalButtons"></div>
+             </div>
+             <div class="modal-footer">
+             </div>
+         </div>
      </div>
  </div>
+
+ <div class="modal fade" id="manageVehicle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-xl">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h1 class="modal-title fs-5" id="manageVehicleTitle">Modal title</h1>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+             </div>
+             <div class="modal-body">
+                 <section id="VERIFIEDContainer">
+                     <section class="tabs" data-aos="fade-left">
+                         <div style="display:flex;justify-content:space-between;align-items:center">
+                             <div class="tab-nav" role="tablist" aria-label="Report sections">
+                                 <button class="tab-btn active" role="tab" aria-selected="true" data-tab="overview">Overview</button>
+                                 <button class="tab-btn" role="tab" data-tab="ownership">Ownership</button>
+                                 <button class="tab-btn" role="tab" data-tab="accidents">Accidents</button>
+                                 <button class="tab-btn" role="tab" data-tab="specs">Specifications</button>
+
+                             </div>
+                             <div class="controls">
+                                 <span class="muted">Trust score</span>
+                                 <div class="kbd" id="trustScore">92%</div>
+                             </div>
+                         </div>
+
+                         <div id="overview" class="tab-panel active">
+                             <form id="vehForm" enctype="multipart/form-data">
+                                 <div class="modal-body">
+                                     <!-- VIN -->
+                                     <div class="mb-3">
+                                         <label for="title" class="small muted" data-bs-toggle="tooltip" title="Vehicle Title (usually the Make, Model and Year)">
+                                             Title *
+                                         </label>
+                                         <input type="text" class="form-control" id="title" name="title" placeholder="e.g., 2012 Toyota Corolla" required>
+                                     </div>
+
+                                     <div class="row">
+                                         <div class="col-sm-6">
+                                             <div class="mb-3">
+                                                 <label for="vin" class="small muted" data-bs-toggle="tooltip" title="Vehicle Identification Number (usually 17 characters long)">
+                                                     VIN *
+                                                 </label>
+                                                 <input type="text" class="form-control vin_border" id="vin" name="vin" placeholder="e.g., 1HGCM82633A004352" required>
+                                                 <div id="vin_error"></div>
+                                             </div>
+                                         </div>
+                                         <div class="col-sm-6">
+                                             <div class="mb-3">
+                                                 <label for="price" class="small muted" data-bs-toggle="tooltip" title="Vehicle current value">
+                                                     Price *
+                                                 </label>
+                                                 <input type="number" class="form-control" id="price" name="price" placeholder="e.g., 1000" required>
+                                             </div>
+                                         </div>
+                                     </div>
+
+                                     <?php
+                                        $makesAndModels = [
+                                            "Toyota" => ["Camry", "Corolla", "RAV4", "Yaris", "Highlander"],
+                                            "Honda" => ["Civic", "Accord", "CR-V", "Pilot", "Fit"],
+                                            "Ford" => ["F-150", "Escape", "Fusion", "Mustang", "Edge"],
+                                            "BMW" => ["3 Series", "5 Series", "X5", "X3", "7 Series"],
+                                            "Mercedes" => ["C-Class", "E-Class", "S-Class", "GLA", "GLC"]
+                                        ];
+                                        ?>
+
+                                     <!-- Make & Model -->
+                                     <div class="row">
+                                         <div class="col-md-6 mb-3">
+                                             <label for="make" class="small muted" data-bs-toggle="tooltip" title="Select the brand of the vehicle">
+                                                 Make
+                                             </label>
+                                             <select name="make" id="make" class="form-select mb-2" onchange="populateModels()" required>
+                                                 <option value="">Select Make</option>
+                                                 <?php foreach ($makesAndModels as $make => $models): ?>
+                                                     <option value="<?= htmlspecialchars($make) ?>"><?= htmlspecialchars($make) ?></option>
+                                                 <?php endforeach; ?>
+                                                 <option value="other">Other</option>
+                                             </select>
+                                             <input type="text" name="cmake" id="makeCustom" class="form-control d-none" placeholder="Enter vehicle make">
+                                             <small class="text-muted">If not listed, select "Other" and type it.</small>
+                                         </div>
+
+                                         <div class="col-md-6 mb-3">
+                                             <label for="model" class="small muted" data-bs-toggle="tooltip" title="Select or enter the vehicle model">
+                                                 Model
+                                             </label>
+                                             <select name="model" id="model" class="form-select mb-2" required>
+                                                 <option value="">Select Model</option>
+                                             </select>
+                                             <input type="text" name="cmodel" id="modelCustom" class="form-control d-none" placeholder="Enter vehicle model">
+                                             <small class="text-muted">Auto-fills based on Make or enter manually.</small>
+                                         </div>
+                                     </div>
+
+                                     <!-- Trim & Year -->
+                                     <div class="row">
+                                         <div class="col-md-6 mb-3">
+                                             <label for="trim" class="small muted" data-bs-toggle="tooltip" title="Vehicle's trim level (e.g., LE, SE, Sport)">
+                                                 Trim
+                                             </label>
+                                             <input type="text" class="form-control" id="trim" name="trim" placeholder="e.g., LE, Sport">
+                                         </div>
+                                         <div class="col-md-6 mb-3">
+                                             <label for="year" class="small muted" data-bs-toggle="tooltip" title="Manufacturing year">
+                                                 Year
+                                             </label>
+                                             <input type="number" class="form-control" id="year" name="year" placeholder="e.g., 2021">
+                                         </div>
+                                     </div>
+
+
+
+                                     <!-- Body Type & Fuel Type -->
+                                     <div class="row">
+                                         <div class="col-md-6 mb-3">
+                                             <?php $bodyTypes = ["Sedan", "Hatchback", "SUV", "Coupe", "Convertible", "Wagon", "Van", "Truck", "Minivan", "Pickup"]; ?>
+                                             <label for="bodyType" class="small muted" data-bs-toggle="tooltip" title="Vehicle body configuration">
+                                                 Body Type
+                                             </label>
+                                             <select name="body_type" id="bodyType" class="form-select" required>
+                                                 <option value="">Select Body Type</option>
+                                                 <?php foreach ($bodyTypes as $type): ?>
+                                                     <option value="<?= htmlspecialchars($type) ?>"><?= htmlspecialchars($type) ?></option>
+                                                 <?php endforeach; ?>
+                                             </select>
+                                         </div>
+
+                                         <div class="col-md-6 mb-3">
+                                             <?php $fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "CNG", "LPG", "Hydrogen", "Ethanol"]; ?>
+                                             <label for="fuelType" class="small muted" data-bs-toggle="tooltip" title="Type of fuel the vehicle uses">
+                                                 Fuel Type
+                                             </label>
+                                             <select name="fuel" id="fuelType" class="form-select" required>
+                                                 <option value="">Select Fuel Type</option>
+                                                 <?php foreach ($fuelTypes as $type): ?>
+                                                     <option value="<?= htmlspecialchars($type) ?>"><?= htmlspecialchars($type) ?></option>
+                                                 <?php endforeach; ?>
+                                             </select>
+                                         </div>
+                                     </div>
+
+                                     <!-- Drive Type & Plate -->
+                                     <div class="row">
+                                         <div class="col-md-6 mb-3">
+                                             <?php $driveTypes = ["FWD", "RWD", "AWD", "4WD"]; ?>
+                                             <label for="driveType" class="small muted" data-bs-toggle="tooltip" title="How power is delivered to wheels">
+                                                 Drive Type
+                                             </label>
+                                             <select name="drive_type" id="driveType" class="form-select" required>
+                                                 <option value="">Select Drive Type</option>
+                                                 <?php foreach ($driveTypes as $type): ?>
+                                                     <option value="<?= htmlspecialchars($type) ?>"><?= htmlspecialchars($type) ?></option>
+                                                 <?php endforeach; ?>
+                                             </select>
+                                         </div>
+
+                                         <div class="col-md-6 mb-3">
+                                             <label for="engineNumber" class="small muted" data-bs-toggle="tooltip" title="Vehicle’s Engine number">
+                                                 Engine Number
+                                             </label>
+                                             <input type="text" class="form-control" id="engineNumber" name="engine_number" placeholder="e.g., ABC-1234">
+                                         </div>
+
+                                         <!-- Transmission -->
+                                         <div class="mb-3 col-md-6">
+                                             <?php $transmissions = ["Manual", "Automatic", "CVT", "Semi-Automatic", "Dual-Clutch"]; ?>
+                                             <label for="transmission" class="small muted" data-bs-toggle="tooltip" title="Gear system">
+                                                 Transmission
+                                             </label>
+                                             <select name="transmission" id="transmission" class="form-select" required>
+                                                 <option value="">Select Transmission</option>
+                                                 <?php foreach ($transmissions as $trans): ?>
+                                                     <option value="<?= htmlspecialchars($trans) ?>"><?= htmlspecialchars($trans) ?></option>
+                                                 <?php endforeach; ?>
+                                             </select>
+                                         </div>
+
+                                         <!-- Mileage -->
+                                         <div class="mb-3 col-md-6">
+                                             <label for="mileage" class="small muted" data-bs-toggle="tooltip" title="Total kilometers the vehicle has traveled">
+                                                 Mileage (km)
+                                             </label>
+                                             <input type="number" class="form-control" id="mileage" name="mileage" placeholder="e.g., 45300">
+                                         </div>
+
+                                     </div>
+
+
+
+
+
+                                     <!-- Colors -->
+                                     <?php $colorOptions = ["Black", "White", "Silver", "Blue", "Red", "Grey", "Green", "Yellow", "Brown", "Orange"]; ?>
+
+                                     <div class="row">
+                                         <div class="col-md-6 mb-3">
+                                             <label for="exteriorColor" class="small muted" data-bs-toggle="tooltip" title="Color of the car’s outer body">
+                                                 Exterior Color
+                                             </label>
+                                             <select name="exterior_color" id="exteriorColor" class="form-select mb-2" required onchange="toggleCustomColor(this, 'exteriorColorCustom')">
+                                                 <option value="">Select Exterior Color</option>
+                                                 <?php foreach ($colorOptions as $color): ?>
+                                                     <option value="<?= htmlspecialchars($color) ?>"><?= htmlspecialchars($color) ?></option>
+                                                 <?php endforeach; ?>
+                                                 <option value="other">Other</option>
+                                             </select>
+                                             <input type="text" name="cexterior_color" id="exteriorColorCustom" class="form-control d-none" placeholder="Enter custom exterior color">
+                                         </div>
+
+                                         <div class="col-md-6 mb-3">
+                                             <label for="interiorColor" class="small muted" data-bs-toggle="tooltip" title="Color of the car’s interior materials">
+                                                 Interior Color
+                                             </label>
+                                             <select name="interior_color" id="interiorColor" class="form-select mb-2" required onchange="toggleCustomColor(this, 'interiorColorCustom')">
+                                                 <option value="">Select Interior Color</option>
+                                                 <?php foreach ($colorOptions as $color): ?>
+                                                     <option value="<?= htmlspecialchars($color) ?>"><?= htmlspecialchars($color) ?></option>
+                                                 <?php endforeach; ?>
+                                                 <option value="other">Other</option>
+                                             </select>
+                                             <input type="text" name="cinterior_color" id="interiorColorCustom" class="form-control d-none" placeholder="Enter custom interior color">
+                                         </div>
+                                         <div class="col-md-6">
+                                             <label for="vehicleImages" class="small muted">Vehicle Images</label>
+                                             <input type="file" id="vehicleImages" name="vehicleImages[]" class="form-control" multiple accept="image/*">
+                                         </div>
+
+                                         <div class="col-md-6">
+                                             <label for="vehicleDocs" class="small muted">Vehicle Documents</label>
+                                             <input type="file" id="vehicleDocs" name="vehicleDocs[]" class="form-control" multiple accept=".pdf,.doc,.docx">
+                                         </div>
+                                         <input type="hidden" name="userid" value="<?= $userid; ?>" />
+                                         <div class="col-md-12">
+                                             <label for="note" class="small muted">Brief Note</label>
+                                             <textarea class="form-control" rows="3" id="note" name="notes"></textarea>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="modal-footer">
+                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                     <button type="submit" class="btn btn-primary">Upload vehicle</button>
+                                 </div>
+                             </form>
+                         </div>
+
+                         <div id="ownership" class="tab-panel">
+                             <div class="card">
+                                 <strong>Ownership history</strong>
+                                 <div class="row">
+                                     <div class="col-sm-6">
+                                         <ol class="muted" style="padding-left:18px;margin:8px 0">
+                                             <li>2016–2018: Dealer (Imported) <button class="del_info">x</button></li>
+                                             <li>2018–2021: Private owner — Lagos <button class="del_info">x</button></li>
+                                             <li>2021–Present: Current owner — Abuja (FCT)</li>
+                                         </ol>
+                                     </div>
+                                     <div class="col-sm-6">
+                                         <form>
+                                             <strong>Add history</strong>
+                                             <div class="row">
+                                                 <div class="mb-3 col-md-12">
+                                                     <label for="ownership_name" class="small muted" data-bs-toggle="tooltip" title="Name of person or company">
+                                                         Owner
+                                                     </label>
+                                                     <input type="text" class="form-control" id="ownership_name" name="ownership_name" placeholder="e.g., John Doe, 10over10 Plc">
+                                                 </div>
+                                                 <div class="mb-3 col-md-6">
+                                                     <label for="owner_location" class="small muted" data-bs-toggle="tooltip" title="Location of the owner">
+                                                         Location
+                                                     </label>
+                                                     <input type="text" class="form-control" id="owner_location" name="owner_location" placeholder="e.g., Lagos, Texas">
+                                                 </div>
+                                                 <div class="mb-3 col-md-6">
+                                                     <label for="ownership_date" class="small muted" data-bs-toggle="tooltip" title="Dates vehicle was in the possession">
+                                                         Duration
+                                                     </label>
+                                                     <input type="text" class="form-control" id="ownership_date" name="ownership_date" placeholder="e.g., 2016 – 2018">
+                                                 </div>
+                                             </div>
+                                             <button type="submit" class="btn btn-primary">Save Ownership</button>
+                                         </form>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+
+                         <div id="accidents" class="tab-panel">
+                             <div class="card">
+                                 <strong>Accident & Damage Reports</strong>
+                                 <div class="row">
+                                     <div class="col-sm-6">
+                                         <ol class="muted">
+                                             <li>2016 – 2018: No major structural damage reported <button class="del_info">x</button></li>
+                                             <li>2018–2021: Private owner — Lagos <button class="del_info">x</button></li>
+                                             <li>2018–2021: Minor insurance claim in 2019 for bumper repair</li>
+                                         </ol>
+                                     </div>
+                                     <div class="col-sm-6">
+                                         <form>
+                                             <strong>Damage Reports</strong>
+                                             <div class="row">
+                                                 <div class="mb-3 col-md-12">
+                                                     <label for="ownership_date" class="small muted" data-bs-toggle="tooltip" title="Dates vehicle was in the possession">
+                                                         Duration
+                                                     </label>
+                                                     <input type="text" class="form-control" id="ownership_date" name="ownership_date" placeholder="e.g., 2016 – 2018">
+                                                 </div>
+                                                 <div class="mb-3 col-md-12">
+                                                     <label for="ownership_name" class="small muted" data-bs-toggle="tooltip" title="Name of person or company">
+                                                         Report
+                                                     </label>
+                                                     <input type="text" class="form-control" id="ownership_name" name="ownership_name" placeholder="e.g., John Doe, 10over10 Plc">
+                                                 </div>
+
+
+                                             </div>
+                                             <button type="submit" class="btn btn-primary">Save Report</button>
+                                         </form>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+
+                         <div id="specs" class="tab-panel">
+                             <div class="row">
+                                 <div class="col-sm-7">
+                                     <div class="meta-grid">
+
+                                         <div class="meta-item" style="display: flex; justify-content: space-between; align-items:center">
+                                             <div>
+                                                 <div class="muted">Transmission</div>
+                                                 <div style="font-weight:700">Automatic</div>
+                                             </div>
+                                             <button class="icon-btn"><i class="fas fa-times danger"></i></button>
+
+                                         </div>
+
+                                     </div>
+                                 </div>
+                                 <div class="col-sm-5">
+                                     <form>
+                                         <strong>Specifications</strong>
+                                         <div class="row">
+                                             <div class="mb-3 col-md-12">
+                                                 <label for="ownership_date" class="small muted" data-bs-toggle="tooltip" title="Dates vehicle was in the possession">
+                                                     Spec Name
+                                                 </label>
+                                                 <input type="text" class="form-control" id="ownership_date" name="ownership_date" placeholder="e.g., GPS">
+                                             </div>
+                                             <div class="mb-3 col-md-12">
+                                                 <label for="ownership_name" class="small muted" data-bs-toggle="tooltip" title="Name of person or company">
+                                                     Value
+                                                 </label>
+                                                 <input type="text" class="form-control" id="ownership_name" name="ownership_name" placeholder="e.g., 45G Special GPS">
+                                             </div>
+
+
+                                         </div>
+                                         <button type="submit" class="btn btn-primary">Save Spec</button>
+                                     </form>
+                                 </div>
+                             </div>
+
+                         </div>
+
+
+                     </section>
+                     <script>
+                         document.querySelectorAll(".tab-btn")?.forEach((btn) => {
+                             btn.addEventListener("click", () => {
+                                 document.querySelectorAll(".tab-btn").forEach((b) => {
+                                     b.classList.remove("active");
+                                     b.setAttribute("aria-selected", "false");
+                                 });
+                                 document
+                                     .querySelectorAll(".tab-panel")
+                                     .forEach((p) => p.classList.remove("active"));
+                                 btn.classList.add("active");
+                                 btn.setAttribute("aria-selected", "true");
+                                 const t = btn.getAttribute("data-tab");
+                                 document.getElementById(t).classList.add("active");
+                                 AOS.refresh();
+                             });
+                         });
+                     </script>
+                 </section>
+             </div>
+             <div class="modal-footer">
+             </div>
+         </div>
+     </div>
+ </div>
+
+ <!-- Add/Edit Modal -->
+ <div class="modal fade" id="uploadVehicleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-lg">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h1 class="modal-title fs-5" id="uploadModalLabel">Upload Vehicle Data</h1>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+             </div>
+             <div id="formUploadElement">
+                 <form id="vehForm" enctype="multipart/form-data">
+                     <div class="modal-body">
+                         <!-- VIN -->
+                         <div class="mb-3">
+                             <label for="title" class="small muted" data-bs-toggle="tooltip" title="Vehicle Title (usually the Make, Model and Year)">
+                                 Title *
+                             </label>
+                             <input type="text" class="form-control" id="title" name="title" placeholder="e.g., 2012 Toyota Corolla" required>
+                         </div>
+
+                         <div class="row">
+                             <div class="col-sm-6">
+                                 <div class="mb-3">
+                                     <label for="vin" class="small muted" data-bs-toggle="tooltip" title="Vehicle Identification Number (usually 17 characters long)">
+                                         VIN *
+                                     </label>
+                                     <input type="text" class="form-control vin_border" id="vin" name="vin" placeholder="e.g., 1HGCM82633A004352" required>
+                                     <div id="vin_error"></div>
+                                 </div>
+                             </div>
+                             <div class="col-sm-6">
+                                 <div class="mb-3">
+                                     <label for="price" class="small muted" data-bs-toggle="tooltip" title="Vehicle current value">
+                                         Price *
+                                     </label>
+                                     <input type="number" class="form-control" id="price" name="price" placeholder="e.g., 1000" required>
+                                 </div>
+                             </div>
+                         </div>
+
+                         <?php
+                            $makesAndModels = [
+                                "Toyota" => ["Camry", "Corolla", "RAV4", "Yaris", "Highlander"],
+                                "Honda" => ["Civic", "Accord", "CR-V", "Pilot", "Fit"],
+                                "Ford" => ["F-150", "Escape", "Fusion", "Mustang", "Edge"],
+                                "BMW" => ["3 Series", "5 Series", "X5", "X3", "7 Series"],
+                                "Mercedes" => ["C-Class", "E-Class", "S-Class", "GLA", "GLC"]
+                            ];
+                            ?>
+
+                         <!-- Make & Model -->
+                         <div class="row">
+                             <div class="col-md-6 mb-3">
+                                 <label for="make" class="small muted" data-bs-toggle="tooltip" title="Select the brand of the vehicle">
+                                     Make
+                                 </label>
+                                 <select name="make" id="make" class="form-select mb-2" onchange="populateModels()" required>
+                                     <option value="">Select Make</option>
+                                     <?php foreach ($makesAndModels as $make => $models): ?>
+                                         <option value="<?= htmlspecialchars($make) ?>"><?= htmlspecialchars($make) ?></option>
+                                     <?php endforeach; ?>
+                                     <option value="other">Other</option>
+                                 </select>
+                                 <input type="text" name="cmake" id="makeCustom" class="form-control d-none" placeholder="Enter vehicle make">
+                                 <small class="text-muted">If not listed, select "Other" and type it.</small>
+                             </div>
+
+                             <div class="col-md-6 mb-3">
+                                 <label for="model" class="small muted" data-bs-toggle="tooltip" title="Select or enter the vehicle model">
+                                     Model
+                                 </label>
+                                 <select name="model" id="model" class="form-select mb-2" required>
+                                     <option value="">Select Model</option>
+                                 </select>
+                                 <input type="text" name="cmodel" id="modelCustom" class="form-control d-none" placeholder="Enter vehicle model">
+                                 <small class="text-muted">Auto-fills based on Make or enter manually.</small>
+                             </div>
+                         </div>
+
+                         <!-- Trim & Year -->
+                         <div class="row">
+                             <div class="col-md-6 mb-3">
+                                 <label for="trim" class="small muted" data-bs-toggle="tooltip" title="Vehicle's trim level (e.g., LE, SE, Sport)">
+                                     Trim
+                                 </label>
+                                 <input type="text" class="form-control" id="trim" name="trim" placeholder="e.g., LE, Sport">
+                             </div>
+                             <div class="col-md-6 mb-3">
+                                 <label for="year" class="small muted" data-bs-toggle="tooltip" title="Manufacturing year">
+                                     Year
+                                 </label>
+                                 <input type="number" class="form-control" id="year" name="year" placeholder="e.g., 2021">
+                             </div>
+                         </div>
+
+
+
+                         <!-- Body Type & Fuel Type -->
+                         <div class="row">
+                             <div class="col-md-6 mb-3">
+                                 <?php $bodyTypes = ["Sedan", "Hatchback", "SUV", "Coupe", "Convertible", "Wagon", "Van", "Truck", "Minivan", "Pickup"]; ?>
+                                 <label for="bodyType" class="small muted" data-bs-toggle="tooltip" title="Vehicle body configuration">
+                                     Body Type
+                                 </label>
+                                 <select name="body_type" id="bodyType" class="form-select" required>
+                                     <option value="">Select Body Type</option>
+                                     <?php foreach ($bodyTypes as $type): ?>
+                                         <option value="<?= htmlspecialchars($type) ?>"><?= htmlspecialchars($type) ?></option>
+                                     <?php endforeach; ?>
+                                 </select>
+                             </div>
+
+                             <div class="col-md-6 mb-3">
+                                 <?php $fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "CNG", "LPG", "Hydrogen", "Ethanol"]; ?>
+                                 <label for="fuelType" class="small muted" data-bs-toggle="tooltip" title="Type of fuel the vehicle uses">
+                                     Fuel Type
+                                 </label>
+                                 <select name="fuel" id="fuelType" class="form-select" required>
+                                     <option value="">Select Fuel Type</option>
+                                     <?php foreach ($fuelTypes as $type): ?>
+                                         <option value="<?= htmlspecialchars($type) ?>"><?= htmlspecialchars($type) ?></option>
+                                     <?php endforeach; ?>
+                                 </select>
+                             </div>
+                         </div>
+
+                         <!-- Drive Type & Plate -->
+                         <div class="row">
+                             <div class="col-md-6 mb-3">
+                                 <?php $driveTypes = ["FWD", "RWD", "AWD", "4WD"]; ?>
+                                 <label for="driveType" class="small muted" data-bs-toggle="tooltip" title="How power is delivered to wheels">
+                                     Drive Type
+                                 </label>
+                                 <select name="drive_type" id="driveType" class="form-select" required>
+                                     <option value="">Select Drive Type</option>
+                                     <?php foreach ($driveTypes as $type): ?>
+                                         <option value="<?= htmlspecialchars($type) ?>"><?= htmlspecialchars($type) ?></option>
+                                     <?php endforeach; ?>
+                                 </select>
+                             </div>
+
+                             <div class="col-md-6 mb-3">
+                                 <label for="engineNumber" class="small muted" data-bs-toggle="tooltip" title="Vehicle’s Engine number">
+                                     Engine Number
+                                 </label>
+                                 <input type="text" class="form-control" id="engineNumber" name="engine_number" placeholder="e.g., ABC-1234">
+                             </div>
+
+                             <!-- Transmission -->
+                             <div class="mb-3 col-md-6">
+                                 <?php $transmissions = ["Manual", "Automatic", "CVT", "Semi-Automatic", "Dual-Clutch"]; ?>
+                                 <label for="transmission" class="small muted" data-bs-toggle="tooltip" title="Gear system">
+                                     Transmission
+                                 </label>
+                                 <select name="transmission" id="transmission" class="form-select" required>
+                                     <option value="">Select Transmission</option>
+                                     <?php foreach ($transmissions as $trans): ?>
+                                         <option value="<?= htmlspecialchars($trans) ?>"><?= htmlspecialchars($trans) ?></option>
+                                     <?php endforeach; ?>
+                                 </select>
+                             </div>
+
+                             <!-- Mileage -->
+                             <div class="mb-3 col-md-6">
+                                 <label for="mileage" class="small muted" data-bs-toggle="tooltip" title="Total kilometers the vehicle has traveled">
+                                     Mileage (km)
+                                 </label>
+                                 <input type="number" class="form-control" id="mileage" name="mileage" placeholder="e.g., 45300">
+                             </div>
+
+                         </div>
+
+
+
+
+
+                         <!-- Colors -->
+                         <?php $colorOptions = ["Black", "White", "Silver", "Blue", "Red", "Grey", "Green", "Yellow", "Brown", "Orange"]; ?>
+
+                         <div class="row">
+                             <div class="col-md-6 mb-3">
+                                 <label for="exteriorColor" class="small muted" data-bs-toggle="tooltip" title="Color of the car’s outer body">
+                                     Exterior Color
+                                 </label>
+                                 <select name="exterior_color" id="exteriorColor" class="form-select mb-2" required onchange="toggleCustomColor(this, 'exteriorColorCustom')">
+                                     <option value="">Select Exterior Color</option>
+                                     <?php foreach ($colorOptions as $color): ?>
+                                         <option value="<?= htmlspecialchars($color) ?>"><?= htmlspecialchars($color) ?></option>
+                                     <?php endforeach; ?>
+                                     <option value="other">Other</option>
+                                 </select>
+                                 <input type="text" name="cexterior_color" id="exteriorColorCustom" class="form-control d-none" placeholder="Enter custom exterior color">
+                             </div>
+
+                             <div class="col-md-6 mb-3">
+                                 <label for="interiorColor" class="small muted" data-bs-toggle="tooltip" title="Color of the car’s interior materials">
+                                     Interior Color
+                                 </label>
+                                 <select name="interior_color" id="interiorColor" class="form-select mb-2" required onchange="toggleCustomColor(this, 'interiorColorCustom')">
+                                     <option value="">Select Interior Color</option>
+                                     <?php foreach ($colorOptions as $color): ?>
+                                         <option value="<?= htmlspecialchars($color) ?>"><?= htmlspecialchars($color) ?></option>
+                                     <?php endforeach; ?>
+                                     <option value="other">Other</option>
+                                 </select>
+                                 <input type="text" name="cinterior_color" id="interiorColorCustom" class="form-control d-none" placeholder="Enter custom interior color">
+                             </div>
+                             <div class="col-md-6">
+                                 <label for="vehicleImages" class="small muted">Vehicle Images</label>
+                                 <input type="file" id="vehicleImages" name="vehicleImages[]" class="form-control" multiple accept="image/*">
+                             </div>
+
+                             <div class="col-md-6">
+                                 <label for="vehicleDocs" class="small muted">Vehicle Documents</label>
+                                 <input type="file" id="vehicleDocs" name="vehicleDocs[]" class="form-control" multiple accept=".pdf,.doc,.docx">
+                             </div>
+                             <input type="hidden" name="userid" value="<?= $userid; ?>" />
+                             <div class="col-md-12">
+                                 <label for="note" class="small muted">Brief Note</label>
+                                 <textarea class="form-control" rows="3" id="note" name="notes"></textarea>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="modal-footer">
+                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                         <button type="submit" class="btn btn-primary">Upload vehicle</button>
+                     </div>
+                 </form>
+                 <script>
+                     function toggleCustomColor(selectEl, customInputId) {
+                         const customInput = document.getElementById(customInputId);
+                         if (selectEl.value === "other") {
+                             customInput.classList.remove("d-none");
+                             customInput.setAttribute("required", "required");
+                         } else {
+                             customInput.classList.add("d-none");
+                             customInput.removeAttribute("required");
+                         }
+                     }
+                     //Initialize tooltips
+                     document.addEventListener("DOMContentLoaded", () => {
+                         const tooltips = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                         tooltips.forEach((tooltipEl) => new bootstrap.Tooltip(tooltipEl));
+                     });
+                 </script>
+
+                 <script>
+                     const makeModelData = <?= json_encode($makesAndModels) ?>;
+
+                     function populateModels() {
+                         const make = document.getElementById('make').value;
+                         const modelSelect = document.getElementById('model');
+                         const modelCustom = document.getElementById('modelCustom');
+                         const makeCustom = document.getElementById('makeCustom');
+
+                         modelSelect.innerHTML = '<option value="">Select Model</option>';
+
+                         // Show custom make input
+                         if (make === 'other') {
+                             makeCustom.classList.remove('d-none');
+                             makeCustom.required = true;
+                         } else {
+                             makeCustom.classList.add('d-none');
+                             makeCustom.required = false;
+                         }
+
+                         // Populate models if make exists
+                         if (makeModelData[make]) {
+                             makeModelData[make].forEach(model => {
+                                 const option = document.createElement('option');
+                                 option.value = model;
+                                 option.text = model;
+                                 modelSelect.appendChild(option);
+                             });
+                             modelSelect.appendChild(new Option('Other', 'other'));
+                         } else {
+                             modelSelect.appendChild(new Option('Other', 'other'));
+                         }
+
+                         // Reset model input
+                         modelCustom.classList.add('d-none');
+                         modelCustom.required = false;
+                     }
+
+                     document.getElementById('model').addEventListener('change', function() {
+                         const selected = this.value;
+                         const modelCustom = document.getElementById('modelCustom');
+                         if (selected === 'other') {
+                             modelCustom.classList.remove('d-none');
+                             modelCustom.required = true;
+                         } else {
+                             modelCustom.classList.add('d-none');
+                             modelCustom.required = false;
+                         }
+                     });
+                 </script>
+             </div>
+         </div>
+     </div>
+ </div>
+
 
  <!-- Modals -->
  <div class="modal" id="passwordModal" aria-hidden="true">

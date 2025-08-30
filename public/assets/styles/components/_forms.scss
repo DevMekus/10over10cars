@@ -214,207 +214,212 @@
 
 .tomselect-style,
 .custom-form {
-  .form-group {
+}
+
+.form-group {
+  position: relative;
+  width: 100%;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+select,
+textarea .form-control {
+  width: 100%;
+  padding: 8px 14px;
+  font-size: 16px;
+  background: white;
+  color: #333;
+  border: 1.5px solid #ccc;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(63, 136, 255, 0.1);
+}
+
+select {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg fill='%23333' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px 16px;
+  padding-right: 40px;
+}
+
+::placeholder {
+  color: #aaa;
+}
+
+//Custom styles for the form select with drop down
+.single-select {
+  .custom-select-wrapper {
     position: relative;
-    width: 100%;
+    user-select: none;
   }
 
-  label {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 6px;
-    color: #333;
-  }
-
-  input,
-  select,
-  textarea {
-    width: 100%;
+  .custom-select {
+    background: #fff;
+    border: 1.5px solid #ccc;
+    //   border-radius: 8px;
     padding: 8px 14px;
     font-size: 16px;
-    background: white;
-    color: #333;
-    border: 1.5px solid #ccc;
-    outline: none;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    cursor: pointer;
+    transition: border-color 0.3s;
   }
 
-  input:focus,
-  select:focus {
+  .custom-select:focus,
+  .custom-select.open {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(63, 136, 255, 0.1);
   }
 
-  select {
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg fill='%23333' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    background-size: 16px 16px;
-    padding-right: 40px;
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1.5px solid #ccc;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    display: none;
   }
 
-  ::placeholder {
-    color: #aaa;
+  .dropdown.open {
+    display: block;
   }
 
-  //Custom styles for the form select with drop down
-  .single-select {
-    .custom-select-wrapper {
-      position: relative;
-      user-select: none;
-    }
-
-    .custom-select {
-      background: #fff;
-      border: 1.5px solid #ccc;
-      //   border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: border-color 0.3s;
-    }
-
-    .custom-select:focus,
-    .custom-select.open {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(63, 136, 255, 0.1);
-    }
-
-    .dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      max-height: 200px;
-      overflow-y: auto;
-      background: #fff;
-      border: 1.5px solid #ccc;
-      border-radius: 0 0 8px 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      z-index: 10;
-      display: none;
-    }
-
-    .dropdown.open {
-      display: block;
-    }
-
-    .dropdown input {
-      width: 100%;
-      border: none;
-      border-bottom: 1px solid #eee;
-      padding: 10px 12px;
-      font-size: 14px;
-      outline: none;
-    }
-
-    .option {
-      padding: 10px 12px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .option:hover {
-      background: #f0f0f0;
-    }
-
-    .option.selected {
-      background: var(--secondary);
-      color: white;
-    }
+  .dropdown input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #eee;
+    padding: 10px 12px;
+    font-size: 14px;
+    outline: none;
   }
 
-  .multiSelectTags {
-    .custom-select-wrapper {
-      position: relative;
-    }
+  .option {
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
 
-    .custom-select {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 6px;
-      min-height: 48px;
-      padding: 10px;
-      border: 1.5px solid #ccc;
-      border-radius: 8px;
-      background: #fff;
-      cursor: text;
-      transition: border-color 0.3s;
-    }
+  .option:hover {
+    background: #f0f0f0;
+  }
 
-    .custom-select:focus-within,
-    .custom-select.open {
-      border-color: var(--secondary);
-      box-shadow: 0 0 0 3px rgba(63, 136, 255, 0.1);
-    }
+  .option.selected {
+    background: var(--secondary);
+    color: white;
+  }
+}
 
-    .custom-select input {
-      border: none;
-      outline: none;
-      font-size: 14px;
-      min-width: 100px;
-      flex: 1;
-      padding: 6px;
-      background: transparent;
-    }
+.multiSelectTags {
+  .custom-select-wrapper {
+    position: relative;
+  }
 
-    .tag {
-      background: var(--primary);
-      color: white;
-      padding: 6px 10px;
-      border-radius: 20px;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+  .custom-select {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 48px;
+    padding: 10px;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    cursor: text;
+    transition: border-color 0.3s;
+  }
 
-    .tag .remove {
-      cursor: pointer;
-      font-weight: bold;
-    }
+  .custom-select:focus-within,
+  .custom-select.open {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(63, 136, 255, 0.1);
+  }
 
-    .dropdown {
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      right: 0;
-      background: #fff;
-      border: 1.5px solid #ccc;
-      border-radius: 6px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      z-index: 10;
-      display: none;
-      max-height: 200px;
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
+  .custom-select input {
+    border: none;
+    outline: none;
+    font-size: 14px;
+    min-width: 100px;
+    flex: 1;
+    padding: 6px;
+    background: transparent;
+  }
 
-    .dropdown.open {
-      display: block;
-    }
+  .tag {
+    background: var(--primary);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
 
-    .option {
-      padding: 10px 12px;
-      cursor: pointer;
-      transition: background 0.2s;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+  .tag .remove {
+    cursor: pointer;
+    font-weight: bold;
+  }
 
-    .option:hover {
-      background: #f0f0f0;
-    }
+  .dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 
-    .option.selected {
-      background: var(--secondary);
-      color: white;
-    }
+  .dropdown.open {
+    display: block;
+  }
+
+  .option {
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .option:hover {
+    background: #f0f0f0;
+  }
+
+  .option.selected {
+    background: var(--secondary);
+    color: white;
   }
 }
 

@@ -40,7 +40,7 @@ export default class AppInit {
       const token = await SessionManager.decryptAndGetToken();
       url =
         token?.role === "admin"
-          ? `${CONFIG.API}/admin/application/admin`
+          ? `${CONFIG.API}/admin/application/admin/${token?.userid}`
           : `${CONFIG.API}/application/user`;
     } else {
       url = `${CONFIG.API}/application/guest`;
@@ -185,34 +185,34 @@ class Application {
     Utility.runClassMethods(this, ["initialize"]);
   }
 
-  // loadButtons() {
-  //   document.addEventListener("DOMContentLoaded", Utility.buttonLoading());
-  // }
-
   themeToggle() {
-    const root = document.documentElement;
-    const themeBtn = document.getElementById("themeToggle");
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.body;
+    if (!themeToggle) return;
 
-    if (!themeBtn) return;
-
-    function setTheme(mode) {
-      root.setAttribute("data-theme", mode);
-      localStorage.setItem("theme", mode);
-      themeBtn.setAttribute("aria-pressed", String(mode === "dark"));
-      themeBtn.innerHTML =
-        mode === "dark"
-          ? '<i class="bi bi-sun"></i>'
-          : '<i class="bi bi-moon-stars"></i>';
+    function loadTheme() {
+      const theme = localStorage.getItem("theme") || "theme-light";
+      body.classList.remove("theme-light", "dark-theme");
+      body.classList.add(theme);
+      themeToggle.innerHTML =
+        theme === "dark-theme"
+          ? `<i class="bi bi-sun"></i>`
+          : `<i class="bi bi-moon-stars"></i>`;
     }
-    setTheme(
-      localStorage.getItem("theme") ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light")
-    );
-    themeBtn.addEventListener("click", () =>
-      setTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark")
-    );
+
+    function toggleTheme() {
+      const isDark = body.classList.contains("dark-theme");
+      const newTheme = isDark ? "theme-light" : "dark-theme";
+      body.classList.remove("dark-theme", "theme-light");
+      body.classList.add(newTheme);
+      localStorage.setItem("theme", newTheme);
+      themeToggle.innerHTML =
+        newTheme === "dark-theme"
+          ? `<i class="bi bi-sun"></i>`
+          : `<i class="bi bi-moon-stars"></i>`;
+    }
+    themeToggle.addEventListener("click", toggleTheme);
+    loadTheme();
   }
 
   nav_onScroll() {

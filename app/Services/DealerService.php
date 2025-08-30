@@ -10,8 +10,6 @@ use App\Utils\Utility;
 
 class DealerService
 {
-
-
     public static function fetchAllDealersInfo()
     {
         $dealer = Utility::$dealers_tbl;
@@ -127,7 +125,7 @@ class DealerService
                 'avatar' => null,
                 'about' => $data['about'] ?? '',
                 'documents' => null,
-                'rc_number' => $data['rc_number'] ?? null,
+                'rc_number' => isset($data['rc_number']) ? $data['rc_number'] : null,
                 'revenue' => 0,
             ];
 
@@ -152,7 +150,7 @@ class DealerService
                 $dealer_docInput = Utility::uploadDocuments('docInput', $target_dir);
                 if (!$dealer_docInput || !$dealer_docInput['success']) Response::error(500, "Image upload failed");
 
-                $dealerInfo['documents'] = json_encode($dealer_banner['files'][0]);
+                $dealerInfo['documents'] = json_encode($dealer_banner['files']);
             }
 
             if (
@@ -189,8 +187,6 @@ class DealerService
             if (empty($dealersData)) Response::error(404, "Dealer account not found");
 
             $dealer = $dealersData[0];
-
-
 
             $dealerInfo = [
                 'company' => $data['company'] ?? $dealer['company'],
@@ -291,13 +287,26 @@ class DealerService
                 }
             }
 
-            if (Database::delete($dealerTable, ["userid" => $id])) {
-                if (Activity::activity([
-                    'userid' =>  $_SESSION['userid'],
-                    'type' => 'delete',
+
+            if (isset($dealer['documents'])) {
+                $documents = json_decode($dealer['documents'], true);
+                foreach ($documents as $document) {
+                    $filenameFromUrl = basename($document);
+                    $target_dir = "../public/UPLOADS/dealers/docs/" . $filenameFromUrl;
+
+                    if (file_exists($target_dir)) {
+                        unlink($target_dir);
+                    }
+                }
+            }
+
+            if (Database::delete($dealerTable, ["id" => $id])) {
+                Activity::activity([
+                    'userid' =>  $dealer['userid'],
+                    'type' => 'dealer',
                     'title' => 'dealer delete successful',
-                ]));
-                Response::success([], "Dealer account deleted");
+                ]);
+                return true;
             }
         } catch (\Throwable $th) {
 

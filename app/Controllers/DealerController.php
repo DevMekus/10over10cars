@@ -56,4 +56,11 @@ class DealerController
         $update = DealerService::updateDealerAccount($id, $data);
         if ($update) Response::success([], "Dealer Account update successful");
     }
+
+    public function deleteDealerInfo($id)
+    {
+        $id = RequestValidator::parseId($id);
+        $delete = DealerService::deleteDealerAccount($id);
+        if ($delete) Response::success([], "Dealer Account delete successful");
+    }
 }

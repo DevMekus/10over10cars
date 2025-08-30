@@ -1,10 +1,11 @@
 <?php
 require_once ROOT_PATH . '/siteConfig.php';
+require_once ROOT_PATH . '/includes/reuse.php';
 require_once ROOT_PATH . '/includes/header.php';
 
 ?>
 
-<body id="Dashboard" class="vehiclesPage">
+<body id="Dashboard" class="vehiclesPage" data-role="<?= $role; ?>" data-userid="<?= $userid; ?>">
     <div class="app">
         <!-- Sidebar -->
         <?php require_once "sidebar.php"; ?>
@@ -59,20 +60,20 @@ require_once ROOT_PATH . '/includes/header.php';
                             <option value="mileage">Sort: Mileage</option>
                             <option value="year">Sort: Year</option>
                         </select>
-                      
+
                         <input class="input" id="min" type="number" min="0" step="50000" placeholder="Min price (₦)" />
-                       <input class="input" id="max" type="number" min="0" step="50000" placeholder="Max price (₦)" />
-                        <div class="field">
+                        <input class="input" id="max" type="number" min="0" step="50000" placeholder="Max price (₦)" />
+                        <!-- <div class="field">
                             <label for="dateFrom">Listed from</label>
                             <input class="input" id="dateFrom" type="date" />
-                        </div>
+                        </div> -->
                         <button id="bulkApprove" class="btn">Bulk Approve</button>
                         <button id="bulkReject" class="btn">Bulk Reject</button>
                         <button id="exportCsv" class="btn">Export CSV</button>
-                        <button id="addVehicleBtn" class="btn btn-ghost"><i class="bi bi-plus-circle"></i> Add Vehicle</button>
+                        <button id="addVehicleBtns" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#uploadVehicleModal"><i class="bi bi-plus-circle"></i> Add Vehicle</button>
                     </div>
                     <div>
-                        <button id="toggleView" class="btn"><i class="bi bi-grid"></i> Grid</button>
+                        <button id="toggleView" class="btn btn-sm btn-ghost"><i class="bi bi-grid"></i> Grid</button>
                     </div>
                 </section>
 
@@ -103,6 +104,7 @@ require_once ROOT_PATH . '/includes/header.php';
                         <div class="small muted" id="pgInfo"></div><button class="btn" id="nextPg">Next</button>
                     </div>
                 </section>
+                <div id="no-data"></div>
                 <?php require "footer.php"; ?>
 
             </main>

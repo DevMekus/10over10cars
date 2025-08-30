@@ -60,8 +60,8 @@ require_once ROOT_PATH . '/includes/header.php';
                             <option value="listings">Sort: Listings</option>
                             <option value="rating">Sort: Rating</option>
                         </select>
-                        <button id="bulkApprove" class="btn">Bulk Approve</button>
-                        <button id="bulkSuspend" class="btn">Bulk Suspend</button>
+                        <!-- <button id="bulkApprove" class="btn">Bulk Approve</button>
+                        <button id="bulkSuspend" class="btn">Bulk Suspend</button> -->
                         <button id="exportCsv" class="btn">Export CSV</button>
                         <a href="<?= BASE_URL ?>dashboard/dealer" id="addDealerBtn" class="btn btn-ghost"><i class="bi bi-person-plus"></i> Add Dealer</a>
                     </div>
