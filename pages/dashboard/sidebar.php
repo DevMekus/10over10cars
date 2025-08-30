@@ -21,9 +21,10 @@
           <a href="<?= BASE_URL; ?>dashboard/transaction" class="<?= $route == "transaction"  ? 'active' : '' ?>"><i class="bi bi-currency-dollar"></i> Transactions</a>
           <a href="<?= BASE_URL; ?>dashboard/dealers" class="<?= $route == "dealers"  ? 'active' : '' ?>"><i class="bi bi-people"></i> Dealers</a>
           <a href="<?= BASE_URL; ?>dashboard/vehicles" class="<?= $route == "vehicles"  ? 'active' : '' ?>"><i class="bi bi-car-front"></i> Vehicles</a>
-          <a href="<?= BASE_URL; ?>dashboard/report" class="<?= $route == "report"  ? 'active' : '' ?>"><i class="bi bi-file-earmark-text"></i> Reports</a>
-          <a href="<?= BASE_URL; ?>dashboard/profile" class="<?= $route == "profile"  ? 'active' : '' ?>"><i class="bi bi-person-circle"></i> Profile</a>
-          <a href="<?= BASE_URL; ?>dashboard/settings" class="<?= $route == "settings"  ? 'active' : '' ?>"><i class="bi bi-gear"></i> Settings</a>
+          <?php if ($role == 'admin'): ?>
+              <a href="<?= BASE_URL; ?>dashboard/report" class="<?= $route == "report"  ? 'active' : '' ?>"><i class="bi bi-file-earmark-text"></i> Reports</a>
+          <?php endif; ?>
+
 
       </nav>
       <div class="account" style="margin-top:auto">
@@ -31,8 +32,9 @@
           <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
               <div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));display:grid;place-items:center;color:#fff">AD</div>
               <div>
-                  <div style="font-weight:700">Sirchie</div>
-                  <div class="small muted">Super Admin</div>
+                  <div style="font-weight:700">
+                      <?= Utility::truncateText(!empty($user['fullname']) ? ucfirst($user['fullname']) : ucfirst($role), 7); ?></div>
+                  <div class="small muted"><?= ucfirst($role); ?></div>
               </div>
           </div>
       </div>

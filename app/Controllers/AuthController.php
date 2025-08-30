@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Services\AuthService;
 use App\Utils\RequestValidator;
+use App\Utils\Response;
 
 
 class AuthController
@@ -31,7 +32,11 @@ class AuthController
 
         $data = RequestValidator::sanitize($data);
 
-        AuthService::createAccount($data);
+        $register = AuthService::createAccount($data);
+
+        if ($register) {
+            Response::success([], 'User registration successful');
+        }
     }
 
     public function logout()
@@ -42,7 +47,8 @@ class AuthController
 
         $data = RequestValidator::sanitize($data);
 
-        AuthService::logoutUser($data);
+        $logout = AuthService::logoutUser($data);
+        if ($logout) Response::success([], "User logged out");
     }
 
     public function recoverAccount()
@@ -53,7 +59,10 @@ class AuthController
 
         $data = RequestValidator::sanitize($data);
 
-        AuthService::recoverAccount($data);
+        $recover = AuthService::recoverAccount($data);
+        if ($recover) {
+            Response::success([], "A reset link has been sent to your registered email.");
+        }
     }
     public function resetAccountPassword()
     {
@@ -63,6 +72,9 @@ class AuthController
         ]);
 
         $data = RequestValidator::sanitize($data);
-        AuthService::resetPassword($data);
+        $reset = AuthService::resetPassword($data);
+        if ($reset) {
+            Response::success([], "Password reset complete");
+        }
     }
 }

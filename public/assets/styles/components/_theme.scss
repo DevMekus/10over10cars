@@ -92,3 +92,11 @@ body {
   font-style: normal;
   transition: background 0.3s, color 0.3s;
 }
+
+.success {
+  color: var(--success);
+}
+
+.danger {
+  color: var(--error);
+}

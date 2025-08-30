@@ -253,6 +253,22 @@ class Application {
     );
   }
 
+  user_menu() {
+    const dropdown = document.getElementById("userDropdown");
+    const menu = document.getElementById("dropdownMenu");
+    if (!dropdown || !menu) return;
+
+    dropdown.addEventListener("click", (e) => {
+      e.stopPropagation(); // prevent body click from closing it immediately
+      menu.classList.toggle("show");
+    });
+
+    // Close if clicked outside
+    document.body.addEventListener("click", () => {
+      menu.classList.remove("show");
+    });
+  }
+
   COOKIEManagement() {
     const cookieBanner = document.getElementById("cookieBanner");
     if (!cookieBanner) return;
@@ -283,6 +299,15 @@ class Application {
     });
   }
 
+  AOSMatchMedia() {
+    AOS.init({
+      duration: 700,
+      once: true,
+      disable: () =>
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    });
+  }
+
   dashboardSidebarToggle() {
     const sidebar = document.getElementById("sidebar");
     const menuBtn = document.getElementById("menuBtn");
@@ -309,6 +334,39 @@ class Application {
         document
           .querySelectorAll(".modal.open")
           .forEach((m) => m.classList.remove("open"));
+      }
+    });
+  }
+
+  logout() {
+    const logout = document.querySelector(".logout");
+    if (!logout) return;
+
+    logout.addEventListener("click", async () => {
+      const result = await Swal.fire({
+        title: "Logging Out",
+        text: "Do you want to continue?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Logout!",
+      });
+      const userid = logout.dataset.id;
+      if (result.isConfirmed) {
+        const { message, status } = await Utility.fetchData(
+          `${CONFIG.API}/auth/logout`,
+          { userid },
+          "POST"
+        );
+
+        Swal.fire(
+          `${status == 200 ? "Success" : "Error"}`,
+          `${message}`,
+          `${status == 200 ? "success" : "error"}`
+        );
+
+        status == 200 && SessionManager.destroyUserSession();
       }
     });
   }

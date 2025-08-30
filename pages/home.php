@@ -9,7 +9,9 @@ require_once ROOT_PATH . '/includes/navbar.php';
     <header id="home" class="hero" aria-labelledby="hero-title">
         <div class="container grid grid-2 hero-grid">
             <div data-aos="fade-right">
-                <h1 id="hero-title"><span id="typed-headline"></h1>
+                <div class="hero-title-con">
+                    <h1 id="hero-title"><span id="typed-headline"></h1>
+                </div>
                 <p class="lead">Check theft status, mileage anomalies, previous ownership, market value & more. Make confident decisions before you buy.</p>
 
                 <form id="vinForm" class="vin-form" autocomplete="off" novalidate>
@@ -30,7 +32,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
             </div>
             <div data-aos="fade-left">
                 <div class="hero-visual">
-                    <div class="car">Hero Illustration / Car Placeholder</div>
+                    <div class="car"></div>
                     <div class="badge" style="position:absolute; bottom:14px; right:14px;"><i class="bi bi-shield-lock"></i> Paystack / Flutterwave Ready</div>
                 </div>
             </div>
@@ -174,7 +176,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
     </section>
 
     <!-- Marketplace -->
-    <section id="market" class="section" aria-labelledby="market-title" data-aos="zoom-out">
+    <section id="market" class="section" aria-labelledby="market-title" data-aos="zoom-in">
         <div class="container">
             <h2 id="market-title" class="section-title">Featured cars</h2>
             <p class="section-sub">Search verified listings. Negotiate confidently.</p>

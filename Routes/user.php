@@ -14,7 +14,13 @@ $car = new VehicleController();
 
 //General Routes for the User and Admin
 
-Router::group('/v1', function () use ($dealer, $car) {
+Router::group('/v1', function () use ($dealer, $car, $user) {
+
+    #UserController routes
+    Router::add('GET',  '/user/{id}', [$user, 'userProfile']);
+    Router::add('PUT',  '/user/{id}', [$user, 'updateUserProfile']);
+
+
     Router::add('GET',  '/dealer/{id}', [$dealer, 'findADealer']);
     Router::add('POST',  '/dealer', [$dealer, 'dealerRegistration']);
 

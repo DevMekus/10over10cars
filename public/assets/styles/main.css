@@ -61,6 +61,14 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 
+.success {
+  color: var(--success);
+}
+
+.danger {
+  color: var(--error);
+}
+
 @font-face {
   font-family: "HelveticaFont";
   src: url("../fonts/Helvetica-Bold.ttf") format("woff2");
@@ -1839,6 +1847,10 @@ select {
   line-height: 1.05;
   margin: 0 0 14px;
 }
+#LANDINGPAGE .hero-title-con {
+  height: 150px;
+  position: relative;
+}
 #LANDINGPAGE .hero p.lead {
   font-size: clamp(16px, 2.3vw, 20px);
   color: var(--muted);
@@ -1854,13 +1866,19 @@ select {
   position: relative;
 }
 #LANDINGPAGE .hero-visual .car {
-  width: 82%;
-  height: 64%;
+  width: 100%;
+  height: 100%;
+  position: relative;
   border-radius: 18px;
   border: 1px dashed var(--border);
   display: grid;
   place-items: center;
   color: var(--muted);
+}
+#LANDINGPAGE .hero-visual .car img {
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
 }
 #LANDINGPAGE .hero-trust {
   display: flex;
@@ -2126,6 +2144,19 @@ select {
   bottom: 16px;
   z-index: 55;
   display: none;
+}
+
+.paymentPage {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.paymentPage .vinBox {
+  width: 600px;
+  margin: auto;
 }
 
 #AUTHContainer {
@@ -3570,4 +3601,237 @@ select {
   width: min(720px, 96%);
   max-height: 90vh;
   overflow: auto;
+}
+
+.notifcationPage {
+  /* Notifications list */
+  /* right column */
+  /* modal */
+  /* responsive */
+}
+.notifcationPage .left-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.notifcationPage input[type=search] {
+  border: none;
+  background: transparent;
+  outline: none;
+  padding-left: 6px;
+}
+.notifcationPage .icon-btn {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.notifcationPage .card-dash {
+  background: var(--bg);
+  padding: 14px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+.notifcationPage .kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+.notifcationPage .kpi {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.notifcationPage .kpi .badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: var(--text-light);
+}
+.notifcationPage .btn.ghost, .notifcationPage .default-form input.ghost[type=submit], .default-form .notifcationPage input.ghost[type=submit],
+.notifcationPage .default-form input.ghost[type=reset],
+.default-form .notifcationPage input.ghost[type=reset] {
+  background: transparent;
+  border: 1px solid rgba(15, 23, 36, 0.06);
+}
+.notifcationPage .bulk-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(14, 165, 233, 0.04), rgba(22, 163, 74, 0.02));
+}
+.notifcationPage .list {
+  display: grid;
+  gap: 8px;
+}
+.notifcationPage .note {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 36, 0.04);
+  background: var(--surface);
+}
+.notifcationPage .note.unread {
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.04);
+  border-left: 4px solid var(--primary);
+}
+.notifcationPage .note .icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: #eef6ff;
+  color: var(--primary);
+  font-weight: 800;
+}
+.notifcationPage .note .body {
+  flex: 1;
+}
+.notifcationPage .note .meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+}
+.notifcationPage .note .actions {
+  display: flex;
+  gap: 6px;
+}
+.notifcationPage .tag {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+}
+.notifcationPage .tag.info {
+  background: rgba(14, 165, 233, 0.08);
+  color: var(--primary);
+}
+.notifcationPage .tag.warn {
+  background: rgba(245, 158, 11, 0.08);
+  color: var(--warn);
+}
+.notifcationPage .tag.danger {
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--danger);
+}
+.notifcationPage .list-footer {
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+}
+.notifcationPage .two-col {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 16px;
+}
+.notifcationPage .chart-wrap {
+  height: 180px;
+}
+.notifcationPage .recent-small {
+  display: grid;
+  gap: 8px;
+}
+.notifcationPage .modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 6, 23, 0.5);
+  z-index: 2000;
+  padding: 20px;
+}
+.notifcationPage .modal.open {
+  display: flex;
+}
+.notifcationPage .modal-card {
+  width: 100%;
+  max-width: 820px;
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+  max-height: 90vh;
+  overflow: auto;
+}
+@media (max-width: 1000px) {
+  .notifcationPage .two-col {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .notifcationPage .kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .notifcationPage .note {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.dashboard-nav .user-dropdown {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: var(--bg);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 2px 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-nav .user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.dashboard-nav .user-name {
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.dashboard-nav .dropdown-menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background-color: var(--bg);
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  min-width: 160px;
+  display: none;
+  flex-direction: column;
+  z-index: 999;
+}
+
+.dashboard-nav .dropdown-menu a {
+  padding: 10px 16px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.dashboard-nav .dropdown-menu a:hover {
+  background-color: var(--neutral-200);
+  color: var(--text);
+}
+
+.dashboard-nav .dropdown-menu.show {
+  display: flex;
 }/*# sourceMappingURL=main.css.map */

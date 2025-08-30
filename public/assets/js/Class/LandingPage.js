@@ -1,4 +1,8 @@
+import AppInit from "./Application.js";
+import SessionManager from "./SessionManager.js";
 import Utility from "./Utility.js";
+import VerifyStatic from "./Verification.js";
+import PaystackPayment from "./Paystack.js";
 
 export default class landingStatic {
   static STATE_LIST = [
@@ -177,6 +181,28 @@ class LandingPage {
     Utility.runClassMethods(this, ["initialize"]);
   }
 
+  hero_cars() {
+    const heroImage = document.querySelector(".hero-visual .car");
+    if (!heroImage) return;
+    console.log("running");
+    const images = [
+      "https://images.unsplash.com/photo-1494905998402-395d579af36f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1566008885218-90abf9200ddb?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1669235219888-a0f83616aad9?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    ];
+
+    let currentIndex = 0;
+
+    setInterval(() => {
+      heroImage.style.opacity = 0;
+      setTimeout(() => {
+        currentIndex = (currentIndex + 1) % images.length;
+        heroImage.innerHTML = `<img src="${images[currentIndex]}" alt="Car illustration" />`;
+        heroImage.style.opacity = 1;
+      }, 500); // wait for fade-out before swapping image
+    }, 5000);
+  }
+
   hero_typing() {
     const domElem = document.getElementById("typed-headline");
     if (!domElem) return;
@@ -204,15 +230,6 @@ class LandingPage {
     });
   }
 
-  AOSMatchMedia() {
-    AOS.init({
-      duration: 700,
-      once: true,
-      disable: () =>
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    });
-  }
-
   
 
   vinValidation() {
@@ -221,27 +238,15 @@ class LandingPage {
     const vinMsg = document.getElementById("vinMsg");
     if (!vinForm) return;
 
-    function isValidVIN(v) {
-      if (!v || v.length !== 17) return false;
-      return /^[A-HJ-NPR-Z0-9]{17}$/i.test(v); // exclude I,O,Q
-    }
-
     vinForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const vin = vinInput.value.trim().toUpperCase();
-      if (!isValidVIN(vin)) {
-        vinMsg.style.color = "var(--danger)";
-        vinMsg.textContent =
-          "Invalid VIN. It must be 17 characters and cannot include I, O, or Q.";
-        vinInput.focus();
-        return;
+      const verify = VerifyStatic.verify_VIN(vin);
+
+      if (verify) {
+        vinMsg.style.color = "var(--accent)";
+        vinMsg.innerHTML = `<a href="#pricing" class="badge" style="border-color:#c7e8d3; color:#16a34a; font-size: 20px"><i class="bi bi-shield-check"></i> VIN looks good. Select Payment</a>`;
       }
-      // Mock result
-      vinMsg.style.color = "var(--accent)";
-      vinMsg.innerHTML = `<span class="badge" style="border-color:#c7e8d3; color:#16a34a;"><i class="bi bi-shield-check"></i> VIN looks good. Showing demo result…</span>`;
-      setTimeout(() => {
-        alert(`Demo only: VIN ${vin} verified. (Connect API here)`);
-      }, 200);
     });
   }
 
@@ -266,15 +271,35 @@ class LandingPage {
         <ul style="color:var(--muted); padding-left:18px;">
           ${p.features.map((f) => `<li>${f}</li>`).join("")}
         </ul>
-        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-          <button class="btn btn-primary"><i class="bi bi-shield-lock"></i> ${
-            p.cta
-          }</button>
-          <button class="btn btn-outline" title="Paystack (placeholder)"><i class="bi bi-credit-card"></i> Paystack</button>
-          <button class="btn btn-outline" title="Flutterwave (placeholder)"><i class="bi bi-credit-card-2-back"></i> Flutterwave</button>
+        <div style="display:flex; justify-content: center; gap:10px; flex-wrap:wrap; margin-top:10px;">
+         
+        <a href="secure/payment?p${
+          p.name
+        }" class="btn btn-primary vin_payment" data-price="${
+        p.price
+      }"><i class="bi bi-shield-lock"></i> 
+        ${p.cta}</a>
+          
+         
         </div>
       `;
       pricingGrid.appendChild(el);
+    });
+  }
+
+  VerificationPayment() {
+    const btns = document.querySelectorAll(".vin_payment");
+    if (!btns) return;
+    btns.forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const getKey = await SessionManager.fetchEncryptionKey();
+        if (getKey.success) {
+          const key = getKey.PAYSTACK_PK;
+          const paystack = new PaystackPayment({
+            publicKey: key,
+          });
+        }
+      });
     });
   }
 

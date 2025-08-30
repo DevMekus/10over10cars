@@ -45,21 +45,45 @@ class UserController
         Response::success($data, "Application data");
     }
 
+    public function userProfile($id)
+    {
+        $id = RequestValidator::parseId($id);
+        $user = UserService::fetchUserDetails($id);
+        if (!empty($user)) Response::success($user, 'user information');
+    }
 
+    public function usersProfiles()
+    {
+        $users = UserService::fetchAllUsersAndData();
 
+        if (!empty($users)) Response::success($users, 'users information');
+    }
 
-    // public function findUser($id)
-    // {
-    //     $id = RequestValidator::parseId($id);
-    //     UserService::sendUserDetails($id);
-    // }
+    public function updateUserProfile($id)
+    {
+        $id = RequestValidator::parseId($id);
+        $data = $_POST;
+        $data = RequestValidator::sanitize($data);
 
-    // public function updateProfile($id)
-    // {
-    //     $id = RequestValidator::parseId($id);
-    //     $data = $_POST;
+        $update = UserService::updateUserInformation($id, $data);
+        if ($update) {
+            //$user = UserService::fetchUserDetails($id);
+            Response::success([], 'Profile update successful');
+        }
+    }
 
-    //     $data = RequestValidator::sanitize($data);
-    //     UserService::updateUserInformation($id, $data);
-    // }
+    public function deleteUserProfile($id)
+    {
+        $id = RequestValidator::parseId($id);
+        $delete = UserService::deleteUserAccount($id);
+        if ($delete) Response::success([], 'User account deleted');
+    }
+
+    public function fetchUserActivity($id)
+    {
+        $id = RequestValidator::parseId($id);
+        $activity = UserService::fetchActivityLogs($id);
+        if (!empty($activity)) Response::success($activity, "user activity");
+        Response::error(404, "user activity not found");
+    }
 }

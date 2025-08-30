@@ -105,11 +105,11 @@ class AuthService
                 unset($data['user_password']);
                 Activity::activity([
                     'userid' => $userid,
-                    'type' => 'register',
+                    'type' => 'registration',
                     'title' => 'registration successful',
                 ]);
                 //self::registrationEmail($data['fullname'], $data['email_address']);
-                Response::success(['user' => $data], 'User registration successful');
+                return true;
             }
         } catch (\Throwable $e) {
             Utility::log($e->getMessage(), 'error', 'UserService::registerNewUser', ['host' => 'localhost'], $e);
@@ -144,11 +144,12 @@ class AuthService
         try {
 
             header('Authorization: Bearer null');
-            if (Activity::activity([
-                'userid' => $data['userid'],
+            Activity::activity([
+                'userid' => $data['userid'] ?? $_SESSION['userid'],
                 'type' => 'logout',
                 'title' => 'logout successful',
-            ])) Response::success([], "User logged out");
+            ]);
+            return true;
         } catch (\Throwable $e) {
             Utility::log($e->getMessage(), 'error', 'AuthService::logout', ['host' => 'localhost'], $e);
             Response::error(500, "An error has occurred");
@@ -177,7 +178,7 @@ class AuthService
 
 
             if (Database::update($accounts, $data, ["userid" => $existingUser['userid']])) {
-                $resetLink = BASE_URL . "/auth/reset-password?token=$token";
+                $resetLink = BASE_URL . "auth/reset-password?token=$token";
 
                 $templateData = [
                     '{{logo_url}}' => BASE_URL . 'assets/images/dark-logo.jpg',
@@ -192,11 +193,11 @@ class AuthService
                 if (MailClient::sendMail(
                     $existingUser['email_address'],
                     'Account Recovery',
-                    ROOT_PATH . '/app/templates/account_recovery_email.html',
+                    ROOT_PATH . '/app/Services/templates/reset_password.html',
                     $templateData,
                     $existingUser['fullname']
                 )) {
-                    Response::success([], "A reset link has been sent to your registered email.");
+                    return true;
                 }
             }
         } catch (\Throwable $e) {
@@ -228,7 +229,7 @@ class AuthService
                     'type' => 'update',
                     'title' => 'password reset successful',
                 ]);
-                Response::success([], "Password reset complete");
+                return true;
             }
         } catch (\Throwable $e) {
             Utility::log($e->getMessage(), 'error', 'UserService::resetPassword', ['host' => 'localhost'], $e);

@@ -12,7 +12,7 @@ use configs\Database;
 class UserService
 {
 
-   
+
 
     public static function fetchUserDetails($id)
     {
@@ -35,10 +35,17 @@ class UserService
                     ]
                 ],
                 ["u.*", "a.*", "d.company"],
-                ["u.userid" => $id]
+                [
+                    "OR" => [
+                        "u.id" => $id,
+                        "u.userid" => $id,
+                        "a.userid" => $id,
+                        "a.id" => $id,
+                    ]
+                ],
+                ["u.$id" => $id]
             );
         } catch (\Throwable $th) {
-
             Utility::log($th->getMessage(), 'error', 'UserService::userDetail', ['userid' => $id], $th);
             Response::error(500, "An error occurred while fetching user details");
         }
@@ -73,26 +80,7 @@ class UserService
     }
 
 
-    public static function sendUserDetails($id)
-    {
-        $user = self::fetchUserDetails($id);
 
-        if (!empty($user)) {
-            Response::success($user[0], "User found");
-        } else {
-            Response::error(404, "User not found");
-        }
-    }
-
-    public static function sendAllUserInformation()
-    {
-        $users = self::fetchAllUsersAndData();
-        if (!empty($users)) {
-            Response::success($users, "Users found");
-        } else {
-            Response::error(404, "Users not found");
-        }
-    }
 
     public static function updateUserInformation($id, $data)
     {
@@ -102,22 +90,25 @@ class UserService
             $userData = self::fetchUserDetails($id);
 
             if (empty($userData)) Response::error(404, "User not found");
+
             $user = $userData[0];
 
 
             $profileInfo = [
-                'fullname' => $data['fullname'] ?? $user['fullname'],
-                'fullname' => $data['email_address'] ?? $user['email_address'],
+                'fullname' => isset($data['fullname']) ? $data['fullname'] : $user['fullname'],
+                'fullname' => isset($data['email_address']) ? $data['email_address'] : $user['email_address'],
                 'user_password' => isset($data['user_password']) ? password_hash($data['user_password'], PASSWORD_BCRYPT) : $user['user_password'],
-                'phone' => $data['phone'] ?? $user['phone'],
-                'location' => $data['location'] ?? $user['location'],
-                'city_state' => $data['city_state'] ?? $user['city_state'],
-                'country' => $data['country'] ?? $user['country'],
+                'phone' => isset($data['phone']) ? $data['phone'] : $user['phone'],
+                'location' => isset($data['location']) ? $data['location'] : $user['location'],
+                'city_state' => isset($data['city_state']) ? $data['city_state'] : $user['city_state'],
+                'country' =>  isset($data['country']) ? $data['country'] : $user['country'],
             ];
 
             $accountInfo = [
-                'status' => $data['status'] ?? $user['status'],
-                'role' => $data['role'] ?? $user['role'],
+                'status' => isset($data['status']) ? $data['status'] : $user['status'],
+                'role' => isset($data['role']) ? $data['role'] : $user['role'],
+                'reset_token' => isset($data['reset_token']) ? $data['reset_token'] : $user['reset_token'],
+                'reset_token_expiration' => isset($data['reset_token_expiration']) ? $data['reset_token_expiration'] : $user['reset_token'],
             ];
 
             if (
@@ -143,17 +134,17 @@ class UserService
             }
 
             if (
-                Database::update($profile,  $profileInfo, ["userid" => $id])
-                && Database::update($accounts,  $accountInfo, ["userid" => $id])
+                Database::update($profile,  $profileInfo, [$id => $id])
+                && Database::update($accounts,  $accountInfo, [$id => $id])
 
             ) {
                 Activity::activity([
                     'userid' => $user['userid'],
                     'type' => 'update',
-                    'title' => 'logout successful',
+                    'title' => 'profile update',
                 ]);
-                $currentUserData = self::fetchUserDetails($id);
-                Response::success($currentUserData, "Account update successful");
+
+                return true;
             }
         } catch (\Throwable $th) {
             Utility::log($th->getMessage(), 'error', 'UserService::updateUserInformation', ['userid' => $id], $th);
@@ -183,17 +174,16 @@ class UserService
             }
 
 
-
             if (
-                Database::delete($profile, ["userid" => $id])
-                && Database::delete($accounts, ["userid" => $id])
+                Database::delete($profile, [$id => $id])
+                && Database::delete($accounts, [$id => $id])
             ) {
                 Activity::activity([
                     'userid' => $_SESSION['userid'],
                     'type' => 'delete',
                     'title' => 'account deleted',
                 ]);
-                Response::success([], "Account deleted successful");
+                return true;
             }
         } catch (\Throwable $th) {
             Utility::log($th->getMessage(), 'error', 'UserService::deleteUserAccount', ['userid' => $id], $th);
@@ -219,31 +209,9 @@ class UserService
                 $id ? ["l.userid" => $id] : [],
                 ["order" => "l.id DESC"]
             );
-            if (empty($logs)) Response::error(404, "Activity logs not found");
-            Response::success($logs, "Activity logs found");
         } catch (\Throwable $th) {
             Utility::log($th->getMessage(), 'error', 'UserService::fetchActivityLogs', ['userid' => $_SESSION['userid']], $th);
             Response::error(500, "An error occurred while fetching activity logs");
         }
-    }
-
-
-
-    public static function sendActivityLog($id)
-    {
-        $log = self::fetchActivityLogs($id);
-        if (empty($log)) {
-            Response::error(404, "Activity log not found");
-        }
-        Response::success($log[0], "Activity log found");
-    }
-
-    public static function sendAllActivityLog()
-    {
-        $log = self::fetchActivityLogs();
-        if (empty($log)) {
-            Response::error(404, "Activity log not found");
-        }
-        Response::success($log[0], "Activity log found");
     }
 }

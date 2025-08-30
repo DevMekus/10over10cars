@@ -56,9 +56,9 @@ require_once ROOT_PATH . '/includes/header.php';
                     <div id="pwError" class="muted" style="display:none;color:var(--danger);font-size:13px"></div>
                 </div>
 
-                <div class="row" style="justify-content:space-between;align-items:center;margin-top:6px">
+                <div class="rows" style="width:100%; display:flex; justify-content:space-between; align-items:center;margin-top:6px">
                     <label class="checkbox"><input id="remember" type="checkbox" aria-label="Remember me"> <span class="muted">Remember me</span></label>
-                    <a href="#" class="muted">Forgot password?</a>
+                    <a href="recover-account" class="muted">Forgot password?</a>
                 </div>
 
                 <!-- Submit -->

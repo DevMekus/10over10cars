@@ -4,24 +4,34 @@ use App\Utils\Utility;
 
 Utility::verifySession();
 
-$role = $_SESSION['role'];
+$role   = $_SESSION['role'];
 $userid = $_SESSION['userid'];
+$user = null;
 
-// // Only fetch profile if not already in session
-// if (!isset($_SESSION['user_profile'])) {
-//     $url = BASE_URL . "api/user/profile/$userid";
-//     $getProfile = Utility::requestClient($url);
-//     $user = $getProfile['data'] ?? null;
+// Refresh user profile if not cached or expired
+$cacheDuration = 300;
+$shouldRefresh = !isset($_SESSION['user_profile'])
+    || !isset($_SESSION['profile_cached_at'])
+    || (time() - $_SESSION['profile_cached_at']) > $cacheDuration;
 
-//     if (!$user) {
-//         header('location: ' . BASE_URL . 'auth/login?f-bk=UNAUTHORIZED');
-//         exit;
-//     }
+if ($shouldRefresh) {
+    $url        = BASE_URL . "api/v1/user/$userid";
+    $getProfile = Utility::requestClient($url);
+    $userArray = $getProfile['data'] ?? null;
 
-//     // Store in session for reuse
-//     $_SESSION['user_profile'] = $user;
-// } else {
-//     $user = $_SESSION['user_profile'];
-// }
+    if (empty($userArray)) {
 
-// $role = $_SESSION['role'];
+        session_unset();
+        session_destroy();
+        header('location: ' . BASE_URL . 'auth/login?f-bk=UNAUTHORIZED');
+        exit;
+    }
+
+
+    $user = is_array($userArray) && isset($userArray[0]) ? $userArray[0] : $userArray;
+
+    $_SESSION['user_profile']   = $user;
+    $_SESSION['profile_cached_at'] = time();
+} else {
+    $user = $_SESSION['user_profile'];
+}

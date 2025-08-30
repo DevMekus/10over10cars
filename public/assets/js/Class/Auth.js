@@ -7,12 +7,16 @@ export default class AuthStatic {
   static submitBtn = document.getElementById("submitBtn");
   static btnText = document.getElementById("btnText");
   static btnSpinner = document.getElementById("btnSpinner");
-  static form = document.getElementById("loginForm");
+
   static emailInput = document.getElementById("email");
   static emailError = document.getElementById("emailError");
   static pwError = document.getElementById("pwError");
-
   static password = document.getElementById("password");
+
+  static form = document.getElementById("loginForm");
+  static register = document.getElementById("registerForm");
+  static recoverForm = document.getElementById("recoverForm");
+  static resetForm = document.getElementById("resetForm");
 
   static showToast(message, type = "info", ttl = 3500) {
     const t = document.createElement("div");
@@ -34,15 +38,39 @@ export default class AuthStatic {
   }
 
   static setLoading(on) {
+    // Store the original label only once
+    if (!AuthStatic._originalLabel) {
+      AuthStatic._originalLabel = AuthStatic.btnText.textContent;
+    }
+
     if (on) {
       AuthStatic.btnSpinner.style.display = "inline-block";
-      AuthStatic.btnText.textContent = "Signing in...";
+      AuthStatic.btnText.textContent = "Please wait...";
       AuthStatic.submitBtn.disabled = true;
     } else {
       AuthStatic.btnSpinner.style.display = "none";
-      AuthStatic.btnText.textContent = "Login";
+      AuthStatic.btnText.textContent = AuthStatic._originalLabel;
       AuthStatic.submitBtn.disabled = false;
     }
+  }
+
+  static validateEmail() {
+    const v = AuthStatic.emailInput.value.trim();
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    AuthStatic.emailError.style.display = ok ? "none" : "block";
+    if (!ok)
+      AuthStatic.emailError.textContent = "Please enter a valid email address.";
+    return ok;
+  }
+
+  static validatePassword() {
+    const v = AuthStatic.password.value || "";
+    const ok = v.length >= 6;
+    AuthStatic.pwError.style.display = ok ? "none" : "block";
+    if (!ok)
+      AuthStatic.pwError.textContent =
+        "Password must be at least 6 characters.";
+    return ok;
   }
 }
 class Auth {
@@ -80,33 +108,15 @@ class Auth {
   }
 
   formValidationLogin() {
-    function validateEmail() {
-      const v = AuthStatic.emailInput.value.trim();
-      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-      AuthStatic.emailError.style.display = ok ? "none" : "block";
-      if (!ok)
-        AuthStatic.emailError.textContent =
-          "Please enter a valid email address.";
-      return ok;
-    }
+    if (!AuthStatic.form) return;
 
-    function validatePassword() {
-      const v = AuthStatic.password.value || "";
-      const ok = v.length >= 6;
-      AuthStatic.pwError.style.display = ok ? "none" : "block";
-      if (!ok)
-        AuthStatic.pwError.textContent =
-          "Password must be at least 6 characters.";
-      return ok;
-    }
-
-    AuthStatic.emailInput.addEventListener("input", validateEmail);
-    AuthStatic.password.addEventListener("input", validatePassword);
+    AuthStatic.emailInput.addEventListener("input", AuthStatic.validateEmail);
+    AuthStatic.password.addEventListener("input", AuthStatic.validatePassword);
 
     AuthStatic.form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const ok = validateEmail() & validatePassword();
+      const ok = AuthStatic.validateEmail() & AuthStatic.validatePassword();
       if (!ok) {
         AuthStatic.showToast("Please fix the errors in the form", "error");
         return;
@@ -139,6 +149,117 @@ class Auth {
             window.location.href = `${CONFIG.BASE_URL}/dashboard/overview`;
           }, CONFIG.TIMEOUT);
         }
+      }
+    });
+  }
+
+  formValidationRegister() {
+    if (!AuthStatic.register) return;
+
+    AuthStatic.emailInput.addEventListener("input", AuthStatic.validateEmail);
+    AuthStatic.password.addEventListener("input", AuthStatic.validatePassword);
+
+    AuthStatic.register.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const ok = AuthStatic.validateEmail() & AuthStatic.validatePassword();
+      if (!ok) {
+        AuthStatic.showToast("Please fix the errors in the form", "error");
+        return;
+      }
+
+      AuthStatic.setLoading(true);
+      const data = Utility.toObject(new FormData(e.target));
+
+      const response = await Utility.fetchData(
+        `${CONFIG.API}/auth/register`,
+        data,
+        "POST"
+      );
+
+      if (response) {
+        AuthStatic.setLoading(false);
+
+        if (response.status !== 200) {
+          AuthStatic.showToast(`${response.message}`, "error");
+          return;
+        }
+
+        AuthStatic.showToast(
+          "Registration successful. Please sign in..",
+          "success"
+        );
+        setTimeout(() => {
+          window.location.href = `${CONFIG.BASE_URL}/auth/login`;
+        }, CONFIG.TIMEOUT);
+      }
+    });
+  }
+
+  formValidationRecoverAccount() {
+    if (!AuthStatic.recoverForm) return;
+    AuthStatic.emailInput.addEventListener("input", AuthStatic.validateEmail);
+
+    AuthStatic.recoverForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const ok = AuthStatic.validateEmail();
+      if (!ok) {
+        AuthStatic.showToast("Please fix the errors in the form", "error");
+        return;
+      }
+
+      AuthStatic.setLoading(true);
+      const data = Utility.toObject(new FormData(e.target));
+
+      const { status, message } = await Utility.fetchData(
+        `${CONFIG.API}/auth/recover`,
+        data,
+        "POST"
+      );
+
+      if (status) {
+        AuthStatic.setLoading(false);
+        AuthStatic.showToast(`${message}`, "error");
+        document.getElementById("message").innerHTML = `<p class="bold ${
+          status == 200 ? "success" : "danger"
+        }">${message}</p>`;
+      }
+    });
+  }
+
+  formValidationResetPassword() {
+    if (!AuthStatic.resetForm) return;
+    AuthStatic.password.addEventListener("input", AuthStatic.validatePassword);
+
+    AuthStatic.resetForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const ok = AuthStatic.validatePassword();
+      if (!ok) {
+        AuthStatic.showToast("Please fix the errors in the form", "error");
+        return;
+      }
+
+      AuthStatic.setLoading(true);
+      const data = Utility.toObject(new FormData(e.target));
+
+      const { status, message } = await Utility.fetchData(
+        `${CONFIG.API}/auth/reset`,
+        data,
+        "POST"
+      );
+
+      if (status) {
+        AuthStatic.setLoading(false);
+        AuthStatic.showToast(
+          `${message}`,
+          `${status == 200 ? "success" : "error"}`
+        );
+        status == 200 &&
+          setTimeout(() => {
+            window.location.href = `${CONFIG.BASE_URL}/auth/login`;
+          }, 1000);
       }
     });
   }

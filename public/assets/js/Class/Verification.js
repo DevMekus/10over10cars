@@ -160,6 +160,32 @@ export default class VerifyStatic {
       setTimeout(() => t.remove(), 400);
     }, ttl);
   }
+
+  static verify_VIN(vin) {
+    const vinMsg = document.getElementById("vinMsg");
+    const vinInput = document.getElementById("vin");
+
+    if (!Utility.isValidVIN(vin)) {
+      vinMsg.style.color = "var(--danger)";
+      vinMsg.textContent = "Invalid VIN. It must be 17 characters";
+      vinInput.focus();
+      return;
+    }
+
+    const vehicles = AppInit.DATA.vehicles;
+    const filter = vehicles.find((vehicle) => vehicle.vin === vin);
+
+    if (!filter) {
+      vinMsg.style.color = "var(--danger)";
+      vinMsg.textContent = "Vehicle bearing this VIN not found";
+      vinInput.focus();
+      return;
+    }
+
+    sessionStorage.removeItem("vin");
+    sessionStorage.setItem("vin", vin);
+    return true;
+  }
 }
 
 class Verification {
@@ -516,6 +542,7 @@ class Verification {
     );
 
     // approve/decline from modal
+    if (!document.getElementById("approveBtn")) return;
     document
       .getElementById("approveBtn")
       .addEventListener("click", () =>

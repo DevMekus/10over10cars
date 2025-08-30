@@ -569,4 +569,9 @@ export default class Utility {
       window.location.reload();
     }, Utility.loadTimeout);
   }
+
+  static isValidVIN(v) {
+    if (!v || v.length !== 17) return false;
+    return /^[A-HJ-NPR-Z0-9]{17}$/i.test(v); // exclude I,O,Q
+  }
 }

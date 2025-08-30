@@ -44,6 +44,7 @@ switch ($input['action']) {
             'status' => 200,
             'message' => 'Application data',
             'ENCRYPTION_KEY' => 'd10b86de4e86d5f6636b96f041f10ded5346a6c760d8d981a6690fbef7c87132',
+            'PAYSTACK_PK' => 'pk_test_5a69848631eaa83428c8a28cad37e3227c6f17e7',
             'success' => true,
         ]);
         exit;

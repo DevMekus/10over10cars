@@ -1,10 +1,11 @@
 <?php
+require_once ROOT_PATH . '/siteConfig.php';
 require_once ROOT_PATH . '/includes/reuse.php';
 require_once ROOT_PATH . '/includes/header.php';
 
 ?>
 
-<body id="Dashboard" class="overviewPage">
+<body id="Dashboard" class="overviewPage" data-role="<?= $role; ?>" data-userid="<?= $userid; ?>">
     <div class="app">
         <!-- Sidebar -->
         <?php require_once "sidebar.php"; ?>
@@ -161,10 +162,7 @@ require_once ROOT_PATH . '/includes/header.php';
     </div>
     <?php require "modals.php"; ?>
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <!-- <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Verification.js"></script>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Vehicle.js"></script>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Dealers.js"></script>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Dashboard.js"></script> -->
+
 
 </body>
 

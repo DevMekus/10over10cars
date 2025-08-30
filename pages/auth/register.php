@@ -38,7 +38,7 @@ require_once ROOT_PATH . '/includes/header.php';
                 </div>
             </div>
 
-            <form id="loginForm" novalidate>
+            <form id="registerForm" novalidate>
                 <div class="field">
                     <label for="fullname">Your fullname</label>
                     <input id="fullname" name="fullname" type="text" inputmode="text" placeholder="John Doe" required aria-required="true" />
@@ -47,7 +47,7 @@ require_once ROOT_PATH . '/includes/header.php';
                 <!-- Email / Username -->
                 <div class="field">
                     <label for="email">Email address</label>
-                    <input id="email" name="email" type="email" inputmode="email" placeholder="you@example.com" required aria-required="true" />
+                    <input id="email" name="email_address" type="email" inputmode="email" placeholder="you@example.com" required aria-required="true" />
                     <div id="emailError" class="muted" style="display:none;color:var(--danger);font-size:13px"></div>
                 </div>
 
@@ -55,16 +55,14 @@ require_once ROOT_PATH . '/includes/header.php';
                 <div class="field">
                     <label for="password">Password</label>
                     <div class="pw-wrap">
-                        <input id="password" name="password" type="password" placeholder="Enter your password" minlength="6" required aria-required="true" />
+                        <input id="password" name="user_password" type="password" placeholder="Enter your password" minlength="6" required aria-required="true" />
                         <button type="button" class="pw-toggle" aria-label="Show password" title="Show/hide password"><i class="bi bi-eye"></i></button>
                     </div>
                     <div id="pwError" class="muted" style="display:none;color:var(--danger);font-size:13px"></div>
                 </div>
+                <input name="role" type="hidden" value="user" />
 
-                <div class="row" style="justify-content:space-between;align-items:center;margin-top:6px">
-                    <label class="checkbox"><input id="remember" type="checkbox" aria-label="Remember me"> <span class="muted">Remember me</span></label>
 
-                </div>
 
                 <!-- Submit -->
                 <div style="display:flex;gap:12px;align-items:center;margin-top:6px">

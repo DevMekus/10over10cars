@@ -1,19 +1,19 @@
 <?php
 require_once ROOT_PATH . '/siteConfig.php';
+require_once ROOT_PATH . '/includes/reuse.php';
 require_once ROOT_PATH . '/includes/header.php';
 
 ?>
 
-<body id="Dashboard" class="notifcationPage">
+<body id="Dashboard" class="notifcationPage"  data-role="<?= $role; ?>" data-userid="<?= $userid; ?>">
     <div class="app">
         <!-- Sidebar -->
         <?php require_once "sidebar.php"; ?>
         <!-- Main area -->
         <div class="main">
             <?php require_once "navbar.php"; ?>
-            <header class="topbar">
+            <header>
                 <div class="left-controls">
-
                     <div class="filters muted" style="margin-left:8px">
                         <select id="typeFilter" aria-label="Filter by type">
                             <option value="all">All types</option>
@@ -39,34 +39,34 @@ require_once ROOT_PATH . '/includes/header.php';
 
                 <div style="display:flex;align-items:center;gap:10px">
                     <button id="simToggle" class="icon-btn" title="Toggle simulation" aria-pressed="false"><i class="bi bi-lightning-charge"></i></button>
-                    <button id="createBtn" class="btn primary">Create</button>
+                    <button id="createBtn" class="btn btn-primary btn-pill">Create</button>
 
                 </div>
             </header>
             <main class="content">
                 <section class="kpis">
-                    <div class="card kpi">
+                    <div class="card-dash kpi">
                         <div class="badge" style="background:linear-gradient(135deg,var(--primary),var(--accent))"><i class="bi bi-envelope-fill"></i></div>
                         <div>
                             <div class="muted small">Unread</div>
                             <div id="sUnread" style="font-weight:800;font-size:18px">0</div>
                         </div>
                     </div>
-                    <div class="card kpi">
+                    <div class="card-dash kpi">
                         <div class="badge" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)"><i class="bi bi-exclamation-triangle-fill"></i></div>
                         <div>
                             <div class="muted small">Alerts</div>
                             <div id="sAlerts" style="font-weight:800;font-size:18px">0</div>
                         </div>
                     </div>
-                    <div class="card kpi">
+                    <div class="card-dash kpi">
                         <div class="badge" style="background:linear-gradient(135deg,#60a5fa,#7dd3fc)"><i class="bi bi-gear-fill"></i></div>
                         <div>
                             <div class="muted small">System</div>
                             <div id="sSystem" style="font-weight:800;font-size:18px">0</div>
                         </div>
                     </div>
-                    <div class="card kpi">
+                    <div class="card-dash kpi">
                         <div class="badge" style="background:linear-gradient(135deg,#ef4444,#fb7185)"><i class="bi bi-archive-fill"></i></div>
                         <div>
                             <div class="muted small">Archived</div>
@@ -77,8 +77,9 @@ require_once ROOT_PATH . '/includes/header.php';
 
                 <section class="two-col">
                     <div>
-                        <div class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
-                            <div style="display:flex;gap:8px;align-items:center">
+                        <div class="card-dash" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+
+                            <div style="display:flex;gap:10px;align-items:center">
                                 <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="selectAll"> Select</label>
                                 <div class="bulk-bar" id="bulkBar" style="display:none">
                                     <button class="btn ghost" id="markRead">Mark read</button>
@@ -96,13 +97,14 @@ require_once ROOT_PATH . '/includes/header.php';
 
                         <div class="list card" id="list" aria-live="polite"></div>
 
-                        <div class="list-footer card" id="listFooter"><button id="prevPage" class="btn ghost">Prev</button>
-                            <div id="pageInfo" class="muted small">Page 1</div><button id="nextPage" class="btn ghost">Next</button>
+                        <div style="display:flex;justify-content:center;gap:8px;padding:10px">
+                            <button id="prevPage" class="btn btn-sm btn-outline-accent">Prev</button>
+                            <div id="pageInfo" class="muted small">Page 1</div><button id="nextPage" class="btn btn-sm btn-outline-accent">Next</button>
                         </div>
                     </div>
 
                     <aside>
-                        <div class="card">
+                        <div class="card-dash">
                             <strong>Real-time simulation</strong>
                             <div class="muted small">Toggle demo notification injection</div>
                             <div style="display:flex;gap:8px;margin-top:8px">
@@ -111,12 +113,12 @@ require_once ROOT_PATH . '/includes/header.php';
                             </div>
                         </div>
 
-                        <div class="card" style="margin-top:12px">
+                        <div class="card-dash" style="margin-top:12px">
                             <strong>Notifications over time</strong>
                             <div class="chart-wrap"><canvas id="notifChart" height="160"></canvas></div>
                         </div>
 
-                        <div class="card" style="margin-top:12px">
+                        <div class="card-dash" style="margin-top:12px">
                             <strong>Recent activity</strong>
                             <div class="recent-small" id="recentSmall"></div>
                         </div>
