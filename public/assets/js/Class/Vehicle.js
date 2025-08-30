@@ -85,7 +85,7 @@ export default class VehicleStatic {
       )}</span>
           </div>
           <div class="action_btns">
-            <button class='toolbar icon-btn' data-view='${
+            <button class='btn btn-sm icon-btn' data-view='${
               v.id
             }'><i class="fas fa-eye"></i></button>
 
@@ -93,21 +93,24 @@ export default class VehicleStatic {
             ${
               role == "admin"
                 ? `
-                    <button class='toolbar icon-btn' data-edit='${
+                    <button class='btn btn-sm icon-btn' data-edit='${
                       v.id
                     }'><i class="fas fa-pencil"></i></button>
-            <button class='toolbar icon-btn' data-delete='${
-              v.id
-            }'><i class="fas fa-trash danger"></i>
-            </button>
+
+           
                ${
                  v.status !== "approved"
-                   ? `<button class='toolbar icon-btn' data-approve='${v.id}'><i class="fas fa-check-circle approve"></i></button>`
+                   ? `<button class='btn btn-sm icon-btn' data-approve='${v.id}'><i class="fas fa-check-circle approve"></i></button>`
                    : ""
                }
+                <button class='btn btn-sm btn-error icon-btn' data-delete='${
+                  v.id
+                }'><i class="fas fa-trash danger"></i>
+            </button>
             ${
               v.status !== "rejected"
-                ? `<button class='toolbar icon-btn' data-reject='${v.id}'><i class="fas fa-times danger"></i></button>`
+                ? `<button class='btn btn-sm btn-error icon-btn' data-reject='${v.id}'>
+                <i class="fas fa-times danger"></i></button>`
                 : ""
             }          
               
@@ -165,29 +168,29 @@ export default class VehicleStatic {
       )}</span></td>
         <td>
            <div class="action_btns">
-            <button class='toolbar icon-btn' data-view='${
+            <button class='btn btn-sm icon-btn' data-view='${
               v.id
             }'><i class="fas fa-eye"></i></button>
-
        
             ${
               role == "admin"
                 ? `
-                    <button class='toolbar icon-btn' data-edit='${
+                    <button class='btn btn-sm icon-btn' data-edit='${
                       v.id
                     }'><i class="fas fa-pencil"></i></button>
-            <button class='toolbar icon-btn' data-delete='${
-              v.id
-            }'><i class="fas fa-trash danger"></i>
-            </button>
+           
                ${
                  v.status !== "approved"
-                   ? `<button class='toolbar icon-btn' data-approve='${v.id}'><i class="fas fa-check-circle approve"></i></button>`
+                   ? `<button class='btn btn-sm icon-btn' data-approve='${v.id}'><i class="fas fa-check-circle approve"></i></button>`
                    : ""
                }
+                <button class='btn btn-sm btn-error icon-btn' data-delete='${
+                  v.id
+                }'><i class="fas fa-trash danger"></i>
+            </button>
             ${
               v.status !== "rejected"
-                ? `<button class='toolbar icon-btn' data-reject='${v.id}'><i class="fas fa-times danger"></i></button>`
+                ? `<button class='btn btn-sm btn-error icon-btn' data-reject='${v.id}'><i class="fas fa-times danger"></i></button>`
                 : ""
             }          
               

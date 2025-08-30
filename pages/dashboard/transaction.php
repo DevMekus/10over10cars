@@ -12,10 +12,9 @@ require_once ROOT_PATH . '/includes/header.php';
         <!-- Main area -->
         <div class="main">
             <?php require_once "navbar.php"; ?>
-            <header class="topbar">
-                <div style="display:flex;align-items:center;gap:12px">
-
-                    <div class="filters" style="margin-left:8px">
+            <header class="topbars">
+                <div class="mt-1">
+                    <div class="filters">
                         <select id="statusFilter">
                             <option value="all">All status</option>
                             <option value="success">Success</option>
@@ -59,13 +58,13 @@ require_once ROOT_PATH . '/includes/header.php';
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
                         <strong>Transactions</strong>
                         <div style="display:flex;gap:8px;align-items:center">
-                            <button class="btn btn-ghost" id="exportCsv">Export CSV</button>
-                            <button class="btn btn-ghost" id="exportPdf">Export PDF</button>
+                            <button class="btn btn-sm btn-outline-accent" id="exportCsv">Export CSV</button>
+                            <button class="btn btn-sm btn-outline-accent" id="exportPdf">Export PDF</button>
                         </div>
                     </div>
 
                     <div class="table-wrap">
-                        <table id="txTable">
+                        <table id="txTable" class="brand-table">
                             <thead>
                                 <tr>
                                     <th data-sort="id">Txn ID</th>

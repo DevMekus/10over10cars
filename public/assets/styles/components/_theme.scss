@@ -39,6 +39,7 @@ $dark-300: hsl(0, 0%, 20%);
   --border: #e7e9ee;
   --shadow: 0 10px 30px rgba(2, 132, 199, 0.08);
   --muted: #5b6470;
+  --danger: #{$error};
 
   --secondary-dark-8: #{$secondary-dark-8};
   --secondary-dark-12: #{$secondary-dark-12};

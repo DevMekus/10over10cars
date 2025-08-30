@@ -96,21 +96,36 @@ require_once ROOT_PATH . '/includes/header.php';
                     <aside>
                         <div class="card" data-aos="fade-up">
                             <strong>Edit profile</strong>
-                            <form id="profileForm" style="margin-top:10px;display:grid;gap:8px">
-                                <label>Full name<input class="input" name="fullname" required /></label>
-                                <label>Email<input class="input" name="email" type="email" required /></label>
-                                <label>Phone<input class="input" name="phone" /></label>
-                                <label>Location<input class="input" name="location" /></label>
-                                <label>Profile photo URL<input class="input" name="avatar" placeholder="https://..." /></label>
-                                <div style="display:flex;justify-content:flex-end;gap:8px"><button type="button" class="btn btn-ghost" id="resetProfile">Reset</button><button type="submit" class="btn btn-primary">Save</button></div>
+                            <form id="profileForm">
+                                <div class="mb-1">
+                                    <label class="muted small">Full name</label>
+                                    <input class="form-control" name="fullname" required />
+                                </div>
+                                <div class="mb-1">
+                                    <label class="muted small">Email</label>
+                                    <input class="form-control" name="email" type="email" required />
+                                </div>
+                                <div class="mb-1">
+                                    <label class="muted small">Phone</label>
+                                    <input class="form-control" name="phone" />
+                                </div>
+                                <div class="mb-1">
+                                    <label class="muted small">Location</label>
+                                    <input class="form-control" name="location" />
+                                </div>
+                                <div class="mb-1">
+                                    <label class="muted small">Profile photo URL</label>
+                                    <input class="form-control" name="avatar" placeholder="https://..." />
+                                </div>
+                                <div style="display:flex;justify-content:flex-end;gap:8px"><button type="button" class="btn btn-ghost" id="resetProfile">Reset</button><button type="submit" class="btn btn-primary btn-pill">Save</button></div>
                             </form>
                         </div>
 
                         <div class="card" style="margin-top:12px" data-aos="fade-up">
                             <strong>Account actions</strong>
                             <div>
-                                <button class="btn btn-ghost">Download data</button>
-                                <button class="btn btn-ghost" id="deleteAccount">Delete account</button>
+                                <button class="btn btn-ghost mb-1 w-100">Download data</button>
+                                <button class="btn btn-error w-100" id="deleteAccount">Delete account</button>
                             </div>
                         </div>
                     </aside>

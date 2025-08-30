@@ -26,7 +26,7 @@ require_once ROOT_PATH . '/includes/header.php';
                             </select>
                             <input type="date" id="fromDate" />
                             <input type="date" id="toDate" />
-                            <a href="<?= BASE_URL ?>dashboard/new-verify" class="btn btn-primary">Verify VIN</a>
+                            <a href="<?= BASE_URL ?>dashboard/new-verify" class="btn btn-outline-primary">Verify VIN</a>
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@ require_once ROOT_PATH . '/includes/header.php';
                         <div class="small muted">Showing <span id="showingCount">0</span> of <span id="totalCount">0</span></div>
                     </div>
 
-                    <table id="reqTable" aria-label="Verification requests table">
+                    <table id="reqTable" class="brand-table" aria-label="Verification requests table">
                         <thead>
                             <tr>
                                 <th>Request ID</th>

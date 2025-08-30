@@ -5,7 +5,7 @@
         </div>
         <div style="display:flex;gap:10px;align-items:center">
 
-            <button id="themeToggle" class="btn btn-ghost ghost" aria-pressed="false" title="Toggle theme"><i class="bi bi-moon-stars"></i></button>
+            <button id="themeToggle" class="btn btn-sm btn-outline-accent" aria-pressed="false" title="Toggle theme"><i class="bi bi-moon-stars"></i></button>
             <a href="<?= BASE_URL; ?>dashboard/notification" id="notifBtn" class="btn btn-sm btn-ghost"><i class="bi bi-bell"></i></a>
         </div>
     </header>

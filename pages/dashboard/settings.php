@@ -13,7 +13,7 @@ require_once ROOT_PATH . '/includes/header.php';
         <div class="main">
             <?php require_once "navbar.php"; ?>
             <main class="content">
-                <div class="card">
+                <div class="card-dash">
                     <div class="tabs" role="tablist">
                         <div class="tab active" data-tab="profile">Profile</div>
                         <div class="tab" data-tab="preferences">Preferences</div>
@@ -54,8 +54,8 @@ require_once ROOT_PATH . '/includes/header.php';
                             </div>
 
                             <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-                                <button type="button" id="profileSave" class="btn primary">Save profile</button>
-                                <button type="button" id="changePasswordBtn" class="btn ghost">Change password</button>
+                                <button type="button" id="profileSave" class="btn btn-primary btn-pill">Save profile</button>
+                                <button type="button" id="changePasswordBtn" class="btn btn-ghost">Change password</button>
                             </div>
                         </form>
                     </section>
@@ -90,8 +90,8 @@ require_once ROOT_PATH . '/includes/header.php';
                             </div>
 
                             <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-                                <button type="button" id="prefsSave" class="btn primary">Save preferences</button>
-                                <button type="button" id="prefsReset" class="btn ghost">Reset</button>
+                                <button type="button" id="prefsSave" class="btn btn-primary btn-pill">Save preferences</button>
+                                <button type="button" id="prefsReset" class="btn btn-ghost">Reset</button>
                             </div>
                         </form>
                     </section>
@@ -109,7 +109,7 @@ require_once ROOT_PATH . '/includes/header.php';
                             <div style="margin-top:8px">
                                 <label>Recent login activity</label>
                                 <div class="activity card" style="margin-top:8px">
-                                    <table>
+                                    <table class="brand-table">
                                         <thead>
                                             <tr>
                                                 <th>When</th>
@@ -124,8 +124,8 @@ require_once ROOT_PATH . '/includes/header.php';
                             </div>
 
                             <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-                                <button type="button" id="securitySave" class="btn primary">Save security</button>
-                                <button type="button" id="revokeSessions" class="btn ghost">Revoke sessions</button>
+                                <button type="button" id="securitySave" class="btn btn-primary">Save security</button>
+                                <button type="button" id="revokeSessions" class="btn btn-ghost">Revoke sessions</button>
                             </div>
                         </form>
                     </section>

@@ -34,10 +34,10 @@ require_once ROOT_PATH . '/includes/header.php';
                         </select>
                     </div>
                     <div style="margin-left:auto;display:flex;gap:8px;align-items:end">
-                        <button id="applyFilters" class="btn primary">Apply</button>
-                        <button id="resetFilters" class="btn">Reset</button>
-                        <button id="exportCsv" class="btn">Export CSV</button>
-                        <button id="exportPdf" class="btn">Export PDF</button>
+                        <button id="applyFilters" class="btn btn-sm btn-primary">Apply</button>
+                        <button id="resetFilters" class="btn btn-sm btn-ghost">Reset</button>
+                        <button id="exportCsv" class="btn btn-sm btn-ghost">Export CSV</button>
+                        <button id="exportPdf" class="btn btn-sm btn-ghost">Export PDF</button>
                     </div>
                 </section>
 
@@ -93,13 +93,13 @@ require_once ROOT_PATH . '/includes/header.php';
                 </section>
 
                 <!-- Detailed table -->
-                <section class="card" data-aos="fade-up">
+                <section class="card-brand" data-aos="fade-up">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
                         <strong id="tableTitle">Recent Transactions</strong>
                         <div class="muted small" id="tableMeta">Showing last 20</div>
                     </div>
                     <div class="table-wrap">
-                        <table id="reportTable">
+                        <table id="reportTable" class="brand-table">
                             <thead>
                                 <tr id="tableHead"></tr>
                             </thead>
@@ -107,9 +107,9 @@ require_once ROOT_PATH . '/includes/header.php';
                         </table>
                     </div>
                     <div style="display:flex;justify-content:center;gap:8px;padding:10px">
-                        <button class="btn" id="prevPg">Prev</button>
+                        <button class="btn btn-sm btn-outline-accent" id="prevPg">Prev</button>
                         <div class="small muted" id="pgInfo"></div>
-                        <button class="btn" id="nextPg">Next</button>
+                        <button class="btn btn-sm btn-outline-accent" id="nextPg">Next</button>
                     </div>
                 </section>
                 <?php require "footer.php"; ?>

@@ -15,7 +15,7 @@ require_once ROOT_PATH . '/includes/header.php';
             <main class="content">
                 <section class="hero">
                     <div class="card" data-aos="fade-up">
-                        <h2 style="margin:0">Join 10over10 as a Dealer</h2>
+                        <h2 class="section-title" style="margin:0">Join 10over10 as a Dealer</h2>
                         <p class="muted">Get access to verified leads, priority listings, and dealer tools to manage inventory and sales. Apply below and complete verification.</p>
 
                         <div style="margin-top:12px" class="benefits">
@@ -63,7 +63,7 @@ require_once ROOT_PATH . '/includes/header.php';
 
                     </div>
 
-                    <aside class="card" data-aos="fade-up">
+                    <aside class="card" data-aos="fade-down">
                         <div style="display:flex;justify-content:space-between;align-items:center"><strong>Application status</strong>
                             <div class="muted small">Demo</div>
                         </div>
@@ -86,89 +86,81 @@ require_once ROOT_PATH . '/includes/header.php';
 
                 <section style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; align-items: start;">
                     <!-- Application Form -->
-                    <div class="card" data-aos="fade-up" style="padding: 20px;">
+                    <div class="card" data-aos="zoom-in" style="padding: 20px;">
                         <h3 style="margin: 0;">Application Form</h3>
                         <p class="muted small">
                             Fill out the form to apply as a dealer. Attach required documents for verification.
                         </p>
 
-                        <form id="dealerForm" enctype="multipart/form-data" style="margin-top: 16px; display: grid; gap: 16px;">
+                        <form id="dealerForm" enctype="multipart/form-data">
                             <!-- Row 1 -->
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                                <div>
-                                    <label>Business name*</label>
-                                    <input class="input" name="company" required placeholder="Your business name" />
+                            <div class="row">
+                                <div class="col-sm-6 mb-2">
+                                    <label class="muted small">Business name*</label>
+                                    <input class="form-control" name="company" required placeholder="Your business name" />
                                 </div>
-                                <div>
-                                    <label>Seller type*</label>
-                                    <select class="input" id="type" name="type" required>
+                                <div class="col-sm-6 mb-2">
+                                    <label class="muted small">Seller type*</label>
+                                    <select class="form-control" id="type" name="type" required>
                                         <option value="individual">Individual</option>
                                         <option value="dealer">Dealer</option>
                                         <option value="company">Company</option>
                                     </select>
                                 </div>
-                            </div>
-
-                            <!-- Row 2 -->
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                                <div>
-                                    <label>Phone*</label>
-                                    <input class="input" name="phone" required placeholder="+234 81..." />
+                                <div class="col-sm-6 mb-2">
+                                    <label class="muted small">Phone*</label>
+                                    <input class="form-control" name="phone" required placeholder="+234 81..." />
                                 </div>
-                                <div>
-                                    <label>Email*</label>
-                                    <input class="input" name="contact" type="email" required placeholder="email@company.com" />
+                                <div class="col-sm-6 mb-2">
+                                    <label class="muted small">Email*</label>
+                                    <input class="form-control" name="contact" type="email" required placeholder="email@company.com" />
                                 </div>
 
-                                <div>
-                                    <label>Userid*</label>
-                                    <input class="input" name="userid" type="text" value="<?= $userid ?? ''; ?>" required />
+                                <div class="col-sm-6 mb-2">
+                                    <label class="muted small">Userid*</label>
+                                    <input class="form-control" name="userid" type="text" value="<?= $userid ?? ''; ?>" required />
                                 </div>
-
-                            </div>
-
-                            <!-- Row 3 -->
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                                <div>
-                                    <label>Location*</label>
-                                    <input class="input" name="state" required placeholder="Enugu.." />
+                                <div class="col-sm-6 mb-2">
+                                    <label class="muted small">Location*</label>
+                                    <input class="form-control" name="state" required placeholder="Enugu.." />
                                 </div>
-                                <div id="license">
-                                    <label>Dealer License / RC number</label>
-                                    <input class="input" name="rc_number" placeholder="RC12345" />
+                                <div class="col-sm-6 mb-2" id="license">
+                                    <label class="muted small">Dealer License / RC number</label>
+                                    <input class="form-control" name="rc_number" placeholder="RC12345" />
                                 </div>
-                                <div>
-                                    <label>About us*</label>
-                                    <textarea rows="3" class="input" name="about" required placeholder="We exist to.."></textarea>
+                                <div class="col-sm-12 mb-2">
+                                    <label class="muted small">About us*</label>
+                                    <textarea rows="3" class="form-control" name="about" required placeholder="We exist to.."></textarea>
 
                                 </div>
+                                <!-- Upload -->
+                                <div class="col-sm-6 mb-2">
+                                    <label class="muted small">Upload verification documents</label><br />
+                                    <small class="muted">Accepted: ID, RC, proof of address (PDF or image)</small><br />
+                                    <input id="docInput" name="docInput" type="file" multiple accept="application/pdf" style="margin-top: 6px;" />
+                                    <div id="preview" class="file-preview"></div>
+                                </div>
+                                <div class="col-sm-6 mb-2">
+                                    <label class="small muted">Upload Banner</label><br />
+                                    <small class="muted">Upload your business banner for easy identification</small><br />
+                                    <input id="banner" name="banner" type="file" accept="image/*" style="margin-top: 6px;" />
+                                    <div id="preview" class="file-preview"></div>
+                                </div>
+
+                                <div class="col-sm-6 mb-2">
+                                    <label class="muted small">Upload Avatar</label><br />
+                                    <small class="muted">Upload your image</small><br />
+                                    <input id="avatar" name="avatar" type="file" accept="image/*" style="margin-top: 6px;" />
+                                    <div id="preview" class="file-preview"></div>
+                                </div>
                             </div>
 
-                            <!-- Upload -->
-                            <div>
-                                <label>Upload verification documents</label><br />
-                                <small class="muted">Accepted: ID, RC, proof of address (PDF or image)</small><br />
-                                <input id="docInput" name="docInput" type="file" multiple accept="application/pdf" style="margin-top: 6px;" />
-                                <div id="preview" class="file-preview"></div>
-                            </div>
-                            <div>
-                                <label>Upload Banner</label><br />
-                                <small class="muted">Upload your business banner for easy identification</small><br />
-                                <input id="banner" name="banner" type="file" accept="image/*" style="margin-top: 6px;" />
-                                <div id="preview" class="file-preview"></div>
-                            </div>
 
-                            <div>
-                                <label>Upload Avatar</label><br />
-                                <small class="muted">Upload your image</small><br />
-                                <input id="avatar" name="avatar" type="file" accept="image/*" style="margin-top: 6px;" />
-                                <div id="preview" class="file-preview"></div>
-                            </div>
 
                             <!-- Actions -->
                             <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px;">
                                 <button type="button" class="btn btn-ghost" id="saveDraft">Save Draft</button>
-                                <button type="submit" class="btn">Submit Application</button>
+                                <button type="submit" class="btn btn-primary btn-pill">Submit Application</button>
                             </div>
                         </form>
                     </div>
@@ -203,7 +195,7 @@ require_once ROOT_PATH . '/includes/header.php';
                             </div>
                         </div>
                         <div style="margin-top: 16px;">
-                            <button id="howItWorks" class="btn btn-ghost">How it works</button>
+                            <button id="howItWorks" class="btn btn-sm btn-ghost">How it works</button>
                         </div>
                     </aside>
                 </section>

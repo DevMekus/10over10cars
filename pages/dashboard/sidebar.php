@@ -16,7 +16,6 @@
 
       <nav class="nav" style="margin-top:10px">
 
-
           <a href="<?= BASE_URL; ?>dashboard/overview" class="<?= $route == "overview" ? 'active' : '' ?>"><i class="bi bi-grid"></i> Dashboard</a>
           <a href="<?= BASE_URL; ?>dashboard/verification" class="<?= $route == "verification"  ? 'active' : '' ?>"><i class="bi bi-search"></i>VIN Verifications</a>
           <a href="<?= BASE_URL; ?>dashboard/transaction" class="<?= $route == "transaction"  ? 'active' : '' ?>"><i class="bi bi-currency-dollar"></i> Transactions</a>
