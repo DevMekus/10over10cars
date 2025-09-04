@@ -64,7 +64,7 @@ class RequestValidator
 
     public static function parseId($id)
     {
-        if (!preg_match('/^[a-zA-Z0-9\-]+$/', $id)) {
+        if (!preg_match('/^[a-zA-Z0-9\-_]+$/', $id)) {
             Response::error(400, "Invalid ID format");
             return;
         }

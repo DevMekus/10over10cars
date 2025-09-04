@@ -19,7 +19,11 @@
           <a href="<?= BASE_URL; ?>dashboard/overview" class="<?= $route == "overview" ? 'active' : '' ?>"><i class="bi bi-grid"></i> Dashboard</a>
           <a href="<?= BASE_URL; ?>dashboard/verification" class="<?= $route == "verification"  ? 'active' : '' ?>"><i class="bi bi-search"></i>VIN Verifications</a>
           <a href="<?= BASE_URL; ?>dashboard/transaction" class="<?= $route == "transaction"  ? 'active' : '' ?>"><i class="bi bi-currency-dollar"></i> Transactions</a>
-          <a href="<?= BASE_URL; ?>dashboard/dealers" class="<?= $route == "dealers"  ? 'active' : '' ?>"><i class="bi bi-people"></i> Dealers</a>
+          <?php if ($role == 'admin'): ?>
+              <a href="<?= BASE_URL; ?>dashboard/dealers" class="<?= $route == "dealers"  ? 'active' : '' ?>"><i class="bi bi-people"></i> Dealers</a>
+          <?php else: ?>
+              <a href="<?= BASE_URL; ?>dashboard/dealer" class="<?= $route == "dealers"  ? 'active' : '' ?>"><i class="bi bi-people"></i> Become a Dealer</a>
+          <?php endif; ?>
           <a href="<?= BASE_URL; ?>dashboard/vehicles" class="<?= $route == "vehicles"  ? 'active' : '' ?>"><i class="bi bi-car-front"></i> Vehicles</a>
           <?php if ($role == 'admin'): ?>
               <a href="<?= BASE_URL; ?>dashboard/report" class="<?= $route == "report"  ? 'active' : '' ?>"><i class="bi bi-file-earmark-text"></i> Reports</a>

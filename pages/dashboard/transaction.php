@@ -58,12 +58,12 @@ require_once ROOT_PATH . '/includes/header.php';
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
                         <strong>Transactions</strong>
                         <div style="display:flex;gap:8px;align-items:center">
-                            <button class="btn btn-sm btn-outline-accent" id="exportCsv">Export CSV</button>
-                            <button class="btn btn-sm btn-outline-accent" id="exportPdf">Export PDF</button>
+                            <button class="btn btn-sm btn-outline-primary" id="exportCsv">Export CSV</button>
+                            <button class="btn btn-sm btn-outline-primary" id="exportPdf">Export PDF</button>
                         </div>
                     </div>
 
-                    <div class="table-wrap">
+                    <div class="table-wrap table-responsive">
                         <table id="txTable" class="brand-table">
                             <thead>
                                 <tr>
@@ -80,9 +80,10 @@ require_once ROOT_PATH . '/includes/header.php';
                             <tbody></tbody>
                         </table>
                     </div>
+                    <div class="no-data"></div>
 
-                    <div class="pager"><button class="btn btn-ghost" id="prev">Prev</button>
-                        <div id="pgInfo" class="muted small"></div><button class="btn btn-ghost" id="next">Next</button>
+                    <div class="pager"><button class="btn btn-sm btn-outline-primary" id="prev">Prev</button>
+                        <div id="pgInfo" class="muted small"></div><button class="btn btn-sm btn-outline-primary" id="next">Next</button>
                     </div>
                 </section>
 
@@ -102,7 +103,7 @@ require_once ROOT_PATH . '/includes/header.php';
     </div>
     <?php require "modals.php"; ?>
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Transaction.js"></script>
+    <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/TransactionPage.js"></script>
 </body>
 
 </html

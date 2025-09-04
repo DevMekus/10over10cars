@@ -41,18 +41,22 @@ require_once ROOT_PATH . '/includes/header.php';
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>Verifications (30 days)</strong>
                             <div class="muted small">Last 30 days</div>
                         </div>
-                        <canvas id="chartVer" height="120"></canvas>
+                        <div style="height:300px; width:100%; max-width:900px; margin:auto;">
+                            <canvas id="chartVer"></canvas>
+                        </div>
+
                     </div>
 
                     <div class="card" data-aos="fade-up" data-aos-delay="80">
                         <strong>Recent activity</strong>
-                        <ul style="list-style:none;padding:0;margin:12px 0;display:grid;gap:8px">
-                            <li class="small"><strong>VIN</strong> 2HGFB2F... — <span class="muted">Verified (Clean)</span></li>
-                            <li class="small"><strong>Dealer</strong> Ace Motors — <span class="muted">Applied (Pending)</span></li>
-                            <li class="small"><strong>TXN</strong> TXN-4906 — <span class="muted">Completed</span></li>
-                            <li class="small"><strong>VIN</strong> JH4KA8... — <span class="muted">Flagged: mileage anomaly</span></li>
-                        </ul>
-                        <a href="#activity" class="small">View full activity →</a>
+
+                        <div id="activityWidget">
+                            <ul id="activityList"
+                                style="list-style:none;padding:0;margin:12px 0;display:grid;gap:8px">
+                            </ul>
+                            <a href="#activity" class="small">View full activity →</a>
+                        </div>
+
                     </div>
                 </section>
 
@@ -62,8 +66,8 @@ require_once ROOT_PATH . '/includes/header.php';
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><strong>Recent verifications</strong>
                             <div class="muted small">Showing last 10</div>
                         </div>
-                        <div style="overflow:auto">
-                            <table id="tableVer">
+                        <div class="table-responsive">
+                            <table id="tableVer" class="brand-table">
                                 <thead>
                                     <tr>
                                         <th>VIN</th>
@@ -75,6 +79,7 @@ require_once ROOT_PATH . '/includes/header.php';
                                 </thead>
                                 <tbody></tbody>
                             </table>
+                            <div class="no-data"></div>
                         </div>
                     </section>
 
@@ -104,8 +109,8 @@ require_once ROOT_PATH . '/includes/header.php';
                                 <strong>Recent verifications</strong>
                                 <div class="muted small">Showing last 10</div>
                             </div>
-                            <div style="overflow:auto">
-                                <table id="tableVer" role="table" aria-label="Recent verifications table">
+                            <div class="table-responsive">
+                                <table class="brand-table" id="tableVer" role="table" aria-label="Recent verifications table">
                                     <thead>
                                         <tr>
                                             <th>VIN</th>
@@ -117,6 +122,7 @@ require_once ROOT_PATH . '/includes/header.php';
                                     </thead>
                                     <tbody id="verTable"></tbody>
                                 </table>
+                                <div class="no-data"></div>
                             </div>
                         </div>
 
@@ -137,23 +143,24 @@ require_once ROOT_PATH . '/includes/header.php';
                                     </thead>
                                     <tbody id="txnTable"></tbody>
                                 </table>
+                                <div class="no-data2"></div>
                             </div>
-                            <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+                            <!-- <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
                                 <button class="action-btn" id="exportCsv">Export CSV</button>
                                 <button class="action-btn" id="exportPdf">Export PDF</button>
-                            </div>
+                            </div> -->
                         </div>
 
                     </section>
 
                     <!-- My Vehicles -->
-                    <section>
+                    <!-- <section>
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
                             <strong>My vehicles</strong>
                             <div class="actions"><button class="action-btn" id="addVehicle">Add Vehicle</button><button class="action-btn" id="manageDealer">Become Dealer</button></div>
                         </div>
                         <div class="vehicles card" id="myVehicles"></div>
-                    </section>
+                    </section> -->
                 <?php endif; ?>
 
                 <?php require "footer.php"; ?>
@@ -162,7 +169,7 @@ require_once ROOT_PATH . '/includes/header.php';
     </div>
     <?php require "modals.php"; ?>
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-
+    <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/OverviewPage.js"></script>
 
 </body>
 

@@ -6,7 +6,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
 
 <body id="LANDINGPAGE">
     <!-- Hero -->
-    <header id="home" class="hero" aria-labelledby="hero-title">
+    <header id="home" class="hero userVerify" aria-labelledby="hero-title">
         <div class="container grid grid-2 hero-grid">
             <div data-aos="fade-right">
                 <div class="hero-title-con">
@@ -22,7 +22,55 @@ require_once ROOT_PATH . '/includes/navbar.php';
                     <div id="vinHint" class="vin-hint">VIN must be 17 characters, letters & numbers only. (I, O, Q not allowed)</div>
                 </form>
                 <div id="vinMsg" role="alert" aria-live="polite" style="margin-top:10px; color: var(--muted);"></div>
+                <div>
+                    <div id="noResult" class="muted"></div>
+                    <div id="resultArea" style="display:none">
+                        <div class="vehicle-card card p-3" style="margin-bottom:12px">
+                            <div class="vehicle-media" id="vehMedia"></div>
+                            <div>
+                                <div style="display:flex;justify-content:space-between;align-items:center">
+                                    <div>
+                                        <div style="font-weight:800;font-size:18px" id="vehTitle">2018 Honda Accord</div>
+                                        <div class="muted small" id="vehSub">VIN: <code id="vehVin">--</code> • Owner: <span id="vehOwner">--</span></div>
+                                    </div>
+                                    <div style="text-align:right">
+                                        <div id="vehPrice" style="font-weight:800">NGN 0</div>
+                                        <div style="margin-top:8px"><span id="vehStatus" class="status-pill status-clean">Status</span></div>
+                                    </div>
+                                </div>
 
+                                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
+                                    <div class="small muted">
+                                        <div style="font-weight:700" id="vehYear">Year</div>
+                                        <div>Year</div>
+                                    </div>
+                                    <div class="small muted">
+                                        <div style="font-weight:700" id="vehMileage">Mileage</div>
+                                        <div>Mileage</div>
+                                    </div>
+                                    <div class="small muted">
+                                        <div style="font-weight:700" id="vehEngine">Engine</div>
+                                        <div>Engine</div>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top:12px">
+                                    <strong>History</strong>
+                                    <ul id="vehHistory" style="margin-top:8px"></ul>
+                                </div>
+
+                                <div id="actionButtons"></div>
+
+                            </div>
+                        </div>
+
+                        <div class="card" style="margin-bottom:12px"><strong>Verification details</strong>
+                            <div id="rawDetails" class="muted small" style="margin-top:8px">Start verification to get all the available details of this car.</div>
+                        </div>
+
+
+                    </div>
+                </div>
                 <div class="hero-trust">
                     <span class="mini-badge"><i class="bi bi-lock"></i> Secure</span>
                     <span class="mini-badge"><i class="bi bi-check2-circle"></i> Reliable Data</span>
@@ -171,7 +219,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
         <div class="container">
             <h2 id="pricing-title" class="section-title">Simple pricing in NGN</h2>
             <p class="section-sub">Pay securely via Paystack or Flutterwave. No hidden fees.</p>
-            <div class="pricing" id="pricingGrid" data-aos="fade-up"><!-- JS renders plans here --></div>
+            <div class="pricing" id="pricingGrid" data-btn="false" data-aos="fade-up"><!-- JS renders plans here --></div>
         </div>
     </section>
 
@@ -181,7 +229,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
             <h2 id="market-title" class="section-title">Featured cars</h2>
             <p class="section-sub">Search verified listings. Negotiate confidently.</p>
 
-            <div class="filters card" style="padding:12px;">
+            <div class="filters cardx" style="padding:12px;">
                 <select id="filterMake" aria-label="Make">
                     <option value="">All Makes</option>
                     <option>Toyota</option>
@@ -196,20 +244,14 @@ require_once ROOT_PATH . '/includes/navbar.php';
                 <select id="filterYear" aria-label="Year">
                     <option value="">Any Year</option>
                 </select>
-                <select id="filterState" aria-label="State">
-                    <option value="">All States</option>
-                    <option>Lagos</option>
-                    <option>Abuja (FCT)</option>
-                    <option>Rivers</option>
-                    <option>Oyo</option>
-                    <option>Anambra</option>
-                    <option>Kaduna</option>
-                </select>
+
+                <input id="filterState" type="text" class="form-control" placeholder="Enugu, Imo" />
                 <input id="filterPrice" type="range" min="500000" max="50000000" step="500000" aria-label="Max price" />
                 <input id="search" class="full" placeholder="Search by keyword (e.g., Corolla, low mileage, verified)" aria-label="Search listings" />
             </div>
 
             <div class="grid grid-3" id="carsGrid" data-aos="fade-up" aria-live="polite"><!-- JS renders cars --></div>
+            <div id="paginationWrap" class="mt-2 mb-2"></div>
         </div>
     </section>
 
@@ -303,7 +345,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
 
     <?php require_once ROOT_PATH . '/includes/footer-links.php'; ?>
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/LandingPage.js"></script>
+    <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/LandingPage.js"></script>
 </body>
 
 </html

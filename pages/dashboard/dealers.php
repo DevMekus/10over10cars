@@ -62,20 +62,22 @@ require_once ROOT_PATH . '/includes/header.php';
                         </select>
                         <!-- <button id="bulkApprove" class="btn">Bulk Approve</button>
                         <button id="bulkSuspend" class="btn">Bulk Suspend</button> -->
-                        <button id="exportCsv" class="btn">Export CSV</button>
-                        <a href="<?= BASE_URL ?>dashboard/dealer" id="addDealerBtn" class="btn btn btn-sm btn-outline-primary"><i class="bi bi-person-plus"></i> Add Dealer</a>
+                        <button id="exportCsv" class="btn btn-sm btn-ghost">Export CSV</button>
+                        <a href="<?= BASE_URL ?>dashboard/dealer" id="addDealerBtn" class="btn btn btn-pill btn-primary"><i class="bi bi-person-plus"></i> Add Dealer</a>
                     </div>
                     <div>
-                        <button id="toggleView" class="btn btn-sm btn-outline-accent"><i class="bi bi-grid"></i> Grid</button>
+                        <button id="toggleView" class="btn btn-sm btn-outline-primary"><i class="bi bi-grid"></i> Grid</button>
                     </div>
                 </section>
 
                 <!-- Dealers Grid -->
                 <section id="gridView" class="grid" aria-live="polite"></section>
+                <div id="pagination" style="margin-top:20px; display:flex; gap:6px; justify-content:center"></div>
+
 
                 <!-- Dealers Table -->
                 <section id="tableView" class="card-dash" style="display:none">
-                    <div class="table-wrap">
+                    <div class="table-wrap table-responsive">
                         <table id="dealersTable" class="brand-table">
                             <thead>
                                 <tr>
@@ -93,7 +95,7 @@ require_once ROOT_PATH . '/includes/header.php';
                     </div>
                     <div class="small muted" id="pgInfo" style="padding:10px;text-align:center"></div>
                 </section>
-                <div id="no-data"></div>
+                <div class="no-data"></div>
                 <?php require "footer.php"; ?>
 
             </main>
@@ -101,7 +103,7 @@ require_once ROOT_PATH . '/includes/header.php';
     </div>
     <?php require "modals.php"; ?>
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Dealers.js"></script>
+    <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/DealerPage.js"></script>
 </body>
 
 </html

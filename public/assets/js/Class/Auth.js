@@ -73,6 +73,8 @@ export default class AuthStatic {
     return ok;
   }
 }
+
+
 class Auth {
   constructor() {
     this.initialize();

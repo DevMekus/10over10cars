@@ -35,9 +35,6 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
 
-
-
-
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/styles/main.css" />
 
 </head>

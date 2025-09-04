@@ -99,6 +99,7 @@ class AuthService
                 'userid' => $userid,
                 'status' => $data['role'] !== 'dealer' ? 'active' : 'pending',
                 'role' => $data['role'] ?? 'user',
+                'memberSince' => date('y-m-d', time()),
             ];
 
             if (Database::insert($profile, $userProfile) && Database::insert($accounts, $userAccount)) {

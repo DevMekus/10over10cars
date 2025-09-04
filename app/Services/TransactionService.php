@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Utils\Response;
 use configs\Database;
 use App\Services\Activity;
+use App\Utils\MailClient;
 use App\Utils\Utility;
 
 class TransactionService
@@ -27,16 +28,15 @@ class TransactionService
                     [
                         "type" => "LEFT",
                         "table" => "$profile p",
-                        "on" => "p.userid = v.userid"
+                        "on" => "p.userid = t.user"
                     ]
                 ],
-                ["t.*", "p.fullname", "v.*"],
+                ["t.*", "p.fullname", "v.plan", "v.status AS vehicle_status",],
                 [
                     "OR" => [
                         "t.id" => $id,
                         "t.txnsid" => $id,
-                        "v.vin" => $id,
-                        "v.userid" => $id,
+                        "t.user" => $id,
                     ]
                 ],
                 ["order" => "t.id DESC"]
@@ -64,10 +64,10 @@ class TransactionService
                     [
                         "type" => "LEFT",
                         "table" => "$profile p",
-                        "on" => "p.userid = v.userid"
+                        "on" => "p.userid = t.user"
                     ]
                 ],
-                ["t.*", "p.fullname", "v.*"],
+                ["t.*", "p.fullname", "v.plan", "v.status AS vehicle_status",],
                 [],
                 ["order" => "t.id DESC"]
             );
@@ -77,23 +77,7 @@ class TransactionService
         }
     }
 
-    public static function sendTransaction($id)
-    {
-        $data = self::fetchAllTransactions($id);
-        if (empty($data)) {
-            Response::error(404, "Transaction not found");
-        }
-        Response::success($data[0], "Transaction found");
-    }
 
-    public static function sendAllTransaction()
-    {
-        $data = self::fetchAllTransactions();
-        if (empty($data)) {
-            Response::error(404, "Transaction not found");
-        }
-        Response::success($data, "Transaction found");
-    }
 
     public static function saveNewTransaction($data)
     {
@@ -101,22 +85,83 @@ class TransactionService
             $txnsid = $data['txnsid'];
             $transactionTable = Utility::$transaction_tbl;
 
-            $data = self::fetchAllTransactions($txnsid);
-            if (!empty($data)) {
-                Response::error(404, "Transaction already exists");
+            $exists = self::fetchTransaction($txnsid);
+
+            if (!empty($exists)) {
+                Response::error(409, "Transaction already exists");
             }
 
             if (Database::insert($transactionTable, $data)) {
                 Activity::activity([
-                    'userid' =>  $data['user'],
-                    'type' => $data['transaction'],
-                    'title' => $data['description'],
+                    'userid' =>  $data['user'] ?? '',
+                    'type' => 'transaction',
+                    'title' => 'new transaction saved',
                 ]);
+
                 return true;
             }
         } catch (\Throwable $th) {
             Utility::log($th->getMessage(), 'error', 'TransactionService::saveNewTransaction', ['userid' => $_SESSION['userid']], $th);
-            return false;
+            Response::error(500, "An error occurred while saving transaction");
+        }
+    }
+
+    public static function updateTransactionStatus($id, $data)
+    {
+        try {
+
+            $transactionTable = Utility::$transaction_tbl;
+            $exists = self::fetchTransaction($id);
+
+            if (empty($exists)) {
+                Response::error(404, "Transaction not found");
+            }
+
+            $transaction = $exists[0];
+
+            $update = [
+                'status' => isset($data['status']) ? $data['status'] : $transaction['status'],
+            ];
+
+            if (Database::update($transactionTable, $update, ['txnsid ' => $id])) {
+                Activity::activity([
+                    'userid' =>  $_SESSION['userid'],
+                    'type' => 'transaction',
+                    'title' => 'transaction updated',
+                ]);
+
+                return true;
+            }
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'TransactionService::updateTransactionStatus', ['userid' => $_SESSION['userid']], $th);
+            Response::error(500, "An error occurred while updating transaction");
+        }
+    }
+
+    public static function deleteTransaction($id)
+    {
+        try {
+
+            $transactionTable = Utility::$transaction_tbl;
+            $exists = self::fetchTransaction($id);
+
+            if (empty($exists)) {
+                Response::error(404, "Transaction not found");
+            }
+
+
+            if (Database::delete($transactionTable, ['txnsid' => $id])) {
+                Activity::activity([
+                    'userid' =>  $_SESSION['userid'],
+                    'type' => 'transaction',
+                    'title' => 'transaction deleted',
+                ]);
+
+                return true;
+            }
+        } catch (\Throwable $th) {
+            Utility::log($th->getMessage(), 'error', 'TransactionService::deleteTransaction', ['userid' => $_SESSION['userid']], $th);
+            Response::error(500, "An error occurred while deleting transaction");
         }
     }
 }

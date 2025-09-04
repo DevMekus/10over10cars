@@ -38,6 +38,7 @@ class UserService
                 [
                     "OR" => [
                         "u.id" => $id,
+                        "u.email_address" => $id,
                         "u.userid" => $id,
                         "a.userid" => $id,
                         "a.id" => $id,
@@ -96,7 +97,7 @@ class UserService
 
             $profileInfo = [
                 'fullname' => isset($data['fullname']) ? $data['fullname'] : $user['fullname'],
-                'fullname' => isset($data['email_address']) ? $data['email_address'] : $user['email_address'],
+                'email_address' => isset($data['email_address']) ? $data['email_address'] : $user['email_address'],
                 'user_password' => isset($data['user_password']) ? password_hash($data['user_password'], PASSWORD_BCRYPT) : $user['user_password'],
                 'phone' => isset($data['phone']) ? $data['phone'] : $user['phone'],
                 'location' => isset($data['location']) ? $data['location'] : $user['location'],
@@ -134,8 +135,8 @@ class UserService
             }
 
             if (
-                Database::update($profile,  $profileInfo, [$id => $id])
-                && Database::update($accounts,  $accountInfo, [$id => $id])
+                Database::update($profile,  $profileInfo, ['userid' => $id])
+                && Database::update($accounts,  $accountInfo, ['userid' => $id])
 
             ) {
                 Activity::activity([
@@ -151,6 +152,8 @@ class UserService
             Response::error(500, "An error occurred while updating user details");
         }
     }
+
+    public static function updateUserPassword() {}
 
     public static function deleteUserAccount($id)
     {
@@ -175,8 +178,8 @@ class UserService
 
 
             if (
-                Database::delete($profile, [$id => $id])
-                && Database::delete($accounts, [$id => $id])
+                Database::delete($profile, ['userid' => $id])
+                && Database::delete($accounts, ['userid' => $id])
             ) {
                 Activity::activity([
                     'userid' => $_SESSION['userid'],

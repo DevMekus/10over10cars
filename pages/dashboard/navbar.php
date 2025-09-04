@@ -28,8 +28,8 @@
                     <?php if ($role == 'admin'): ?>
                         <a href="<?= BASE_URL;  ?>dashboard/settings">Settings</a>
                     <?php endif; ?>
-                    <div class="p-4">
-                        <button class="logout btn btn-sn btn-ghost" data-id="<?= $userid; ?>">Logout <i class="fas fa-power-off"></i></button>
+                    <div class="">
+                        <a href="#" class="logout btn btn-sm w-100 btn-ghostd" data-id="<?= $userid; ?>">Logout <i class="fas fa-power-off text-error"></i></a>
                     </div>
 
                 </div>

@@ -1,11 +1,14 @@
 <?php
+
+use App\Utils\Utility;
+
 require_once ROOT_PATH . '/siteConfig.php';
 require_once ROOT_PATH . '/includes/reuse.php';
 require_once ROOT_PATH . '/includes/header.php';
 
 ?>
 
-<body id="Dashboard" class="settingsPage" data-role="<?= $role; ?>" data-userid="<?= $userid; ?>">
+<body id="Dashboard" class="profilePage" data-role="<?= $role; ?>" data-userid="<?= $userid; ?>">
     <div class="app">
         <!-- Sidebar -->
         <?php require_once "sidebar.php"; ?>
@@ -13,169 +16,235 @@ require_once ROOT_PATH . '/includes/header.php';
         <div class="main">
             <?php require_once "navbar.php"; ?>
             <main class="content">
-                <div class="card-dash">
-                    <div class="tabs" role="tablist">
-                        <div class="tab active" data-tab="profile">Profile</div>
-                        <div class="tab" data-tab="preferences">Preferences</div>
-                        <div class="tab" data-tab="security">Security</div>
-                        <div class="tab" data-tab="platform">Platform</div>
-                    </div>
-
-                    <section id="profile" class="tab-panel">
-                        <form id="profileForm">
-                            <div class="row">
-                                <div>
-                                    <label>Full name</label>
-                                    <input type="text" name="fullname" id="fullname" required />
-                                </div>
-                                <div>
-                                    <label>Email</label>
-                                    <input type="email" name="email" id="email" required />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div>
-                                    <label>Phone</label>
-                                    <input type="text" name="phone" id="phone" />
-                                </div>
-                                <div>
-                                    <label>Location</label>
-                                    <input type="text" name="location" id="location" />
+                <div class="layout">
+                    <!-- Left: Profile Overview & Tabs -->
+                    <section>
+                        <div class="card-panel mb-3" data-aos="fade-up">
+                            <div class="profile-hero">
+                                <div class="avatar"><img id="avatarPreview" src="{{avatar_url}}" alt="Avatar preview"></div>
+                                <div class="profile-meta">
+                                    <h2><?= Utility::truncateText(ucfirst($user['fullname']), 20); ?> <span class="chip"><?= ucfirst($role); ?></span></h2>
+                                    <div style="color:var(--muted);margin-top:6px"><?= ucfirst($user['email_address']); ?></div>
+                                    <div class="progress-wrap">
+                                        <label class="form-label">Profile completion</label>
+                                        <div class="progress" style="height:10px;border-radius:999px;overflow:hidden">
+                                            <div id="profileProgress" class="progress-bar" role="progressbar" style="width:72%;background:linear-gradient(90deg,var(--accent), var(--primary));"></div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top:12px;display:flex;gap:8px">
+                                        <button class="btn btn-primary pill" id="editBtn">Edit Profile</button>
+                                        <button class="btn btn-outline-secondary pill" id="changePassBtn" data-bs-toggle="modal" data-bs-target="#updatePassword"><i class="bi bi-key-fill"></i> Change Password</button>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div style="display:flex;gap:12px;align-items:center;margin-top:6px">
-                                <div style="width:84px;height:84px;border-radius:12px;overflow:hidden;background:#eef2f7"><img id="avatarPreview" src="https://i.pravatar.cc/200?img=32" alt="avatar" style="width:100%;height:100%;object-fit:cover" /></div>
-                                <div style="flex:1">
-                                    <label class="small muted">Profile picture</label>
-                                    <input type="file" id="avatarInput" accept="image/*" />
-                                    <div class="small muted">PNG, JPG — max 2MB</div>
-                                </div>
-                            </div>
-
-                            <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-                                <button type="button" id="profileSave" class="btn btn-primary btn-pill">Save profile</button>
-                                <button type="button" id="changePasswordBtn" class="btn btn-ghost">Change password</button>
-                            </div>
-                        </form>
-                    </section>
-
-                    <section id="preferences" class="tab-panel" style="display:none">
-                        <form id="prefsForm">
-                            <div class="row">
-                                <div>
-                                    <label>Theme</label>
-                                    <select id="themeSelect">
-                                        <option value="light">Light</option>
-                                        <option value="dark">Dark</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label>Language</label>
-                                    <select id="langSelect">
-                                        <option value="en">English</option>
-                                        <option value="fr">Français</option>
-                                        <option value="yo">Yorùbá</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div style="margin-top:8px">
-                                <label>Notifications</label>
-                                <div class="inline" style="margin-top:6px">
-                                    <label class="small"><input type="checkbox" id="emailNotif" /> Email</label>
-                                    <label class="small"><input type="checkbox" id="smsNotif" /> SMS</label>
-                                    <label class="small"><input type="checkbox" id="pushNotif" /> Push</label>
-                                </div>
-                            </div>
-
-                            <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-                                <button type="button" id="prefsSave" class="btn btn-primary btn-pill">Save preferences</button>
-                                <button type="button" id="prefsReset" class="btn btn-ghost">Reset</button>
-                            </div>
-                        </form>
-                    </section>
-
-                    <section id="security" class="tab-panel" style="display:none">
-                        <form id="securityForm">
-                            <div style="margin-bottom:8px">
-                                <label>Two-factor authentication (2FA)</label>
-                                <div class="inline" style="margin-top:6px">
-                                    <label class="small"><input type="checkbox" id="toggle2fa" /> Enable 2FA</label>
-                                </div>
-                                <div class="small muted" style="margin-top:6px">We recommend enabling 2FA for all admin accounts.</div>
-                            </div>
-
-                            <div style="margin-top:8px">
-                                <label>Recent login activity</label>
-                                <div class="activity card" style="margin-top:8px">
-                                    <table class="brand-table">
-                                        <thead>
-                                            <tr>
-                                                <th>When</th>
-                                                <th>IP</th>
-                                                <th>Device</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="loginActivity"></tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-                                <button type="button" id="securitySave" class="btn btn-primary">Save security</button>
-                                <button type="button" id="revokeSessions" class="btn btn-ghost">Revoke sessions</button>
-                            </div>
-                        </form>
-                    </section>
-
-                    <section id="platform" class="tab-panel" style="display:none">
-                        <form id="platformForm">
-                            <div class="row">
-                                <div>
-                                    <label>Default verification plan</label>
-                                    <select id="defaultPlan">
-                                        <option>Standard</option>
-                                        <option>Basic</option>
-                                        <option>Pro</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label>Transaction limit (NGN)</label>
-                                    <input type="number" id="txLimit" min="0" />
-                                </div>
-                            </div>
-
-                            <div style="margin-top:8px">
-                                <label>Dealer verification rules</label>
-                                <textarea id="dealerRules" rows="4" style="width:100%;padding:10px;border-radius:10px;border:1px solid rgba(15,23,36,0.06);background:transparent"></textarea>
-                            </div>
-
-                            <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-                                <button type="button" id="platformSave" class="btn primary">Save platform</button>
-                                <button type="button" id="platformReset" class="btn ghost">Reset</button>
-                            </div>
-                        </form>
-                    </section>
-                </div>
-
-                <div class="grid-2">
-                    <div class="card" data-aos="fade-up">
-                        <strong>Audit log</strong>
-                        <div class="muted small">Recent administrative actions</div>
-                        <div style="margin-top:10px;max-height:300px;overflow:auto;" id="auditLog"></div>
-                    </div>
-
-                    <div class="card" data-aos="fade-up">
-                        <strong>Danger zone</strong>
-                        <div class="muted small">Account and system destructive actions</div>
-                        <div>
-                            <button id="resetPlatformBtn" class="btn btn-ghost">Reset platform settings</button>
-                            <button id="exportBackup" class="btn btn-ghost">Export system backup</button>
-                            <button id="deleteAccountBtn" class="btn" style="background:var(--danger);color:#fff">Delete admin account</button>
                         </div>
-                    </div>
+
+                        <!-- Tabs -->
+                        <div class="card-panel" data-aos="fade-up">
+                            <div class="tabs-nav" role="tablist" aria-label="Profile tabs">
+                                <button class="active" data-tab="details">Profile Details</button>
+                                <button data-tab="preferences">Preferences</button>
+                                <button data-tab="security">Security</button>
+                                <button data-tab="platform">Platform</button>
+                            </div>
+
+                            <!-- Tab: Profile Details -->
+                            <div id="tab-details" class="tab-content">
+                                <form id="profileForm" enctype="multipart/form-data">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Full name</label>
+                                            <input name="fullname" class="form-control" value="<?= ucfirst($user['fullname']) ?? ''; ?>" placeholder="John Doe" required />
+                                            <div class="invalid-feedback">Please provide your full name.</div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" name="email_address" value="<?= ucfirst($user['email_address']) ?? ''; ?>" class="form-control" placeholder="You@email.com" <?= $role !== 'admin' ? 'disabled' : '' ?> />
+                                            <div class="invalid-feedback">Enter a valid email address.</div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Phone</label>
+                                            <input name="phone" value="<?= $user['phone'] ? ucfirst($user['phone']) : ""; ?>" class="form-control" placeholder="+1 555 555 555" />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Location</label>
+                                            <input name="location" value="<?= $user['location'] ? ucfirst($user['location']) : ""; ?>" class="form-control" placeholder="20 Dalas Avenue" />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">City</label>
+                                            <input name="city_state" value="<?= $user['city_state'] ? ucfirst($user['city_state']) : ""; ?>" class="form-control" placeholder="New Haven, Enugu state" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Country</label>
+                                            <input name="country" value="<?= $user['country'] ? ucfirst($user['country']) : ""; ?>" class="form-control" placeholder="Nigeria" />
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label class="form-label">Select Avatar</label>
+                                            <input type="file" name="dp-upload" accept="images/*" id="dp-upload" class="form-control" placeholder="https://..." />
+                                            <div class="helper">Paste an image URL and preview updates instantly.</div>
+                                        </div>
+
+                                        <div class="col-12 d-flex justify-content-end" style="gap:8px;margin-top:6px">
+                                            <button type="reset" id="resetProfile" class="btn btn-outline-secondary">Reset</button>
+                                            <button type="submit" id="saveProfile" class="btn btn-primary btn-pill">Save changes</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Preferences tab -->
+                            <div id="tab-preferences" class="tab-content d-none">
+                                <form id="prefsForm">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Theme</label>
+                                            <select id="themeSelect" class="form-select">
+                                                <option value="light">Light</option>
+                                                <option value="dark">Dark</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Language</label>
+                                            <select id="langSelect" class="form-select">
+                                                <option value="en">English</option>
+                                                <option value="fr">Français</option>
+                                                <option value="yo">Yorùbá</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label">Notifications</label>
+                                            <div class="d-flex gap-3 mt-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="emailNotif" />
+                                                    <label class="form-check-label" for="emailNotif">Email</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="smsNotif" />
+                                                    <label class="form-check-label" for="smsNotif">SMS</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="pushNotif" />
+                                                    <label class="form-check-label" for="pushNotif">Push</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 d-flex justify-content-end gap-2 mt-2">
+                                            <button type="button" id="prefsReset" class="btn btn-outline-secondary">Reset</button>
+                                            <button type="submit" id="prefsSave" class="btn btn-primary">Save preferences</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Security tab -->
+                            <div id="tab-security" class="tab-content d-none">
+                                <form id="securityForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">Two-factor authentication (2FA)</label>
+                                        <div class="form-check form-switch mt-2">
+                                            <input class="form-check-input" type="checkbox" id="toggle2fa" />
+                                            <label class="form-check-label" for="toggle2fa">Enable 2FA</label>
+                                        </div>
+                                        <div class="helper">We recommend enabling 2FA for all admin accounts.</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Recent login activity</label>
+                                        <div class="card-panel mt-2" style="padding:0;">
+                                            <table class="brand-table mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>When</th>
+                                                        <th>IP</th>
+                                                        <th>Device</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="loginActivity"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button type="button" id="revokeSessions" class="btn btn-outline-secondary">Revoke sessions</button>
+                                        <button type="submit" id="securitySave" class="btn btn-primary">Save security</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Platform tab -->
+                            <div id="tab-platform" class="tab-content d-none">
+                                <form id="platformForm">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Default verification plan</label>
+                                            <select id="defaultPlan" class="form-select">
+                                                <option>Standard</option>
+                                                <option>Basic</option>
+                                                <option>Pro</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Transaction limit (NGN)</label>
+                                            <input type="number" id="txLimit" class="form-control" min="0" />
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label">Dealer verification rules</label>
+                                            <textarea id="dealerRules" rows="4" class="form-control" placeholder="Enter verification rules..."></textarea>
+                                        </div>
+
+                                        <div class="col-12 d-flex justify-content-end gap-2">
+                                            <button type="button" id="platformReset" class="btn btn-outline-secondary">Reset</button>
+                                            <button type="submit" id="platformSave" class="btn btn-primary">Save platform</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Right rail: Quick actions & preferences -->
+                    <aside class="right-rail">
+                        <div class="card-panel" data-aos="fade-up">
+                            <h6>Account Actions</h6>
+                            <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+                                <button class="btn btn-outline-secondary">Download data</button>
+                                <button class="btn btn-warning">Deactivate account</button>
+
+                            </div>
+                        </div>
+
+                        <div class="card-panel" data-aos="fade-up">
+                            <h6>Preferences</h6>
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" id="prefDark" />
+                                <label class="form-check-label" for="prefDark">Dark mode</label>
+                            </div>
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" id="prefEmail" checked />
+                                <label class="form-check-label" for="prefEmail">Email notifications</label>
+                            </div>
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" id="prefAlerts" />
+                                <label class="form-check-label" for="prefAlerts">Browser alerts</label>
+                            </div>
+                        </div>
+
+                        <div class="card-panel text-center" data-aos="fade-up">
+                            <h6>Support</h6>
+                            <p class="text-muted" style="font-size:13px">Need help? Reach out to our support team.</p>
+                            <a href="{{support_url}}" class="btn btn-outline-primary">Contact support</a>
+                        </div>
+                    </aside>
                 </div>
 
                 <?php require "footer.php"; ?>
@@ -185,8 +254,20 @@ require_once ROOT_PATH . '/includes/header.php';
     </div>
     <?php require "modals.php"; ?>
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Settings.js"></script>
+    <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
+    <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/ProfilePage.js"></script>
 
+    <script>
+        /* ---------- Tabs ---------- */
+        function activateTab(name) {
+            document.querySelectorAll('.tabs-nav button').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('d-none'));
+            const el = document.getElementById('tab-' + name);
+            if (el) el.classList.remove('d-none');
+        }
+        document.querySelectorAll('.tabs-nav button').forEach(b => b.addEventListener('click', () => activateTab(b.dataset.tab)));
+    </script>
 </body>
 
-</html
+
+</html>

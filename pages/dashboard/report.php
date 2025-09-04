@@ -98,7 +98,7 @@ require_once ROOT_PATH . '/includes/header.php';
                         <strong id="tableTitle">Recent Transactions</strong>
                         <div class="muted small" id="tableMeta">Showing last 20</div>
                     </div>
-                    <div class="table-wrap">
+                    <div class="table-wrap table-responsive">
                         <table id="reportTable" class="brand-table">
                             <thead>
                                 <tr id="tableHead"></tr>
@@ -106,10 +106,11 @@ require_once ROOT_PATH . '/includes/header.php';
                             <tbody id="tableBody"></tbody>
                         </table>
                     </div>
+                    <div class="no-data"></div>
                     <div style="display:flex;justify-content:center;gap:8px;padding:10px">
-                        <button class="btn btn-sm btn-outline-accent" id="prevPg">Prev</button>
+                        <button class="btn btn-sm btn-outline-primary" id="prevPg">Prev</button>
                         <div class="small muted" id="pgInfo"></div>
-                        <button class="btn btn-sm btn-outline-accent" id="nextPg">Next</button>
+                        <button class="btn btn-sm btn-outline-primary" id="nextPg">Next</button>
                     </div>
                 </section>
                 <?php require "footer.php"; ?>
@@ -119,7 +120,7 @@ require_once ROOT_PATH . '/includes/header.php';
     </div>
     <?php require "modals.php"; ?>
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Report.js"></script>
+    <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/ReportPage.js"></script>
 
 </body>
 

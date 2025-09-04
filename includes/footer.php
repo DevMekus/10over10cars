@@ -7,11 +7,10 @@
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
 
+<!-- Toasts -->
+<div class="toast-wrap" id="toastWrap" style="z-index: 1300000;"></div>
 
-
-
-<script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Application.js"></script>
-
+<script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/App.js"></script>
 
 <script>
     AOS.init();

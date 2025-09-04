@@ -68,7 +68,7 @@ if (!$token) header('location: ' . BASE_URL . 'auth/login');
     <!-- Toast container (hidden until needed) -->
     <div id="toastContainer" aria-live="polite" style="position:fixed;right:20px;top:20px;z-index:9999"></div>
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Auth.js"></script>
+    <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/AuthPage.js"></script>
 </body>
 
 </html

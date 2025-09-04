@@ -104,7 +104,7 @@ require_once ROOT_PATH . '/includes/header.php';
                         <div class="small muted" id="pgInfo"></div><button class="btn btn-sm btn-outline-accent" id="nextPg">Next</button>
                     </div>
                 </section>
-                <div id="no-data"></div>
+                <div class="no-data"></div>
                 <?php require "footer.php"; ?>
 
             </main>
@@ -112,8 +112,7 @@ require_once ROOT_PATH . '/includes/header.php';
     </div>
     <?php require "modals.php"; ?>
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Vehicle.js"></script>
-
+    <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/VehiclePage.js"></script>
 </body>
 
 </html

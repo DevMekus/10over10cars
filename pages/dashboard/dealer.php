@@ -118,7 +118,7 @@ require_once ROOT_PATH . '/includes/header.php';
 
                                 <div class="col-sm-6 mb-2">
                                     <label class="muted small">Userid*</label>
-                                    <input class="form-control" name="userid" type="text" value="<?= $userid ?? ''; ?>" required />
+                                    <input class="form-control" name="userid" type="text" value="<?= $role !== 'admin' ? $userid : ''; ?>" required />
                                 </div>
                                 <div class="col-sm-6 mb-2">
                                     <label class="muted small">Location*</label>
@@ -214,7 +214,7 @@ require_once ROOT_PATH . '/includes/header.php';
     </div>
 
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Dealers.js"></script>
+    <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/DealerPage.js"></script>
 
 </body>
 <?php require "modals.php"; ?>

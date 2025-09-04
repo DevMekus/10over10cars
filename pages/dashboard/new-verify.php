@@ -45,7 +45,7 @@ require_once ROOT_PATH . '/includes/header.php';
                         <div id="noResult" class="muted">No verification yet — enter a VIN and click Verify.</div>
                         <div id="resultArea" style="display:none">
                             <div class="vehicle-card card" style="margin-bottom:12px">
-                                <div class="vehicle-media" id="vehMedia"><img src="https://images.unsplash.com/photo-1542362567-b07e54358753?q=80&w=1200&auto=format&fit=crop&sat=-20" alt="vehicle" /></div>
+                                <div class="vehicle-media" id="vehMedia"></div>
                                 <div>
                                     <div style="display:flex;justify-content:space-between;align-items:center">
                                         <div>
@@ -78,29 +78,27 @@ require_once ROOT_PATH . '/includes/header.php';
                                         <ul id="vehHistory" style="margin-top:8px"></ul>
                                     </div>
 
-                                    <div style="display:flex;gap:8px;margin-top:12px">
-                                        <button id="saveToHistory" class="btn ghost">Save to history</button>
-                                        <button id="reportIssue" class="btn" style="background:var(--danger);color:#fff">Report issue</button>
-                                    </div>
+                                    <div id="actionButtons"></div>
+
                                 </div>
                             </div>
 
                             <div class="card" style="margin-bottom:12px"><strong>Verification details</strong>
-                                <div id="rawDetail" class="muted small" style="margin-top:8px"></div>
+                                <div id="rawDetails" class="muted small" style="margin-top:8px">Start verification to get all the available details of this car.</div>
                             </div>
 
-                            <div class="card"><strong>Related records</strong>
+                            <!-- <div class="card"><strong>Related records</strong>
                                 <div id="related" style="margin-top:8px" class="muted small">No related records (demo).</div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
                     <aside>
                         <div class="card">
-                            <strong>Verification history</strong>
-                            <div class="muted small" style="margin-top:6px">Recent VIN lookups (local)</div>
+                            <strong>Verification history (local)</strong>
+                            <div class="muted small" style="margin-top:6px">Recent VIN lookups</div>
                             <div class="history-list" id="historyList" style="margin-top:10px"></div>
-                            <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end"><button id="clearHistory" class="btn ghost">Clear</button></div>
+                            <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end"><button id="clearHistory" class="btn btn-sm btn-outline-accent btn-pill">Clear</button></div>
                         </div>
 
                         <div class="card" style="margin-top:12px">
@@ -120,7 +118,7 @@ require_once ROOT_PATH . '/includes/header.php';
     </div>
     <?php require "modals.php"; ?>
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
-    <script type="module" src="<?php echo BASE_URL; ?>assets/js/Class/Verification.js"></script>
+    <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/VerificationPage.js"></script>
 </body>
 
 </html
