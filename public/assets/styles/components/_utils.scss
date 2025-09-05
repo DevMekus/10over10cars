@@ -173,6 +173,10 @@ a {
   }
 }
 
+.select-tags {
+  z-index: 10;
+}
+
 .empty-state {
   display: grid;
   place-items: center;

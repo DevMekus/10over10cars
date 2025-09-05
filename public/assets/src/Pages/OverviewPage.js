@@ -25,7 +25,7 @@ class OverviewPage {
     //---recent Verifications
     const verifications = Application.DATA.verifications;
 
-    Overview.renderRecentverification(verifications);
+    Overview.renderRecentVerification(verifications);
 
     //---recent transactions
     const transactions = Application.DATA.verifications;

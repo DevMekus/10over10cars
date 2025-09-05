@@ -5,6 +5,13 @@ import { CONFIG } from "../Utils/config.js";
 import { clearAppData } from "../Utils/Session.js";
 import { DataTransfer } from "../Utils/api.js";
 
+/**
+ * Dealer Management Class
+ * Handles rendering, filtering, and CRUD operations for dealers.
+ * Includes grid/table views, pagination, search/filtering,
+ * and server-side updates with error handling.
+ */
+
 export default class Dealer {
   static VIEW = "grid";
   static SELECTED = new Set();
@@ -12,74 +19,102 @@ export default class Dealer {
   static currentPage = 1;
   static pageSize = 10; // dealers per page
 
+  /**
+   * Filter and sort dealer data based on search, status, and sorting options.
+   * @returns {Array} Filtered dealer objects
+   */
   static getFiltered() {
-    const q = (Utility.el("q").value || "").toLowerCase();
-    const status = Utility.el("statusFilter").value;
-    const sort = Utility.el("sortBy").value;
-    let rows = Application.DATA.dealers.filter((d) => {
-      if (
-        q &&
-        !(
-          d.name.toLowerCase().includes(q) ||
-          d.email.toLowerCase().includes(q) ||
-          d.phone.includes(q)
+    try {
+      const q = (Utility.el("q").value || "").toLowerCase();
+      const status = Utility.el("statusFilter").value;
+      const sort = Utility.el("sortBy").value;
+      let rows = Application.DATA.dealers.filter((d) => {
+        if (
+          q &&
+          !(
+            d.name.toLowerCase().includes(q) ||
+            d.email.toLowerCase().includes(q) ||
+            d.phone.includes(q)
+          )
         )
-      )
-        return false;
-      if (status !== "all" && d.status !== status) return false;
-      return true;
-    });
+          return false;
+        if (status !== "all" && d.status !== status) return false;
+        return true;
+      });
 
-    rows.sort((a, b) => {
-      if (sort === "name") return a.company.localeCompare(b.company);
-      if (sort === "date") return a.joined.localeCompare(b.joined);
-      if (sort === "listings") return b.listings - a.listings;
-      if (sort === "rating") return b.rating - a.rating;
-      return 0;
-    });
+      rows.sort((a, b) => {
+        if (sort === "name") return a.company.localeCompare(b.company);
+        if (sort === "date") return a.joined.localeCompare(b.joined);
+        if (sort === "listings") return b.listings - a.listings;
+        if (sort === "rating") return b.rating - a.rating;
+        return 0;
+      });
 
-    Dealer.currentData = rows;
-    return rows;
-  }
-
-  static renderStats(data) {
-    Utility.el("sTotal").textContent = data.length;
-
-    Utility.el("sApproved").textContent = data.filter(
-      (d) => d.status === "approved"
-    ).length;
-    Utility.el("sPending").textContent = data.filter(
-      (d) => d.status === "pending"
-    ).length;
-    Utility.el("sSuspended").textContent = data.filter(
-      (d) => d.status === "suspended"
-    ).length;
-  }
-
-  static renderGrid() {
-    const mount = Utility.el("gridView");
-    const noData = document.querySelector(".no-data");
-    mount.innerHTML = "";
-    noData.innerHTML = "";
-
-    const rows = Dealer.getFiltered();
-    const totalRows = rows.length;
-
-    if (totalRows === 0) {
-      Utility.renderEmptyState(noData);
-      return;
+      Dealer.currentData = rows;
+      return rows;
+    } catch (error) {
+      console.error("Error filtering dealers:", error);
+      Utility.toast("Failed to filter dealers", "error");
+      return [];
     }
+  }
 
-    // Pagination slice
-    const start = (Dealer.currentPage - 1) * Dealer.pageSize;
-    const end = start + Dealer.pageSize;
-    const paginatedRows = rows.slice(start, end);
+  /**
+   * Render dealer statistics summary.
+   * @param {Array} data Dealer list
+   */
+  static renderStats(data) {
+    try {
+      if (Utility.el("sTotal")) Utility.el("sTotal").textContent = data.length;
 
-    paginatedRows.forEach((d) => {
-      const card = document.createElement("div");
-      card.className = "dealer";
-      card.setAttribute("data-aos", "fade-up");
-      card.innerHTML = `
+      if (Utility.el("sApproved"))
+        Utility.el("sApproved").textContent = data.filter(
+          (d) => d.status === "approved"
+        ).length;
+
+      if (Utility.el("sPending"))
+        Utility.el("sPending").textContent = data.filter(
+          (d) => d.status === "pending"
+        ).length;
+
+      if (Utility.el("sSuspended"))
+        Utility.el("sSuspended").textContent = data.filter(
+          (d) => d.status === "suspended"
+        ).length;
+    } catch (error) {
+      console.error("Error rendering stats:", error);
+      Utility.toast("Failed to render dealer stats", "error");
+    }
+  }
+
+  /**
+   * Render dealers in grid view with pagination.
+   */
+  static renderGrid() {
+    try {
+      const mount = Utility.el("gridView");
+      const noData = document.querySelector(".no-data");
+      mount.innerHTML = "";
+      noData.innerHTML = "";
+
+      const rows = Dealer.getFiltered();
+      const totalRows = rows.length;
+
+      if (totalRows === 0) {
+        Utility.renderEmptyState(noData);
+        return;
+      }
+
+      // Pagination slice
+      const start = (Dealer.currentPage - 1) * Dealer.pageSize;
+      const end = start + Dealer.pageSize;
+      const paginatedRows = rows.slice(start, end);
+
+      paginatedRows.forEach((d) => {
+        const card = document.createElement("div");
+        card.className = "dealer";
+        card.setAttribute("data-aos", "fade-up");
+        card.innerHTML = `
       <div class='banner'>
         <img src='${d.banner}' alt='banner of ${d.company}'/>
         <div class='avatar'><img src='${d.avatar}' alt='${d.company}'/></div>
@@ -121,12 +156,21 @@ export default class Dealer {
           }'><i class="fas fa-trash"></i></button>
         </div>
       </div>`;
-      mount.appendChild(card);
-    });
+        mount.appendChild(card);
+      });
 
-    // Render pagination
-    Dealer.renderPagination(totalRows);
+      // Render pagination
+      Dealer.renderPagination(totalRows);
+    } catch (error) {
+      console.error("Error rendering dealer grid:", error);
+      Utility.toast("Failed to render dealer grid", "error");
+    }
   }
+
+  /**
+   * Render pagination controls.
+   * @param {number} totalRows
+   */
 
   static renderPagination(totalRows) {
     const paginationMount = Utility.el("pagination");
@@ -175,9 +219,15 @@ export default class Dealer {
     paginationMount.appendChild(nextBtn);
   }
 
+  /**
+   * Render dealers in table view.
+   */
   static renderTable() {
     const wrap = document.querySelector("#dealersTable tbody");
     const noData = document.querySelector(".no-data");
+
+    if (!wrap || !noData) return;
+
     wrap.innerHTML = "";
     noData.innerHTML = "";
 
@@ -235,6 +285,9 @@ export default class Dealer {
     ).textContent = `Page ${Utility.PAGE} • Showing ${slice.length} of ${rows.length}`;
   }
 
+  /**
+   * Attach listeners for search and filter inputs.
+   */
   static searchAndFilter() {
     ["q", "statusFilter", "sortBy"].forEach((id) =>
       Utility.el(id).addEventListener("input", () => {
@@ -244,7 +297,10 @@ export default class Dealer {
     );
   }
 
-  static openDetail(id) {
+  /**
+   * Open detail modal for a dealer.
+   * @param {string} id Dealer ID
+   */ static openDetail(id) {
     const d = Application.DATA.dealers.find((x) => x.id === id);
     if (!d) {
       Utility.toast("Dealer not found", "error");
@@ -314,96 +370,121 @@ export default class Dealer {
     });
   }
 
+  /**
+   * Update dealer status (approve/suspend).
+   */
   static async updateDealerStatus(id, newStatus, fromModal = false) {
-    const d = Application.DATA.dealers.find((x) => x.id === id);
+    try {
+      const d = Application.DATA.dealers.find((x) => x.id === id);
 
-    if (!d) {
-      Utility.toast("Dealer not found", "error");
-      return;
-    }
-
-    $("#displayDetails").modal("hide");
-
-    const result = await Utility.confirm("Update Dealer");
-    if (result.isConfirmed) {
-      //---Send to Server
-      const { status, message } = await DataTransfer(
-        `${CONFIG.API}/admin/dealer/${id}`,
-        { status: newStatus },
-        "PATCH"
-      );
-
-      Utility.toast(`${message}`, `${status == 200 ? "success" : "error"}`);
-
-      if (status == 200) {
-        await clearAppData();
-        await Application.initializeData();
-
-        Dealer.renderStats(Application.DATA.dealers);
-        Dealer.VIEW === "grid" ? Dealer.renderGrid() : Dealer.renderTable();
+      if (!d) {
+        Utility.toast("Dealer not found", "error");
+        return;
       }
 
-      if (fromModal) $("#displayDetails").modal("hide");
+      $("#displayDetails").modal("hide");
+
+      const result = await Utility.confirm("Update Dealer");
+      if (result.isConfirmed) {
+        //---Send to Server
+        const { status, message } = await DataTransfer(
+          `${CONFIG.API}/admin/dealer/${id}`,
+          { status: newStatus },
+          "PATCH"
+        );
+
+        Utility.toast(`${message}`, `${status == 200 ? "success" : "error"}`);
+
+        if (status == 200) {
+          await clearAppData();
+          await Application.initializeData();
+
+          Dealer.renderStats(Application.DATA.dealers);
+          Dealer.VIEW === "grid" ? Dealer.renderGrid() : Dealer.renderTable();
+        }
+
+        if (fromModal) $("#displayDetails").modal("hide");
+      }
+    } catch (error) {
+      console.error("Error updating dealer status:", error);
+      Utility.toast("Failed to update dealer status", "error");
     }
   }
 
+  /**
+   * Delete a dealer.
+   */
   static async deleteDealer(id) {
-    const d = Application.DATA.dealers.find((x) => x.id === id);
+    try {
+      const d = Application.DATA.dealers.find((x) => x.id === id);
 
-    if (!d) {
-      Utility.toast("Dealer not found", "error");
-      return;
-    }
-
-    $("#displayDetails").modal("hide");
-
-    //---Send to Server
-    const result = await Utility.confirm("Delete Dealer");
-    if (result.isConfirmed) {
-      const { status, message } = await DataTransfer(
-        `${CONFIG.API}/admin/dealer/${id}`,
-        {},
-        "DELETE"
-      );
-      Utility.toast(`${message}`, `${status == 200 ? "success" : "error"}`);
-
-      if (status == 200) {
-        await clearAppData();
-        await Application.initializeData();
-
-        Dealer.renderStats(Application.DATA.dealers);
-        Dealer.VIEW === "grid" ? Dealer.renderGrid() : Dealer.renderTable();
+      if (!d) {
+        Utility.toast("Dealer not found", "error");
+        return;
       }
-    }
+
+      $("#displayDetails").modal("hide");
+
+      //---Send to Server
+      const result = await Utility.confirm("Delete Dealer");
+      if (result.isConfirmed) {
+        const { status, message } = await DataTransfer(
+          `${CONFIG.API}/admin/dealer/${id}`,
+          {},
+          "DELETE"
+        );
+        Utility.toast(`${message}`, `${status == 200 ? "success" : "error"}`);
+
+        if (status == 200) {
+          await clearAppData();
+          await Application.initializeData();
+
+          Dealer.renderStats(Application.DATA.dealers);
+          Dealer.VIEW === "grid" ? Dealer.renderGrid() : Dealer.renderTable();
+        }
+      }
+    } catch (error) {}
   }
 
+  /**
+   * Save a new dealer record.
+   */
   static async saveNewDealer(data) {
-    //--- Send
-    const result = await Utility.confirm(
-      "New Dealer",
-      "Do you want to save this dealer?"
-    );
-
-    if (result.isConfirmed) {
-      const response = await DataTransfer(`${CONFIG.API}/dealer`, data, "POST");
-
-      Utility.toast(
-        `${response.message}`,
-        `${response.status == 200 ? "success" : "error"}`
+    try {
+      //--- Send
+      const result = await Utility.confirm(
+        "New Dealer",
+        "Do you want to save this dealer?"
       );
 
-      if (response.status == 200) {
-        await clearAppData();
-        await Application.initializeData();
+      if (result.isConfirmed) {
+        const response = await DataTransfer(
+          `${CONFIG.API}/dealer`,
+          data,
+          "POST"
+        );
+
+        Utility.toast(
+          `${response.message}`,
+          `${response.status == 200 ? "success" : "error"}`
+        );
+
+        if (response.status == 200) {
+          await clearAppData();
+          await Application.initializeData();
+        }
+
+        Swal.fire(
+          response.status == 200 ? "Success!" : "Error",
+          `${response.message}`,
+          response.status == 200 ? "success" : "error"
+        );
+
+        return response;
       }
-
-      Swal.fire(
-        response.status == 200 ? "Success!" : "Error",
-        `${response.message}`,
-        response.status == 200 ? "success" : "error"
-      );
-
-      return response;
+    } catch (error) {
+      console.error("Error saving new dealer:", error);
+      Utility.toast("Failed to save dealer", "error");
     }
   }
 }

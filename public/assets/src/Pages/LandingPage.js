@@ -5,16 +5,23 @@ import Verification from "../Classes/Verification.js";
 import { CONFIG } from "../Utils/config.js";
 import PaymentChannel from "../Classes/PaymentChannel.js";
 
+/**
+ * @class LandingPage
+ * Handles landing page functionality including VIN validation, hero animations,
+ * mobile menu, FAQ, blog posts, pricing, payments, and marketplace car listings.
+ */
 class LandingPage {
   constructor() {
     this.initialize();
   }
 
+  /** Initialize application data and run class methods */
   async initialize() {
     await Application.initializeData();
     Utility.runClassMethods(this, ["initialize"]);
   }
 
+  /** Validate VIN input and fetch verification results */
   vinValidation() {
     const vinForm = document.getElementById("vinForm");
     const vinInput = document.getElementById("vin");
@@ -47,6 +54,8 @@ class LandingPage {
       const result = await Verification.verificationResult(vin);
     });
   }
+
+  /** Animate hero headline typing */
   hero_typing() {
     const domElem = document.getElementById("typed-headline");
     if (!domElem) return;
@@ -63,6 +72,7 @@ class LandingPage {
     });
   }
 
+  /** Rotate hero car images */
   hero_cars() {
     const heroImage = document.querySelector(".hero-visual .car");
     if (!heroImage) return;
@@ -84,6 +94,8 @@ class LandingPage {
       }, 500); // wait for fade-out before swapping image
     }, 5000);
   }
+
+  /** Toggle mobile menu */
   mobileMenu() {
     // ---------- Mobile Menu ----------
     const mobileBtn = document.querySelector(".mobile-menu-btn");
@@ -95,6 +107,7 @@ class LandingPage {
     });
   }
 
+  /** Initialize AOS animations respecting reduced motion preferences */
   AOSMatchMedia() {
     AOS.init({
       duration: 700,
@@ -104,6 +117,7 @@ class LandingPage {
     });
   }
 
+  /** Render FAQs from Application.FAQS */
   FAQRender() {
     const faqList = document.getElementById("faqList");
     if (!faqList) return;
@@ -135,6 +149,7 @@ class LandingPage {
     }
   }
 
+  /** Render blog posts */
   blogPostRendering() {
     const blogGrid = document.getElementById("blogGrid");
     if (!blogGrid) return;
@@ -148,6 +163,7 @@ class LandingPage {
     });
   }
 
+  /** Render pricing plans with optional payment buttons */
   pricingRendering() {
     const pricingGrid = document.getElementById("pricingGrid");
     if (!pricingGrid) return;
@@ -188,6 +204,7 @@ class LandingPage {
     });
   }
 
+  /** Handle payment modal form and submission */
   prepareForPayment() {
     const emailField = Utility.el("emailField");
     const params = new URLSearchParams(window.location.search);
@@ -257,22 +274,23 @@ class LandingPage {
     const makeSel = document.getElementById("filterMake");
     const modelSel = document.getElementById("filterModel");
     const yearSel = document.getElementById("filterYear");
-    const stateInput = document.getElementById("filterState"); // input for state
+    const stateInput = document.getElementById("filterState");
     const priceRange = document.getElementById("filterPrice");
     const searchInput = document.getElementById("search");
     const paginationWrap = document.getElementById("paginationWrap");
 
     if (!carsGrid) return;
+
     await Application.initializeData();
     const CARS = Application.DATA.vehicles;
 
     let currentPage = 1;
     const perPage = 10;
 
-    const unique = (arr) => [...new Set(arr.filter(Boolean))]; // remove null/empty
+    const unique = (arr) => [...new Set(arr.filter(Boolean))];
 
-    function populateFilters() {
-      // Clear old options
+    // ------------------ Populate Filter Options ------------------
+    const populateFilters = () => {
       makeSel.innerHTML = `<option value="">All Makes</option>`;
       modelSel.innerHTML = `<option value="">All Models</option>`;
       yearSel.innerHTML = `<option value="">Any Year</option>`;
@@ -286,49 +304,53 @@ class LandingPage {
       makeSel.innerHTML += MAKES.map((m) => `<option>${m}</option>`).join("");
       modelSel.innerHTML += MODELS.map((m) => `<option>${m}</option>`).join("");
       yearSel.innerHTML += YEARS.map((y) => `<option>${y}</option>`).join("");
-    }
+    };
 
-    function carCard(car) {
+    // ------------------ Create Car Card ------------------
+    const carCard = (car) => {
       const wrap = document.createElement("article");
       wrap.className = "car-card";
-      wrap.style.width = "300px";
-      wrap.style.border = "1px solid #eee";
-      wrap.style.borderRadius = "12px";
-      wrap.style.overflow = "hidden";
-      wrap.style.display = "flex";
-      wrap.style.flexDirection = "column";
-      wrap.style.background = "#fff";
-      wrap.style.boxShadow = "0 2px 6px rgba(0,0,0,0.08)";
-      wrap.style.transition = "transform 0.2s ease, box-shadow 0.2s ease";
+      wrap.style.cssText = `
+      width:300px;
+      border:1px solid #eee;
+      border-radius:12px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      background:#fff;
+      box-shadow:0 2px 6px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    `;
 
+      const carImage = JSON.parse(car.images)[0] || "";
       wrap.innerHTML = `
-    <div class="car-media" style="width:100%;height:180px;overflow:hidden;position:relative;">
-      <img src="${JSON.parse(car.images)[0]}" alt="${car.title}" 
-           style="width:100%;height:100%;object-fit:cover;display:block;" />
-      <button class="btn btn-outline btn-fav btn-sm" aria-pressed="false" 
-              style="position:absolute;top:10px;right:10px;border-radius:50%;padding:6px;">
-        <i class="bi bi-heart"></i>
-      </button>
-    </div>
-    <div class="car-body" style="flex:1;padding:12px;display:flex;flex-direction:column;gap:8px;">
-      <strong style="font-size:16px;line-height:1.3;">${car.title}</strong>
-      <div style="color:#666; font-size:14px;">
-        ${car.year} • ${Number(car.mileage).toLocaleString()} km • ${
+      <div class="car-media" style="width:100%;height:180px;overflow:hidden;position:relative;">
+        <img src="${carImage}" alt="${
+        car.title
+      }" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <button class="btn btn-outline btn-fav btn-sm" aria-pressed="false" style="position:absolute;top:10px;right:10px;border-radius:50%;padding:6px;">
+          <i class="bi bi-heart"></i>
+        </button>
+      </div>
+      <div class="car-body" style="flex:1;padding:12px;display:flex;flex-direction:column;gap:8px;">
+        <strong style="font-size:16px;line-height:1.3;">${car.title}</strong>
+        <div style="color:#666; font-size:14px;">
+          ${car.year} • ${Number(car.mileage).toLocaleString()} km • ${
         car.state ?? ""
       }
-      </div>
-      <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;">
-        <div style="font-weight:800;font-size:16px;color:#222;">${Utility.fmtNGN(
-          car.price
-        )}</div>
-        <a href="${CONFIG.BASE_URL}/car-detail?vin=${
+        </div>
+        <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-weight:800;font-size:16px;color:#222;">${Utility.fmtNGN(
+            car.price
+          )}</div>
+          <a href="${CONFIG.BASE_URL}/car-detail?vin=${
         car.vin
       }" class="btn btn-primary btn-pill btn-sm">
-          <i class="bi bi-eye"></i> View
-        </a>
+            <i class="bi bi-eye"></i> View
+          </a>
+        </div>
       </div>
-    </div>
-  `;
+    `;
 
       // Hover effect
       wrap.addEventListener("mouseenter", () => {
@@ -340,7 +362,7 @@ class LandingPage {
         wrap.style.boxShadow = "0 2px 6px rgba(0,0,0,0.08)";
       });
 
-      // Fav toggle
+      // Favorite toggle
       const favBtn = wrap.querySelector(".btn-fav");
       favBtn.addEventListener("click", () => {
         const pressed = favBtn.getAttribute("aria-pressed") === "true";
@@ -351,14 +373,15 @@ class LandingPage {
       });
 
       return wrap;
-    }
+    };
 
-    function paginate(array, page, perPage) {
+    // ------------------ Pagination ------------------
+    const paginate = (array, page) => {
       const start = (page - 1) * perPage;
       return array.slice(start, start + perPage);
-    }
+    };
 
-    function renderPagination(total, currentPage) {
+    const renderPagination = (total) => {
       paginationWrap.innerHTML = "";
       const pages = Math.ceil(total / perPage);
       for (let i = 1; i <= pages; i++) {
@@ -373,9 +396,10 @@ class LandingPage {
         });
         paginationWrap.appendChild(btn);
       }
-    }
+    };
 
-    function renderCars() {
+    // ------------------ Render Cars ------------------
+    const renderCars = () => {
       carsGrid.innerHTML = "";
       const q = searchInput.value.toLowerCase();
       const stateQ = stateInput.value.toLowerCase();
@@ -394,10 +418,9 @@ class LandingPage {
               .includes(q))
       );
 
-      const paged = paginate(filtered, currentPage, perPage);
-      paged.forEach((c) => carsGrid.appendChild(carCard(c)));
-
-      if (filtered.length === 0) {
+      const paged = paginate(filtered, currentPage);
+      if (paged.length) paged.forEach((c) => carsGrid.appendChild(carCard(c)));
+      else {
         const empty = document.createElement("div");
         empty.className = "card";
         empty.style.padding = "16px";
@@ -405,10 +428,10 @@ class LandingPage {
         carsGrid.appendChild(empty);
       }
 
-      renderPagination(filtered.length, currentPage);
-    }
+      renderPagination(filtered.length);
+    };
 
-    // Filters update list
+    // ------------------ Event Listeners ------------------
     [makeSel, modelSel, yearSel, priceRange].forEach((el) =>
       el.addEventListener("change", () => {
         currentPage = 1;
@@ -416,20 +439,14 @@ class LandingPage {
       })
     );
 
-    searchInput.addEventListener(
-      "input",
-      Application.debounce(() => {
-        currentPage = 1;
-        renderCars();
-      }, 300)
-    );
-
-    stateInput.addEventListener(
-      "input",
-      Application.debounce(() => {
-        currentPage = 1;
-        renderCars();
-      }, 300)
+    [searchInput, stateInput].forEach((el) =>
+      el.addEventListener(
+        "input",
+        Application.debounce(() => {
+          currentPage = 1;
+          renderCars();
+        }, 300)
+      )
     );
 
     populateFilters();

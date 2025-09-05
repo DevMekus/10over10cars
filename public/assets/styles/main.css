@@ -427,6 +427,10 @@ a {
     grid-template-columns: 1fr;
   }
 }
+.select-tags {
+  z-index: 10;
+}
+
 .empty-state {
   display: grid;
   place-items: center;
@@ -1131,6 +1135,7 @@ select {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   width: 100%;
+  z-index: 2;
 }
 
 .card:hover {
@@ -1287,6 +1292,10 @@ select {
 
 .bg-error {
   background: var(--error);
+}
+
+.filters {
+  z-index: 30px;
 }
 
 .filters input,
@@ -1798,6 +1807,10 @@ select {
   border-radius: 6px;
   overflow: hidden;
   margin-top: 1rem;
+}
+
+.brand-card .brand-table {
+  box-shadow: none;
 }
 
 .brand-table th,
