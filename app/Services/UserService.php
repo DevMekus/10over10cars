@@ -34,7 +34,7 @@ class UserService
                         "on" => "u.userid = d.userid"
                     ]
                 ],
-                ["u.*", "a.*", "d.company"],
+                ["u.*", "a.*", "d.company", "d.status AS company_status"],
                 [
                     "OR" => [
                         "u.id" => $id,
@@ -44,7 +44,7 @@ class UserService
                         "a.id" => $id,
                     ]
                 ],
-                ["u.$id" => $id]
+                ["u.userid" => $id]
             );
         } catch (\Throwable $th) {
             Utility::log($th->getMessage(), 'error', 'UserService::userDetail', ['userid' => $id], $th);
@@ -72,7 +72,7 @@ class UserService
                         "on" => "u.userid = d.userid"
                     ]
                 ],
-                ["u.*", "a.*", "d.company"],
+                ["u.*", "a.*", "d.company", "d.status AS company_status"],
             );
         } catch (\Throwable $th) {
             Utility::log($th->getMessage(), 'error', 'UserService::userDetail', ['userid' => $_SESSION['userid']], $th);
@@ -93,7 +93,6 @@ class UserService
             if (empty($userData)) Response::error(404, "User not found");
 
             $user = $userData[0];
-
 
             $profileInfo = [
                 'fullname' => isset($data['fullname']) ? $data['fullname'] : $user['fullname'],

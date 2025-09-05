@@ -77,4 +77,33 @@ class AuthController
             Response::success([], "Password reset complete");
         }
     }
+
+    public function getUserSessions($id)
+    {
+        $id = RequestValidator::parseId($id);
+        $sessions = AuthService::userSessions($id);
+
+        if (empty($sessions)) Response::error(404, "Sessions not found");
+        Response::success($sessions, "sessions available");
+    }
+
+    public function getActiveSessions()
+    {
+
+        $sessions = AuthService::activeSessions();
+        if (empty($sessions)) Response::error(404, "Sessions not found");
+        Response::success($sessions, "sessions available");
+    }
+
+    public function revokeSession($id)
+    {
+        $id = RequestValidator::parseId($id);
+        $revoke = AuthService::revokeSession($id);
+
+        if ($revoke) Response::success([], 'session revoked');
+        Response::error(500, "Could not revoke session");
+    }
+
+
+    public function clearAllUserSession($userid) {}
 }

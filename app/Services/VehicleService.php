@@ -112,23 +112,6 @@ class VehicleService
         }
     }
 
-    public static function sendVehicleInformation($id)
-    {
-        $data = self::fetchVehicleInformation($id);
-        if (empty($data)) {
-            Response::error(404, "Vehicle information not found");
-        }
-        Response::success($data[0], "Vehicle information found");
-    }
-
-    public static function sendAllVehicleInformation()
-    {
-        $data = self::fetchAllVehicleInformation();
-        if (empty($data)) {
-            Response::error(404, "Vehicles information not found");
-        }
-        Response::success($data, "Vehicles information found");
-    }
 
     public static function uploadNewVehicleData($data)
     {
@@ -206,9 +189,8 @@ class VehicleService
 
                 //Update Dealer Listing
                 $getDealer = DealerService::fetchDealerInformation($uploadData['userid']);
-                if (empty($getDealer)) {
-                    //--Create a dealer account and increase listing
-                } else {
+                
+                if (!empty($getDealer)) {
                     $dealer = $getDealer[0];
                     $increase_listing = intval($dealer['listings']) + 1;
                     $updateListing = ['listings' => $increase_listing];

@@ -12,6 +12,8 @@ class Activity
     public static function activity($data)
     {
         $table = Utility::$loginactivity;
+        $device = Utility::getUserDevice();
+        $ip = Utility::getUserIP();
         try {
             $activity = [
                 'logid' => Utility::generate_uniqueId(10),
@@ -19,8 +21,8 @@ class Activity
                 'type' => $data['type'],
                 'title' => $data['title'],
                 'status' => $data['status'] ?? 'success',
-                'ip' => $data['ip'] ?? 'not available',
-                'device' => $data['device'] ?? 'device',
+                'ip' => $ip ?? 'not available',
+                'device' => $device  ?? '',
             ];
             if (Database::insert($table, $activity)) {
                 return true;

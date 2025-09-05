@@ -14,18 +14,68 @@ require_once ROOT_PATH . '/includes/header.php';
             <?php require_once "navbar.php"; ?>
             <main class="content">
                 <!-- Filters / Controls -->
-                <section class="card-brand filters" data-aos="fade-up" aria-label="Report filters">
-                    <div>
-                        <label class="small muted">Date from</label><br>
-                        <input type="date" id="fromDate" />
+
+                <div class="dashboard">
+                    <!-- Summary Header Card -->
+                    <div class="summary-card" data-aos="fade-up">
+                        <div>
+                            <?php if ($role == 'admin'): ?>
+                                <!-- Admin View -->
+                                <h1>Reports</h1>
+                                <p>As an administrator, you can generate, review, and analyze system-wide reports to monitor activities, performance, and compliance.</p>
+
+                            <?php else: ?>
+                                <!-- User View -->
+                                <h1>My Reports</h1>
+                                <p>As a user, you can view and download reports related to your activities, transactions, and vehicle interactions on the platform.</p>
+                            <?php endif; ?>
+                        </div>
+                        <div class="summary-icon" data-aos="zoom-in" data-aos-delay="200">
+                            <i data-feather="bar-chart-2" width="36" height="36"></i>
+                        </div>
                     </div>
-                    <div>
-                        <label class="small muted">Date to</label><br>
-                        <input type="date" id="toDate" />
+
+                    <!-- Stat Cards Grid -->
+                    <div class="stats-grid mt-2">
+                        <div class="stats-card" data-aos="fade-up">
+                            <div class="icon-box bg-accent"><i data-feather="check-circle"></i></div>
+                            <h3 id="kVerifs"></h3>
+                            <p>Total Verifications
+                            </p>
+
+                        </div>
+
+                        <div class="stats-card" data-aos="fade-up" data-aos-delay="100">
+                            <div class="icon-box bg-accent"><i data-feather="dollar-sign"></i></div>
+                            <h3 id="kRevenue">3.2k</h3>
+                            <p>Transactions (NGN)</p>
+
+                        </div>
+
+                        <?php if ($role == 'admin'):  ?>
+                            <div class="stats-card" data-aos="fade-up" data-aos-delay="200">
+                                <div class="icon-box bg-primary"><i data-feather="users"></i></div>
+                                <h3 id="kDealers">8.4k</h3>
+                                <p>Active Dealers
+                                </p>
+                            </div>
+                        <?php endif; ?>
+
+                        <div class="stats-card" data-aos="fade-up" data-aos-delay="300">
+                            <div class="icon-box bg-error"><i data-feather="truck"></i></div>
+                            <h3 id="kVehicles">1.1k</h3>
+                            <p>Vehicles Listed
+                            </p>
+                        </div>
+
+
                     </div>
+                </div>
+                <section class="brand-card filters" data-aos="fade-up" aria-label="Report filters">
+                    <input type="text" class="datepicker form-control" placeholder="Start date" id="fromDate" />
+                    <input type="text" class="datepicker form-control" placeholder="End" id="toDate" />
                     <div>
-                        <label class="small muted">Report type</label><br>
-                        <select id="reportType">
+                        <select id="reportType" class="select-tags">
                             <option value="overview">Overview</option>
                             <option value="verifications">Verifications</option>
                             <option value="transactions">Transactions</option>
@@ -41,41 +91,11 @@ require_once ROOT_PATH . '/includes/header.php';
                     </div>
                 </section>
 
-                <!-- KPI Tiles -->
-                <section class="kpis">
-                    <div class="card-brand kpi" data-aos="fade-up">
-                        <div class="badge" style="background:linear-gradient(135deg,#60a5fa,#34d399)"><i class="bi bi-bar-chart"></i></div>
-                        <div>
-                            <div class="small muted">Total Verifications</div>
-                            <div id="kVerifs" class="value">0</div>
-                        </div>
-                    </div>
-                    <div class="card-brand kpi" data-aos="fade-up">
-                        <div class="badge" style="background:linear-gradient(135deg,#34d399,#22c55e)"><i class="bi bi-currency-dollar"></i></div>
-                        <div>
-                            <div class="small muted">Revenue (NGN)</div>
-                            <div id="kRevenue" class="value">0</div>
-                        </div>
-                    </div>
-                    <div class="card-brand kpi" data-aos="fade-up">
-                        <div class="badge" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)"><i class="bi bi-people"></i></div>
-                        <div>
-                            <div class="small muted">Active Dealers</div>
-                            <div id="kDealers" class="value">0</div>
-                        </div>
-                    </div>
-                    <div class="card-brand kpi" data-aos="fade-up">
-                        <div class="badge" style="background:linear-gradient(135deg,#f87171,#ef4444)"><i class="bi bi-car-front"></i></div>
-                        <div>
-                            <div class="small muted">Vehicles Listed</div>
-                            <div id="kVehicles" class="value">0</div>
-                        </div>
-                    </div>
-                </section>
+
 
                 <!-- Charts & Top items -->
                 <section class="cols">
-                    <div class="card" data-aos="fade-up">
+                    <div class="brand-card" data-aos="fade-up">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
                             <strong>Trends</strong>
                             <div class="muted small" id="trendLabel">Last 30 days</div>
@@ -83,7 +103,7 @@ require_once ROOT_PATH . '/includes/header.php';
                         <canvas id="trendChart" height="110" aria-label="Trends chart" role="img"></canvas>
                     </div>
 
-                    <div class="card" data-aos="fade-up">
+                    <div class="brand-card" data-aos="fade-up">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
                             <strong>Top Dealers</strong>
                             <div class="muted small">By revenue</div>
@@ -93,7 +113,7 @@ require_once ROOT_PATH . '/includes/header.php';
                 </section>
 
                 <!-- Detailed table -->
-                <section class="card-brand" data-aos="fade-up">
+                <section class="brand-card" data-aos="fade-up">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
                         <strong id="tableTitle">Recent Transactions</strong>
                         <div class="muted small" id="tableMeta">Showing last 20</div>

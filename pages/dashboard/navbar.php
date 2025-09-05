@@ -8,7 +8,7 @@
             <div class="search" role="search"><i class="bi bi-search muted"></i><input id="q" type="search" placeholder="Search VIN, Vehicle, dealer..." style="border:none;background:transparent;outline:none;padding-left:6px;flex:1" /></div>
         </div>
         <div style="display:flex;gap:10px;align-items:center">
-            <a href="<?= BASE_URL; ?>dashboard/notification" id="notifBtn" class="btn btn-sm btn-ghost"><i class="bi bi-bell"></i></a>
+            <!-- <a href="<?= BASE_URL; ?>dashboard/notification" id="notifBtn" class="btn btn-sm btn-ghost"><i class="bi bi-bell"></i></a> -->
             <div class="user-dropdown" id="userDropdown">
                 <img
                     src="<?= !empty($user['avatar']) ? $user['avatar'] : 'https://i.pravatar.cc/150?img=5' ?>"

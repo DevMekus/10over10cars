@@ -230,7 +230,7 @@ require_once ROOT_PATH . '/includes/navbar.php';
             <p class="section-sub">Search verified listings. Negotiate confidently.</p>
 
             <div class="filters cardx" style="padding:12px;">
-                <select id="filterMake" aria-label="Make">
+                <select id="filterMake" class="select-tags" aria-label="Make">
                     <option value="">All Makes</option>
                     <option>Toyota</option>
                     <option>Honda</option>
@@ -238,10 +238,10 @@ require_once ROOT_PATH . '/includes/navbar.php';
                     <option>Lexus</option>
                     <option>Ford</option>
                 </select>
-                <select id="filterModel" aria-label="Model">
+                <select id="filterModel" class="select-tags" aria-label="Model">
                     <option value="">All Models</option>
                 </select>
-                <select id="filterYear" aria-label="Year">
+                <select id="filterYear" class="select-tags" aria-label="Year">
                     <option value="">Any Year</option>
                 </select>
 

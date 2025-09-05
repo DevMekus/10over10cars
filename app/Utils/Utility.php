@@ -8,6 +8,8 @@ class Utility
     public static string $API_ROUTE = "/10over10cars/api";
     public static $siteName = '';
 
+
+
     public static $accounts_tbl = 'accounts_tbl';
     public static $profile_tbl = 'profile_tbl';
     public static $dealers_tbl = 'dealers_tbl';
@@ -21,6 +23,7 @@ class Utility
     public static $insurance_tbl = 'insurance';
     public static $ownership_tbl = 'ownership';
     public static $specifications_tbl = 'specifications';
+    public static $sessions_tbl = 'sessions';
 
 
     private const ENCRYPTION_METHOD = 'AES-256-CBC';
@@ -35,6 +38,8 @@ class Utility
         '6' => 'Vehicle',
         '6' => 'Verification',
     ];
+
+
 
 
     private static function getKey(): string
@@ -312,5 +317,21 @@ class Utility
         $currentRoute = trim($path, '/');
 
         return $currentRoute;
+    }
+
+    static function getUserIP()
+    {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR']; // for proxies
+        } else {
+            return $_SERVER['REMOTE_ADDR'];
+        }
+    }
+
+    public static function getUserDevice()
+    {
+        return $_SERVER['HTTP_USER_AGENT'];
     }
 }

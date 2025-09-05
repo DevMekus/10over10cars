@@ -16,12 +16,25 @@ require_once ROOT_PATH . '/includes/header.php';
         <div class="main">
             <?php require_once "navbar.php"; ?>
             <main class="content">
+                <div class="dashboard">
+                    <!-- Summary Header Card -->
+                    <div class="summary-card" data-aos="fade-up">
+                        <div>
+                            <h1>Account Settings</h1>
+                            <p>As a user, you can update your personal information, change your password, and customize your account preferences.</p>
+                        </div>
+
+                        <div class="summary-icon" data-aos="zoom-in" data-aos-delay="200">
+                            <i data-feather="bar-chart-2" width="36" height="36"></i>
+                        </div>
+                    </div>
+                </div>
                 <div class="layout">
                     <!-- Left: Profile Overview & Tabs -->
                     <section>
                         <div class="card-panel mb-3" data-aos="fade-up">
                             <div class="profile-hero">
-                                <div class="avatar"><img id="avatarPreview" src="{{avatar_url}}" alt="Avatar preview"></div>
+                                <div class="avatar"><img id="avatarPreview" src="<?= !empty($user['avatar']) ? $user['avatar'] : 'https://i.pravatar.cc/150?img=5' ?>" alt="Avatar preview"></div>
                                 <div class="profile-meta">
                                     <h2><?= Utility::truncateText(ucfirst($user['fullname']), 20); ?> <span class="chip"><?= ucfirst($role); ?></span></h2>
                                     <div style="color:var(--muted);margin-top:6px"><?= ucfirst($user['email_address']); ?></div>
@@ -82,10 +95,17 @@ require_once ROOT_PATH . '/includes/header.php';
                                             <input name="country" value="<?= $user['country'] ? ucfirst($user['country']) : ""; ?>" class="form-control" placeholder="Nigeria" />
                                         </div>
 
+                                        <input type="hidden" name="userid" value="<?= $user ? $user['userid'] : ''; ?>" required />
+
+
                                         <div class="col-md-12">
+
+                                            <div class="mb-1" style="width:84px;height:84px;border-radius:12px;overflow:hidden;background:#eef2f7">
+                                                <img id="avatarPreview2" src="<?= !empty($user['avatar']) ? $user['avatar'] : 'https://i.pravatar.cc/150?img=5' ?>" style="width:100%;height:100%;object-fit:cover" />
+                                            </div>
                                             <label class="form-label">Select Avatar</label>
-                                            <input type="file" name="dp-upload" accept="images/*" id="dp-upload" class="form-control" placeholder="https://..." />
-                                            <div class="helper">Paste an image URL and preview updates instantly.</div>
+                                            <input type="file" name="dp-upload" accept="image/*" id="dp-upload" class="form-control" placeholder="https://..." />
+                                            <div class="helper">Select an image PNG, JPG - Max 2MB</div>
                                         </div>
 
                                         <div class="col-12 d-flex justify-content-end" style="gap:8px;margin-top:6px">
@@ -98,8 +118,7 @@ require_once ROOT_PATH . '/includes/header.php';
 
                             <!-- Tab: Activity -->
                             <div id="tab-activity" class="tab-content d-none">
-                                <div class="timeline" id="activityList">
-                                    <!-- Items injected by JS -->
+                                <div class="timeline" id="activityList">                                  
                                 </div>
                                 <div class="d-flex justify-content-end mt-2"><button id="clearActivity" class="btn btn-outline-danger">Clear Activity</button></div>
                             </div>
@@ -108,9 +127,21 @@ require_once ROOT_PATH . '/includes/header.php';
                             <div id="tab-security" class="tab-content d-none">
                                 <div class="mb-3">
                                     <h6>Active Sessions</h6>
-                                    <ul class="list-group">
-                                        <!-- JS will inject items -->
-                                    </ul>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm" id="sessionsTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Device</th>
+                                                    <th>IP Address</th>
+                                                    <th>Last Active</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                        <div id="no-data"></div>
+                                    </div>
                                 </div>
                                 <div>
                                     <button id="signoutOthers" class="btn btn-outline-secondary">Sign out other sessions</button>
@@ -122,16 +153,16 @@ require_once ROOT_PATH . '/includes/header.php';
 
                     <!-- Right rail: Quick actions & preferences -->
                     <aside class="right-rail">
-                        <div class="card-panel" data-aos="fade-up">
+                        <!-- <div class="card-panel" data-aos="fade-up">
                             <h6>Account Actions</h6>
                             <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
                                 <button class="btn btn-outline-secondary">Download data</button>
                                 <button class="btn btn-warning">Deactivate account</button>
 
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="card-panel" data-aos="fade-up">
+                        <!-- <div class="card-panel" data-aos="fade-up">
                             <h6>Preferences</h6>
                             <div class="form-check form-switch mt-2">
                                 <input class="form-check-input" type="checkbox" id="prefDark" />
@@ -145,12 +176,12 @@ require_once ROOT_PATH . '/includes/header.php';
                                 <input class="form-check-input" type="checkbox" id="prefAlerts" />
                                 <label class="form-check-label" for="prefAlerts">Browser alerts</label>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="card-panel text-center" data-aos="fade-up">
                             <h6>Support</h6>
                             <p class="text-muted" style="font-size:13px">Need help? Reach out to our support team.</p>
-                            <a href="{{support_url}}" class="btn btn-outline-primary">Contact support</a>
+                            <a href="<?= BASE_URL ?>contact-us" class="btn btn-outline-primary">Contact support</a>
                         </div>
                     </aside>
                 </div>

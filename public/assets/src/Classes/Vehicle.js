@@ -8,6 +8,9 @@ export default class Vehicle {
   static VIEW = "grid";
   static SELECTED = new Set();
   static CURRENT_DATA = null;
+  static currentPage = 1;
+  static pageSize = 10; // vehicles per page
+  static paginationEl = "pagination"; // id for pagination mount
 
   static renderStats(data) {
     Utility.el("sTotal").textContent = data.length;
@@ -57,82 +60,139 @@ export default class Vehicle {
 
     mount.innerHTML = "";
     noData.innerHTML = "";
-    const rows = Vehicle.getFiltered();
 
-    if (rows == 0) {
-      noData.innerHTML = `<div class="w-100 mt-4 text-center text-error"><p>Data not available</p></div>`;
+    const rows = Vehicle.getFiltered();
+    const totalRows = rows.length;
+
+    if (totalRows === 0) {
+      Utility.renderEmptyState(noData);
+
       return;
     }
-    const token = await decryptJsToken();
-    // const role = token.role;
 
-    rows.forEach((v) => {
+    const token = await decryptJsToken();
+
+    // Slice data for current page
+    const start = (Vehicle.currentPage - 1) * Vehicle.pageSize;
+    const end = start + Vehicle.pageSize;
+    const paginatedRows = rows.slice(start, end);
+
+    paginatedRows.forEach((v) => {
       const card = document.createElement("div");
       card.className = "v-card";
       const images = JSON.parse(v.images);
       card.setAttribute("data-aos", "fade-up");
       card.innerHTML = `
-        <div class='media'>
-          <img src='${images[0]}' alt='${v.title}'/>
-          <span class='status'>${Utility.toTitleCase(v.status)}</span>
+      <div class='media'>
+        <img src='${images[0]}' alt='${v.title}'/>
+        <span class='status'>${Utility.toTitleCase(v.status)}</span>
+      </div>
+      <div class='body'>
+        <div style='display:flex;justify-content:space-between;align-items:center'>
+          <div>
+            <div style='font-weight:800'>${v.title}</div>
+            <div class='small muted'>VIN ${v.vin}</div>
+          </div>
+          <div class='price'>${Utility.fmtNGN(v.price)}</div>
         </div>
-        <div class='body'>
-          <div style='display:flex;justify-content:space-between;align-items:center'>
-            <div>
-              <div style='font-weight:800'>${v.title}</div>
-              <div class='small muted'>VIN ${v.vin}</div>
-            </div>
-            <div class='price'>${Utility.fmtNGN(v.price)}</div>
-          </div>
-          <div style='display:flex;gap:12px;margin-top:8px' class='small muted'>
-            <span><i class='bi bi-speedometer2'></i> ${Utility.fmt(
-              v.mileage
-            )} km</span>
-            <span><i class='bi bi-person-badge'></i> ${
-              v.company ?? "---"
-            }</span>
-          </div>
-          <div style='display:flex;gap:6px;margin-top:10px'>
-            <span class='pill ${v.status}'>${Utility.toTitleCase(
-        v.status
-      )}</span>
-          </div>
-          <div class="action_btns mt-3">
-            <button class='toolbar btn btn-sm btn-outline-accent' 
-            data-view='${v.id}'><i class="fas fa-eye"></i>
-            </button>       
-            ${
-              token?.role == "admin"
-                ? `
-                    <button class='toolbar btn btn-sm btn-outline-accent' 
-                    data-edit='${v.id}'><i class="fas fa-pencil"></i>
-                    </button>
-                    
-
-                    <button class='toolbar btn btn-sm btn-outline-error' 
-                    data-delete='${v.id}'><i class="fas fa-trash danger"></i>
-                    </button>
-               ${
-                 v.status !== "approved"
-                   ? `<button class='toolbar btn btn-sm btn-outline-accent' data-approve='${v.id}'>
-                   <i class="fas fa-check-circle approve"></i> 
-                   </button>`
-                   : ""
-               }
-            ${
-              v.status !== "rejected"
-                ? `<button class='toolbar btn btn-sm btn-outline-error' data-reject='${v.id}'>
-                <i class="fas fa-times danger"></i> 
-                </button>`
-                : ""
-            } 
+        <div style='display:flex;gap:12px;margin-top:8px' class='small muted'>
+          <span><i class='bi bi-speedometer2'></i> ${Utility.fmt(
+            v.mileage
+          )} km</span>
+          <span><i class='bi bi-person-badge'></i> ${v.company ?? "---"}</span>
+        </div>
+        <div style='display:flex;gap:6px;margin-top:10px'>
+          <span class='pill ${v.status}'>${Utility.toTitleCase(v.status)}</span>
+        </div>
+        <div class="action_btns mt-3">
+          <button class='toolbar btn btn-sm btn-outline-accent' data-view='${
+            v.id
+          }'>
+            <i class="fas fa-eye"></i>
+          </button>       
+          ${
+            token?.role == "admin"
+              ? `
+                <button class='toolbar btn btn-sm btn-outline-accent' data-edit='${
+                  v.id
+                }'>
+                  <i class="fas fa-pencil"></i>
+                </button>
+                <button class='toolbar btn btn-sm btn-outline-error' data-delete='${
+                  v.id
+                }'>
+                  <i class="fas fa-trash danger"></i>
+                </button>
+                ${
+                  v.status !== "approved"
+                    ? `<button class='toolbar btn btn-sm btn-outline-accent' data-approve='${v.id}'>
+                        <i class="fas fa-check-circle approve"></i> 
+                       </button>`
+                    : ""
+                }
+                ${
+                  v.status !== "rejected"
+                    ? `<button class='toolbar btn btn-sm btn-outline-error' data-reject='${v.id}'>
+                        <i class="fas fa-times danger"></i> 
+                       </button>`
+                    : ""
+                } 
               `
-                : ``
-            }           
-          </div>
-        </div>`;
+              : ``
+          }           
+        </div>
+      </div>`;
       mount.appendChild(card);
     });
+
+    // Render pagination
+    Vehicle.renderPagination(totalRows);
+  }
+
+  static renderPagination(totalRows) {
+    const paginationMount = Utility.el(Vehicle.paginationEl);
+    if (!paginationMount) return;
+
+    paginationMount.innerHTML = "";
+
+    const totalPages = Math.ceil(totalRows / Vehicle.pageSize);
+    if (totalPages <= 1) return;
+
+    // Prev button
+    const prevBtn = document.createElement("button");
+    prevBtn.textContent = "Prev";
+    prevBtn.disabled = Vehicle.currentPage === 1;
+    prevBtn.onclick = () => {
+      if (Vehicle.currentPage > 1) {
+        Vehicle.currentPage--;
+        Vehicle.renderGrid();
+      }
+    };
+    paginationMount.appendChild(prevBtn);
+
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement("button");
+      btn.textContent = i;
+      btn.className = i === Vehicle.currentPage ? "active" : "";
+      btn.onclick = () => {
+        Vehicle.currentPage = i;
+        Vehicle.renderGrid();
+      };
+      paginationMount.appendChild(btn);
+    }
+
+    // Next button
+    const nextBtn = document.createElement("button");
+    nextBtn.textContent = "Next";
+    nextBtn.disabled = Vehicle.currentPage === totalPages;
+    nextBtn.onclick = () => {
+      if (Vehicle.currentPage < totalPages) {
+        Vehicle.currentPage++;
+        Vehicle.renderGrid();
+      }
+    };
+    paginationMount.appendChild(nextBtn);
   }
 
   static async renderTable() {
@@ -143,7 +203,7 @@ export default class Vehicle {
     noData.innerHTML = "";
     const rows = Vehicle.getFiltered();
     if (rows == 0) {
-      noData.innerHTML = `<div class="w-100 mt-4 text-center text-error"><p>Data not available</p></div>`;
+      Utility.renderEmptyState(noData);
       return;
     }
 

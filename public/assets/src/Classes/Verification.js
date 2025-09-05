@@ -3,7 +3,7 @@ import Application from "../Classes/Application.js";
 import Vehicle from "../Classes/Vehicle.js";
 import { CONFIG } from "../Utils/config.js";
 import { DataTransfer } from "../Utils/api.js";
-import { clearAppData } from "../Utils/Session.js";
+import { clearAppData, decryptJsToken } from "../Utils/Session.js";
 
 export default class Verification {
   static statistics() {
@@ -22,7 +22,7 @@ export default class Verification {
     document.getElementById("statDeclined").textContent = declined;
     document.getElementById("statPending").textContent = pending;
   }
-  static renderTable(data) {
+  static async renderTable(data) {
     const tbody = document.querySelector("#reqTable tbody");
     const noData = document.querySelector(".no-data");
     if (!tbody) return;
@@ -53,6 +53,8 @@ export default class Verification {
     const slice = filtered.slice(start, start + Utility.PER_PAGE);
     document.getElementById("showingCount").textContent = slice.length;
 
+    const token = await decryptJsToken();
+
     slice.forEach((r) => {
       const tr = document.createElement("tr");
       const images = JSON.parse(r.images);
@@ -81,11 +83,18 @@ export default class Verification {
               <button class="btn btn-sm btn-primary" 
               data-view='${r.request_id}'>View</button>
               ${
-                r.status === "pending"
-                  ? `<button class="btn btn-sm btn-ghost" data-approve='${r.request_id}'>Approve</button>
+                token?.role == "admin"
+                  ? `
+                 ${
+                   r.status === "pending"
+                     ? `<button class="btn btn-sm btn-ghost" data-approve='${r.request_id}'>Approve</button>
                   <button class="btn btn-sm btn-ghost" data-decline='${r.request_id}'>Decline</button>`
-                  : ""
+                     : ""
+                 }
+                `
+                  : ``
               }
+             
             </div>
           </td>
         `;
@@ -231,7 +240,7 @@ export default class Verification {
     }
   }
 
-  static openDetail(id) {
+  static async openDetail(id) {
     const req = Application.DATA.verifications.find((r) => r.request_id === id);
     if (!req) {
       Utility.toast("Request not available", "error");
@@ -242,6 +251,8 @@ export default class Verification {
     const images = req.images ? JSON.parse(req.images) : null;
     const docs = req.documents ? JSON.parse(req.documents) : null;
     let title = Utility.el("detailModalLabel");
+
+    const token = await decryptJsToken();
 
     title.innerHTML = "";
     domBody.innerHTML = "";
@@ -256,9 +267,17 @@ export default class Verification {
                     images ? images[0] : ""
                   }" alt="vehicle image" />
                  </div>
-                 <div style="margin-top:10px;display:flex;gap:8px">
-                 <button class="btn btn-primary btn-pill"  data-target="${id}" id="approveBtn">Approve</button>
-                 <button class="btn btn-ghost" data-target="${id}" id="declineBtn">Decline</button></div>
+                 ${
+                   token?.role == "admin"
+                     ? `
+                  <div style="margin-top:10px;display:flex;gap:8px">
+                    <button class="btn btn-primary btn-pill"  data-target="${id}" id="approveBtn">Approve</button>
+                    <button class="btn btn-ghost" data-target="${id}" id="declineBtn">Decline</button>
+                 </div>
+                  `
+                     : ``
+                 }
+                 
              </div>
              <div class="col-sm-6">
                  <div><strong id="detailTitle">${req.title}</strong>
@@ -283,7 +302,11 @@ export default class Verification {
                        req.fullname
                      }. (dealer:${req.company})</div>
                  </div>
-                 <div style="margin-top:10px"><strong>Documents</strong>
+
+                 ${
+                   req.status == "approved"
+                     ? `
+                  <div style="margin-top:10px"><strong>Documents</strong>
                      <ul id="detailDocs" style="margin:6px 0 0 14px">
                      ${
                        docs &&
@@ -296,6 +319,11 @@ export default class Verification {
                      }
                      </ul>
                  </div>
+                  
+                  `
+                     : ``
+                 }
+                 
                  <div style="margin-top:12px"><strong>Notes</strong>
                      <div id="detailNotes" class="muted small">
                      ${req.notes ?? "-"}</div>
@@ -336,8 +364,6 @@ export default class Verification {
         { status: decision },
         "PATCH"
       );
-
-      console.log(response);
 
       Utility.toast(
         response.message,

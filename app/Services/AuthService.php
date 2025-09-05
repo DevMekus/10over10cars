@@ -46,6 +46,21 @@ class AuthService
                 'role' => $user['role'],
                 'exp' => time() + 3600
             ]);
+
+            //--Save session
+            $sessions_tbl = Utility::$sessions_tbl;
+            $device = Utility::getUserDevice();
+            $ip = Utility::getUserIP();
+
+            $session = [
+                'userid' => $user['userid'],
+                'session_token' =>  $token,
+                'device' => $device,
+                'ip_address' => $ip,
+            ];
+
+            Database::insert($sessions_tbl, $session);
+
             if (Activity::activity([
                 'userid' => $user['userid'],
                 'type' => 'login',
@@ -143,8 +158,10 @@ class AuthService
     public static function logoutUser($data)
     {
         try {
+            self::revokeSession($data['userid']);
 
             header('Authorization: Bearer null');
+
             Activity::activity([
                 'userid' => $data['userid'] ?? $_SESSION['userid'],
                 'type' => 'logout',
@@ -234,6 +251,76 @@ class AuthService
             }
         } catch (\Throwable $e) {
             Utility::log($e->getMessage(), 'error', 'UserService::resetPassword', ['host' => 'localhost'], $e);
+            Response::error(500, "An error has occurred");
+        }
+    }
+
+    public static function userSessions($id)
+    {
+        try {
+            $session_tbl = Utility::$sessions_tbl;
+            $profile = Utility::$profile_tbl;
+
+            return Database::joinTables(
+                "$session_tbl s",
+                [
+                    [
+                        "type" => "LEFT",
+                        "table" => "$profile p",
+                        "on" => "s.userid = p.userid"
+                    ],
+
+                ],
+                ["s.*", "p.fullname", "p.email_address"],
+                [
+                    "OR" => [
+                        "s.id" => $id,
+                        "s.userid" => $id,
+                        "p.email_address" => $id,
+                        "p.userid" => $id,
+                    ]
+                ],
+                ["s.userid" => $id]
+            );
+        } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'UserService::userSessions', ['host' => 'localhost'], $e);
+            Response::error(500, "An error has occurred");
+        }
+    }
+
+
+    public static function activeSessions()
+    {
+        try {
+            $session_tbl = Utility::$sessions_tbl;
+            $profile = Utility::$profile_tbl;
+
+            return Database::joinTables(
+                "$session_tbl s",
+                [
+                    [
+                        "type" => "LEFT",
+                        "table" => "$profile p",
+                        "on" => "s.userid = p.userid"
+                    ],
+
+                ],
+                ["s.*", "p.fullname", "p.email_address"],
+
+            );
+        } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'UserService::activeSessions', ['host' => 'localhost'], $e);
+            Response::error(500, "An error has occurred");
+        }
+    }
+
+    public static function revokeSession($sessionId)
+    {
+        try {
+            $session_tbl = Utility::$sessions_tbl;
+            return Database::delete($session_tbl, ['userid' => $sessionId]);
+        } catch (\Throwable $e) {
+            Utility::log($e->getMessage(), 'error', 'UserService::revokeSession', ['host' => 'localhost'], $e);
             Response::error(500, "An error has occurred");
         }
     }

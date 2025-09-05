@@ -14,14 +14,18 @@
                         <label class="muted small">Current password</label>
                         <input type="password" name="current_password" id="curPass" required />
                     </div>
+                    <input type="hidden" name="userid" value="<?= $user ? $user['userid'] : ''; ?>" required />
+
+                    <input type="hidden" name="action" value="password_update" required />
+                   
                     <div>
                         <label class="muted small">New password</label>
                         <input type="password" name="user_password" id="newPass" required />
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Change password</button>
+
+                    <button type="submit" class="btn btn-primary btn-pill">Change password</button>
                 </div>
             </form>
         </div>

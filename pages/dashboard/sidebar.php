@@ -24,7 +24,11 @@
           <?php else: ?>
               <a href="<?= BASE_URL; ?>dashboard/dealer" class="<?= $route == "dealers"  ? 'active' : '' ?>"><i class="bi bi-people"></i> Become a Dealer</a>
           <?php endif; ?>
-          <a href="<?= BASE_URL; ?>dashboard/vehicles" class="<?= $route == "vehicles"  ? 'active' : '' ?>"><i class="bi bi-car-front"></i> Vehicles</a>
+
+          <?php if ($role == 'admin' || $user['company'] !== null && $user['company_status'] == 'approved'): ?>
+              <a href="<?= BASE_URL; ?>dashboard/vehicles" class="<?= $route == "vehicles"  ? 'active' : '' ?>"><i class="bi bi-car-front"></i> Vehicles</a>
+          <?php endif; ?>
+
           <?php if ($role == 'admin'): ?>
               <a href="<?= BASE_URL; ?>dashboard/report" class="<?= $route == "report"  ? 'active' : '' ?>"><i class="bi bi-file-earmark-text"></i> Reports</a>
           <?php endif; ?>

@@ -206,6 +206,12 @@
     background: rgba(239, 68, 68, 0.08);
     color: var(--danger);
   }
+
+  .overview-activity {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 16px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -224,6 +230,11 @@
 
   #Dashboard .topbar .search {
     width: 200px;
+  }
+
+  .overview-activity {
+    display: flex;
+    flex-wrap: wrap;
   }
 }
 
@@ -1017,10 +1028,14 @@
   }
 
   .v-card {
-    border: 1px solid rgba(15, 23, 36, 0.06);
-    border-radius: 12px;
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    width: 100%;
+    height: 360px;
     overflow: hidden;
-    background: var(--surface);
   }
 
   .v-card .media {
@@ -1046,6 +1061,12 @@
     font-size: 12px;
     background: rgba(15, 23, 36, 0.6);
     color: var(--text-light);
+  }
+
+  .v-card .action_btns {
+    position: absolute;
+    bottom: 0;
+    padding: 10px;
   }
 
   .v-card .body {

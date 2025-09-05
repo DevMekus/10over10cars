@@ -31,7 +31,8 @@ export default class Report {
 
     Utility.el("kVerifs").textContent = Utility.fmt(verifs.length);
     Utility.el("kRevenue").textContent = Utility.fmtNGN(revenue);
-    Utility.el("kDealers").textContent = Utility.fmt(activeDealers);
+    if (Utility.el("kDealers"))
+      Utility.el("kDealers").textContent = Utility.fmt(activeDealers);
     Utility.el("kVehicles").textContent = Utility.fmt(vehicles.length);
   }
 
@@ -242,7 +243,7 @@ export default class Report {
     tbody.innerHTML = "";
 
     if (Report.CURRENT_ROWS.length == 0) {
-      Utility.renderEmptyState(noData)     
+      Utility.renderEmptyState(noData);
       return;
     }
 

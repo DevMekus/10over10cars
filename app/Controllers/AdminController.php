@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Services\AuthService;
 use App\Services\UserService;
 use App\Utils\RequestValidator;
 use App\Services\DealerService;
@@ -11,7 +12,7 @@ use App\Services\TransactionService;
 use App\Services\VehicleService;
 use App\Services\VerificationService;
 use App\Utils\Response;
-
+use GrahamCampbell\ResultType\Result;
 
 class AdminController
 {

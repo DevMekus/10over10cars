@@ -1,7 +1,7 @@
 import Utility from "../Classes/Utility.js";
 import Application from "../Classes/Application.js";
 import { CONFIG } from "../Utils/config.js";
-import { clearAppData } from "../Utils/Session.js";
+import { clearAppData, decryptJsToken } from "../Utils/Session.js";
 import { DataTransfer } from "../Utils/api.js";
 
 export default class Transaction {
@@ -31,7 +31,7 @@ export default class Transaction {
       Utility.fmtNGN(revenue);
   }
 
-  static transactionTable(data) {
+  static async transactionTable(data) {
     const tbody = document.querySelector("#txTable tbody");
     const noData = document.querySelector(".no-data");
     if (!tbody) return;
@@ -71,6 +71,8 @@ export default class Transaction {
     const start = (Utility.PAGE - 1) * Utility.PER_PAGE;
     const slice = filtered.slice(start, start + Utility.PER_PAGE);
 
+    const token = await decryptJsToken();
+
     slice.forEach((tx) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -91,8 +93,16 @@ export default class Transaction {
           <div style='display:flex;gap:6px'>
           <button class='btn btn-sm btn-primary' 
           data-view='${tx.txnsid}'>View</button>
-         <button class='btn btn-sm  btn-outline-error' 
-          data-block='${tx.txnsid}'>Delete</button></div></td>
+
+          ${
+            token?.role == "admin"
+              ? `
+            <button class='btn btn-sm  btn-outline-error' 
+              data-block='${tx.txnsid}'>Delete</button></div></td>
+            `
+              : ``
+          }
+         
         `;
       tbody.appendChild(tr);
     });
@@ -221,13 +231,14 @@ export default class Transaction {
       return;
     }
 
+    //----Send to API and send response
+    if (fromModal) $("#displayDetails").modal("hide");
+
     if (decision == "refund" && tx.status !== "success") {
       Utility.toast("Only successful transactions can be refunded", "error");
       return;
     }
 
-    //----Send to API and send response
-    if (fromModal) $("#displayDetails").modal("hide");
     const result = await Utility.confirm("Update changes");
 
     if (result.isConfirmed) {
@@ -254,6 +265,7 @@ export default class Transaction {
 
   static async deleteTransaction(id, fromModal = false) {
     const tx = Application.DATA.txns.find((t) => t.txnsid === id);
+    
     if (!tx) {
       Utility.toast("Transaction not found", "error");
       return;
@@ -261,6 +273,7 @@ export default class Transaction {
 
     //----Send to API and send response
     if (fromModal) $("#displayDetails").modal("hide");
+
     const result = await Utility.confirm(
       "Delete transaction?",
       "Action is not reversible"
@@ -288,7 +301,7 @@ export default class Transaction {
     }
   }
 
-  static openDetail(id) {
+  static async openDetail(id) {
     const tx = Application.DATA.txns.find((t) => t.txnsid === id);
     if (!tx) {
       Utility.toast("Transaction not found", "error");
@@ -297,6 +310,7 @@ export default class Transaction {
 
     const domBody = Utility.el("detailModalBody");
     let title = Utility.el("detailModalLabel");
+    const token = await decryptJsToken();
 
     title.innerHTML = "";
     domBody.innerHTML = "";
@@ -320,11 +334,19 @@ export default class Transaction {
                  <div style="margin-top:12px"><strong>Status</strong>
                      <div id="txStatus" class="muted small">${tx.status}</div>
                  </div>
-                 <div style="margin-top:12px"><strong>Action</strong>
+                 ${
+                   token?.role == "admin"
+                     ? `
+                  <div style="margin-top:12px"><strong>Action</strong>
                      <div style="display:flex;gap:8px;margin-top:8px">
                      <button class="btn btn-primary btn-sm btn-pill" data-target="${id}" id="refundBtn">Refund</button>
                      <button class="btn btn-sm btn-outline-error" data-target="${id}" id="blockBtn">Delete</button></div>
                  </div>
+                  
+                  `
+                     : ``
+                 }
+                 
              </div>
              <div class="col-sm-6">
                  <div><strong>User/Dealer</strong>

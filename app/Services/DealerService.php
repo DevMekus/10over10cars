@@ -169,7 +169,7 @@ class DealerService
                 Activity::activity([
                     'userid' => $data['userid'],
                     'type' => 'register',
-                    'title' => 'dealer register successful',
+                    'title' => 'dealer registration successful',
                 ]);
                 return true;
             }

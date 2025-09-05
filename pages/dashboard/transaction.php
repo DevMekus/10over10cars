@@ -12,51 +12,87 @@ require_once ROOT_PATH . '/includes/header.php';
         <!-- Main area -->
         <div class="main">
             <?php require_once "navbar.php"; ?>
-            <header class="topbars">
-                <div class="mt-1">
-                    <div class="filters">
-                        <select id="statusFilter">
-                            <option value="all">All status</option>
-                            <option value="success">Success</option>
-                            <option value="pending">Pending</option>
-                            <option value="failed">Failed</option>
-                        </select>
-                        <input type="date" id="fromDate" />
-                        <input type="date" id="toDate" />
-                        <select id="methodFilter">
-                            <option value="all">All methods</option>
-                            <option value="card">Card</option>
-                            <option value="bank">Bank</option>
-                            <option value="ussd">USSD</option>
-                            <option value="wallet">Wallet</option>
-                        </select>
+
+            <main class="content">
+                <div class="dashboard">
+                    <!-- Summary Header Card -->
+                    <div class="summary-card" data-aos="fade-up">
+                        <div>
+                            <?php if ($role == 'admin'): ?>
+                                <!-- Admin View -->
+                                <h1>Transactions</h1>
+                                <p>As an administrator, you can monitor, review, and manage all transactions across the platform to ensure accuracy and security.</p>
+
+                            <?php else: ?>
+                                <!-- User View -->
+                                <h1>My Transactions</h1>
+                                <p>As a user, you can view and track your transaction history, check payment statuses, and keep records of your activities.</p>
+                            <?php endif; ?>
+                        </div>
+                        <div class="summary-icon" data-aos="zoom-in" data-aos-delay="200">
+                            <i data-feather="bar-chart-2" width="36" height="36"></i>
+                        </div>
+                    </div>
+
+                    <!-- Stat Cards Grid -->
+                    <div class="stats-grid mt-2">
+                        <div class="stats-card" data-aos="fade-up">
+                            <div class="icon-box bg-accent"><i data-feather="dollar-sign"></i></div>
+                            <h3 id="statTotal"></h3>
+                            <p>Total transactions</p>
+
+                        </div>
+
+                        <div class="stats-card" data-aos="fade-up" data-aos-delay="100">
+                            <div class="icon-box bg-accent"><i data-feather="check-circle"></i></div>
+                            <h3 id="statSuccess">3.2k</h3>
+                            <p>Successful transactions</p>
+
+                        </div>
+
+                        <div class="stats-card" data-aos="fade-up" data-aos-delay="200">
+                            <div class="icon-box bg-primary"><i data-feather="clock"></i></div>
+                            <h3 id="statPending">8.4k</h3>
+                            <p>Pending transactions</p>
+                        </div>
+
+                        <div class="stats-card" data-aos="fade-up" data-aos-delay="300">
+                            <div class="icon-box bg-error"><i data-feather="x-circle"></i></div>
+                            <h3 id="statFailed">1.1k</h3>
+                            <p>Failed Transactions</p>
+                        </div>
+
+
                     </div>
                 </div>
 
-            </header>
-            <main class="content">
-                <section class="stats">
-                    <div class="card" data-aos="fade-up">
-                        <div class="muted">Total transactions</div>
-                        <div class="big" id="statTotal">0</div>
-                    </div>
-                    <div class="card" data-aos="fade-up">
-                        <div class="muted">Successful</div>
-                        <div class="big" id="statSuccess">0</div>
-                    </div>
-                    <div class="card" data-aos="fade-up">
-                        <div class="muted">Pending</div>
-                        <div class="big" id="statPending">0</div>
-                    </div>
-                    <div class="card" data-aos="fade-up">
-                        <div class="muted">Failed</div>
-                        <div class="big" id="statFailed">0</div>
-                    </div>
-                </section>
+                <header class="brand-card">
+                    <div class="mt-1">
+                        <p class="muted">Filter transaction data</p>
+                        <div class="filters">
 
-                <section class="card" data-aos="fade-up">
+                            <select id="statusFilter" class="select-tags">
+                                <option value="all">All status</option>
+                                <option value="success">Success</option>
+                                <option value="pending">Pending</option>
+                                <option value="failed">Failed</option>
+                            </select>
+                            <input type="date" class="form-control datepicker" placeholder="Start" type="date" id="fromDate" />
+                            <input type="date" class="form-control datepicker" placeholder="End" type="date" id="toDate" />
+                            <select id="methodFilter" class="select-tags">
+                                <option value="all">All methods</option>
+                                <option value="card">Card</option>
+                                <option value="bank">Bank</option>
+                                <option value="ussd">USSD</option>
+                                <option value="wallet">Wallet</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </header>
+                <section class="brand-card" data-aos="fade-up">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                        <strong>Transactions</strong>
+                        <strong>Transaction Data</strong>
                         <div style="display:flex;gap:8px;align-items:center">
                             <button class="btn btn-sm btn-outline-primary" id="exportCsv">Export CSV</button>
                             <button class="btn btn-sm btn-outline-primary" id="exportPdf">Export PDF</button>
@@ -89,9 +125,13 @@ require_once ROOT_PATH . '/includes/header.php';
 
                 <!-- mini chart + revenue summary -->
                 <section style="display:grid;grid-template-columns:1fr 320px;gap:12px">
-                    <div class="card" data-aos="fade-up"><strong>Revenue (last 30 days)</strong><canvas id="revChart" height="120"></canvas></div>
-                    <div class="card" data-aos="fade-up">
-                        <div class="muted">Total revenue</div>
+                    <div class="brand-card" data-aos="fade-up"><strong><?= $role == 'admin' ? 'Revenue' : 'Transaction' ?> (last 30 days)</strong>
+                        <canvas id="revChart" height="120"></canvas>
+
+                    </div>
+                    <div
+                        class="brand-card" data-aos="fade-up">
+                        <div class="muted">Total <?= $role == 'admin' ? 'Revenue' : 'Transaction' ?></div>
                         <div class="big" id="totalRevenue">NGN 0</div>
                         <div style="margin-top:8px" class="muted small">Includes refunds</div>
                     </div>

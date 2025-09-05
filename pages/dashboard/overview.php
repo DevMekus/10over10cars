@@ -12,32 +12,53 @@ require_once ROOT_PATH . '/includes/header.php';
         <!-- Main area -->
         <div class="main">
             <?php require_once "navbar.php"; ?>
-            <main class="content">
+            <main class="content ">
+                <div class="dashboard">
+                    <!-- Summary Header Card -->
+                    <div class="summary-card" data-aos="fade-up">
+                        <div>
+                            <h1><?= $user['fullname']; ?></h1>
+                            <p>Welcome back to <?= BRAND_NAME; ?> dashboard</p>
+                        </div>
+                        <div class="summary-icon" data-aos="zoom-in" data-aos-delay="200">
+                            <i data-feather="bar-chart-2" width="36" height="36"></i>
+                        </div>
+                    </div>
+
+                    <!-- Stat Cards Grid -->
+                    <div class="stats-grid mt-2">
+                        <div class="stats-card" data-aos="fade-up">
+                            <div class="icon-box bg-primary"><i data-feather="shield"></i></div>
+                            <h3 id="statVer"></h3>
+                            <p>Car verifications</p>
+                        </div>
+
+                        <div class="stats-card" data-aos="fade-up" data-aos-delay="100">
+                            <div class="icon-box bg-accent"><i data-feather="user"></i></div>
+                            <h3 id="statDeal">3.2k</h3>
+                            <p>Active Dealers</p>
+                        </div>
+
+                        <div class="stats-card" data-aos="fade-up" data-aos-delay="200">
+                            <div class="icon-box bg-info"><i data-feather="truck"></i></div>
+                            <h3 id="statVeh">8.4k</h3>
+                            <p>Vehicle listings</p>
+                        </div>
+
+                        <div class="stats-card" data-aos="fade-up" data-aos-delay="300">
+                            <div class="icon-box bg-error"><i data-feather="dollar-sign"></i></div>
+                            <h3 id="statRev">1.1k</h3>
+                            <p>Transactions (NGN)</p>
+                        </div>
 
 
-                <!-- Overview -->
-                <section class="grid-4">
-                    <div class="card" data-aos="fade-up">
-                        <div class="muted">Total verifications</div>
-                        <div class="stat" id="statVer">1,240</div>
                     </div>
-                    <div class="card" data-aos="fade-up" data-aos-delay="80">
-                        <div class="muted">Active vehicles</div>
-                        <div class="stat" id="statVeh">312</div>
-                    </div>
-                    <div class="card" data-aos="fade-up" data-aos-delay="160">
-                        <div class="muted">Dealers</div>
-                        <div class="stat" id="statDeal">42</div>
-                    </div>
-                    <div class="card" data-aos="fade-up" data-aos-delay="240">
-                        <div class="muted">Revenue (NGN)</div>
-                        <div class="stat" id="statRev">NGN 8,420,000</div>
-                    </div>
-                </section>
+                </div>
+
 
                 <!-- Charts + Activity -->
-                <section style="display:grid;grid-template-columns:1fr 380px;gap:16px">
-                    <div class="card" data-aos="fade-up">
+                <section class="overview-activity">
+                    <div class="brand-card" data-aos="fade-up">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>Verifications (30 days)</strong>
                             <div class="muted small">Last 30 days</div>
                         </div>
@@ -47,7 +68,7 @@ require_once ROOT_PATH . '/includes/header.php';
 
                     </div>
 
-                    <div class="card" data-aos="fade-up" data-aos-delay="80">
+                    <div class="brand-card" data-aos="fade-up" data-aos-delay="80">
                         <strong>Recent activity</strong>
 
                         <div id="activityWidget">
@@ -62,11 +83,13 @@ require_once ROOT_PATH . '/includes/header.php';
 
                 <?php if ($role == 'admin'): ?>
                     <!-- Verifications table -->
-                    <section class="card" data-aos="fade-up">
-                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><strong>Recent verifications</strong>
+                    <section class="brand-card" data-aos="fade-up">
+                        <div>
+                            <strong>Recent verifications</strong>
                             <div class="muted small">Showing last 10</div>
                         </div>
-                        <div class="table-responsive">
+                        <div class="table-responsives">
+
                             <table id="tableVer" class="brand-table">
                                 <thead>
                                     <tr>
@@ -84,27 +107,16 @@ require_once ROOT_PATH . '/includes/header.php';
                     </section>
 
                     <!-- Vehicles grid (rich cards) -->
-                    <section>
-                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>Vehicles</strong>
-                            <div><button class="btn btn-ghost" id="addVehicleBtn">+ Add Vehicle</button></div>
-                        </div>
-                        <div class="vehicles-grid" id="vehiclesGrid"></div>
-                    </section>
 
-                    <!-- Dealers management -->
-                    <section class="card" data-aos="fade-up">
-                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><strong>Dealer requests</strong>
-                            <div class="muted small">Pending approvals</div>
-                        </div>
-                        <div id="dealerList"></div>
-                    </section>
+
+
                 <?php endif; ?>
 
                 <?php if ($role == 'user'): ?>
                     <!-- Tables -->
                     <section style="display:grid;grid-template-columns:2fr 1fr;gap:2px">
 
-                        <div class="card" data-aos="fade-up">
+                        <div class="brand-card" data-aos="fade-up">
                             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
                                 <strong>Recent verifications</strong>
                                 <div class="muted small">Showing last 10</div>
@@ -126,7 +138,7 @@ require_once ROOT_PATH . '/includes/header.php';
                             </div>
                         </div>
 
-                        <div class="card" data-aos="fade-up" data-aos-delay="80">
+                        <div class="brand-card" data-aos="fade-up" data-aos-delay="80">
                             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
                                 <strong>Transactions</strong>
                                 <div class="muted small">Last 5</div>

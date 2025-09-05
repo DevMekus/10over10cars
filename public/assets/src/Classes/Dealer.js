@@ -392,6 +392,17 @@ export default class Dealer {
         `${response.status == 200 ? "success" : "error"}`
       );
 
+      if (response.status == 200) {
+        await clearAppData();
+        await Application.initializeData();
+      }
+
+      Swal.fire(
+        response.status == 200 ? "Success!" : "Error",
+        `${response.message}`,
+        response.status == 200 ? "success" : "error"
+      );
+
       return response;
     }
   }

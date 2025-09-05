@@ -1,5 +1,6 @@
 import Utility from "../Classes/Utility.js";
 import Application from "../Classes/Application.js";
+import { CONFIG } from "../Utils/config.js";
 
 export default class Overview {
   static renderStats() {
@@ -148,12 +149,14 @@ export default class Overview {
         <td><strong>${v.vin.substring(0, 8)}...</strong></td>
         <td>${v.result ?? "—"}</td>
         <td>${v.source ?? "System"}</td>
-        <td>${new Date(v.date).toLocaleString()}</td>
+        <td>${v.date}</td>
         <td>
-          <button class="btn btn-sm btn-outline-primary" 
+          <a href="${
+            CONFIG.BASE_URL
+          }/dashboard/verification" class="btn btn-sm btn-outline-primary" 
                   data-vin="${v.vin}">
             View
-          </button>
+          </a>
         </td>
       `;
       tbody.appendChild(tr);
@@ -179,16 +182,14 @@ export default class Overview {
       const tr = document.createElement("tr");
 
       tr.innerHTML = `
-        <td><strong>${t.id ?? "—"}</strong></td>
+        <td><strong>${t.request_id ?? "—"}</strong></td>
         <td>${Utility.fmtNGN ? Utility.fmtNGN(t.amount) : t.amount}</td>
         <td>
-          <span class="badge ${
-            t.status === "Completed" ? "bg-success" : "bg-warning"
-          }">
+          <span class="badge ${t.status}">
             ${t.status}
           </span>
         </td>
-        <td>${new Date(t.date).toLocaleString()}</td>
+        <td>${t.date}</td>
       `;
 
       tbody.appendChild(tr);

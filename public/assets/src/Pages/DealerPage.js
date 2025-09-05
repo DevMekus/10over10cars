@@ -2,7 +2,7 @@ import Utility from "../Classes/Utility.js";
 import Application from "../Classes/Application.js";
 
 import Dealer from "../Classes/Dealer.js";
-import { clearAppData } from "../Utils/Session.js";
+import { clearAppData, decryptJsToken } from "../Utils/Session.js";
 
 class DealerPage {
   constructor() {
@@ -162,11 +162,14 @@ class DealerPage {
     });
   }
 
-  renderPendingApplications() {
+  async renderPendingApplications() {
     const mount = Utility.el("applications");
     if (!mount) return;
+    const token = await decryptJsToken();
     const data = Application.DATA.dealers.filter(
-      (apps) => apps.status === "pending"
+      (apps) =>
+        token?.role == "admin" ||
+        (token?.userid == apps.userid && apps.status === "pending")
     );
 
     if (!data.length) {
@@ -181,13 +184,12 @@ class DealerPage {
       div.style.justifyContent = "space-between";
       div.style.alignItems = "center";
       div.style.padding = "8px 0";
-      div.innerHTML = `<div><strong>Apx-${
-        a.id
-      }</strong> <div class="muted small">${new Date(
-        a.joined
-      ).toLocaleString()}</div></div><div><span class="muted small">${
-        a.status
-      }</span></div>`;
+      div.innerHTML = `<div><strong>Apx-${a.userid}</strong> 
+      <div class="muted small">${a.joined}</div></div>
+      <div class="${a.status} status-pill">
+      <span class="muted small">
+      ${a.status}</span>
+      </div>`;
       mount.appendChild(div);
     });
   }

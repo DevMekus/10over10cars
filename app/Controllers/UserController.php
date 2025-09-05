@@ -66,10 +66,28 @@ class UserController
         $data = RequestValidator::sanitize($data);
 
         $update = UserService::updateUserInformation($id, $data);
-        if ($update) {
-            //$user = UserService::fetchUserDetails($id);
+        if ($update)
             Response::success([], 'Profile update successful');
+    }
+
+    public function updateUserPassword($id)
+    {
+        $id = RequestValidator::parseId($id);
+        $data = $_POST;
+        $data = RequestValidator::sanitize($data);
+
+        $userData = UserService::fetchUserDetails($id);
+        if (empty($userData)) Response::error(404, "User not found");
+
+        $user = $userData[0];
+        if ($user && password_verify($data['current_password'], $user['user_password'])) {
+
+            $update = UserService::updateUserInformation($id, $data);
+
+            if ($update)
+                Response::success([], 'Password update successful');
         }
+        Response::error(401, "Incorrect password");
     }
 
     public function deleteUserProfile($id)
