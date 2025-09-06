@@ -1,3 +1,6 @@
+import { CONFIG } from "./config.js";
+import Utility from "../Classes/Utility.js";
+
 /**
  * Session.js
  * Handles user session management, app data caching, and encryption utilities.
@@ -7,9 +10,6 @@
  * - Utility.js
  * - jwt-decode (assumed available globally or imported)
  */
-
-import { CONFIG } from "./config.js";
-import Utility from "../Classes/Utility.js";
 
 /**
  * Fetch the encryption key from server for app data encryption

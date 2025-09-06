@@ -45,20 +45,20 @@ require_once ROOT_PATH . '/includes/header.php';
 
                         <div class="stats-card" data-aos="fade-up" data-aos-delay="100">
                             <div class="icon-box bg-accent"><i data-feather="check-circle"></i></div>
-                            <h3 id="statSuccess">3.2k</h3>
+                            <h3 id="statSuccess"></h3>
                             <p>Successful transactions</p>
 
                         </div>
 
                         <div class="stats-card" data-aos="fade-up" data-aos-delay="200">
                             <div class="icon-box bg-primary"><i data-feather="clock"></i></div>
-                            <h3 id="statPending">8.4k</h3>
+                            <h3 id="statPending"></h3>
                             <p>Pending transactions</p>
                         </div>
 
                         <div class="stats-card" data-aos="fade-up" data-aos-delay="300">
                             <div class="icon-box bg-error"><i data-feather="x-circle"></i></div>
-                            <h3 id="statFailed">1.1k</h3>
+                            <h3 id="statFailed"></h3>
                             <p>Failed Transactions</p>
                         </div>
 

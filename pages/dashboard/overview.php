@@ -35,19 +35,19 @@ require_once ROOT_PATH . '/includes/header.php';
 
                         <div class="stats-card" data-aos="fade-up" data-aos-delay="100">
                             <div class="icon-box bg-accent"><i data-feather="user"></i></div>
-                            <h3 id="statDeal">3.2k</h3>
+                            <h3 id="statDeal"></h3>
                             <p>Active Dealers</p>
                         </div>
 
                         <div class="stats-card" data-aos="fade-up" data-aos-delay="200">
                             <div class="icon-box bg-info"><i data-feather="truck"></i></div>
-                            <h3 id="statVeh">8.4k</h3>
+                            <h3 id="statVeh"></h3>
                             <p>Vehicle listings</p>
                         </div>
 
                         <div class="stats-card" data-aos="fade-up" data-aos-delay="300">
                             <div class="icon-box bg-error"><i data-feather="dollar-sign"></i></div>
-                            <h3 id="statRev">1.1k</h3>
+                            <h3 id="statRev"></h3>
                             <p>Transactions (NGN)</p>
                         </div>
 

@@ -22,7 +22,7 @@ class MailClient
             $mail->SMTPSecure = false;
 
             // Email headers
-            $mail->setFrom('support@10over10cars.com', BRAND_NAME);
+            $mail->setFrom(BRAND_EMAIL, BRAND_NAME);
             $mail->addAddress($toEmail, $toName ?: $toEmail);
             $mail->isHTML($isHtml);
             $mail->Subject = $subject;
@@ -43,3 +43,5 @@ class MailClient
         }
     }
 }
+
+

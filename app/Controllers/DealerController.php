@@ -6,61 +6,145 @@ use App\Services\DealerService;
 use App\Utils\Response;
 use App\Utils\RequestValidator;
 
+/**
+ * Class DealerController
+ *
+ * Handles dealer-related operations such as registration,
+ * retrieval, update, and deletion of dealer accounts.
+ */
 class DealerController
 {
-
-
-    public function index()
+    /**
+     * Retrieve all dealers from the system.
+     *
+     * @return void
+     */
+    public function index(): void
     {
-        $dealers = DealerService::fetchAllDealersInfo();
-        if (empty($dealers)) Response::error(404, "Dealers not found");
-        Response::success($dealers, "Dealers found");
-    }
-    public function findADealer($id)
-    {
-        $id = RequestValidator::parseId($id);
-        $dealer = DealerService::fetchDealerInformation($id);
-        if (empty($dealer)) Response::error(404, "Dealer not found");
-        Response::success($dealer, "Dealer found");
-    }
+        try {
+            $dealers = DealerService::fetchAllDealersInfo();
 
-    public function dealerRegistration()
-    {
-        $data = RequestValidator::validate([
-            'company' => 'require|min:3',
-            'userid' => 'required|address',
-            'contact' => 'required|city',
-            'phone' => 'required|country',
-            'state' => 'required|state',
-            'about' => 'required|state'
-        ], $_POST);
+            if (empty($dealers)) {
+                Response::error(404, "Dealers not found");
+                return;
+            }
 
-        $data = RequestValidator::sanitize($data);
-
-        $upload = DealerService::saveNewDealerInformation($data);
-
-        if ($upload) Response::success(
-            ['dealer' => $data['userid']],
-            'dealer registration successful'
-        );
+            Response::success($dealers, "Dealers found");
+        } catch (\Throwable $e) {
+            Response::error(500, "Error fetching dealers: " . $e->getMessage());
+        }
     }
 
-    public function updateDealerInfo($id)
+    /**
+     * Retrieve information about a specific dealer by ID.
+     *
+     * @param mixed $id
+     * @return void
+     */
+    public function findADealer($id): void
     {
-        $id = RequestValidator::parseId($id);
-        $data = RequestValidator::validate([
-            'status' => 'require',
-        ]);
+        try {
+            $id = RequestValidator::parseId($id);
 
-        $data = RequestValidator::sanitize($data);
-        $update = DealerService::updateDealerAccount($id, $data);
-        if ($update) Response::success([], "Dealer Account update successful");
+            $dealer = DealerService::fetchDealerInformation($id);
+
+            if (empty($dealer)) {
+                Response::error(404, "Dealer not found");
+                return;
+            }
+
+            Response::success($dealer, "Dealer found");
+        } catch (\Throwable $e) {
+            Response::error(500, "Error fetching dealer: " . $e->getMessage());
+        }
     }
 
-    public function deleteDealerInfo($id)
+    /**
+     * Register a new dealer with the provided data.
+     *
+     * @return void
+     */
+    public function dealerRegistration(): void
     {
-        $id = RequestValidator::parseId($id);
-        $delete = DealerService::deleteDealerAccount($id);
-        if ($delete) Response::success([], "Dealer Account delete successful");
+        try {
+            $data = RequestValidator::validate([
+                'company' => 'required|min:3',
+                'userid'  => 'required|numeric',
+                'contact' => 'required|string',
+                'phone'   => 'required|string',
+                'state'   => 'required|string',
+                'about'   => 'required|string',
+            ], $_POST);
+
+            $data = RequestValidator::sanitize($data);
+
+            $upload = DealerService::saveNewDealerInformation($data);
+
+            if ($upload) {
+                Response::success(
+                    ['dealer' => $data['userid']],
+                    "Dealer registration successful"
+                );
+                return;
+            }
+
+            Response::error(500, "Dealer registration failed");
+        } catch (\Throwable $e) {
+            Response::error(500, "Error during dealer registration: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Update dealer account information.
+     *
+     * @param mixed $id
+     * @return void
+     */
+    public function updateDealerInfo($id): void
+    {
+        try {
+            $id = RequestValidator::parseId($id);
+
+            $data = RequestValidator::validate([
+                'status' => 'required|string',
+            ]);
+
+            $data = RequestValidator::sanitize($data);
+
+            $update = DealerService::updateDealerAccount($id, $data);
+
+            if ($update) {
+                Response::success([], "Dealer account update successful");
+                return;
+            }
+
+            Response::error(500, "Dealer account update failed");
+        } catch (\Throwable $e) {
+            Response::error(500, "Error updating dealer: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Delete a dealer account by ID.
+     *
+     * @param mixed $id
+     * @return void
+     */
+    public function deleteDealerInfo($id): void
+    {
+        try {
+            $id = RequestValidator::parseId($id);
+
+            $delete = DealerService::deleteDealerAccount($id);
+
+            if ($delete) {
+                Response::success([], "Dealer account deletion successful");
+                return;
+            }
+
+            Response::error(500, "Dealer account deletion failed");
+        } catch (\Throwable $e) {
+            Response::error(500, "Error deleting dealer: " . $e->getMessage());
+        }
     }
 }

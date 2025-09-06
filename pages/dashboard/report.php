@@ -47,7 +47,7 @@ require_once ROOT_PATH . '/includes/header.php';
 
                         <div class="stats-card" data-aos="fade-up" data-aos-delay="100">
                             <div class="icon-box bg-accent"><i data-feather="dollar-sign"></i></div>
-                            <h3 id="kRevenue">3.2k</h3>
+                            <h3 id="kRevenue"></h3>
                             <p>Transactions (NGN)</p>
 
                         </div>
@@ -55,7 +55,7 @@ require_once ROOT_PATH . '/includes/header.php';
                         <?php if ($role == 'admin'):  ?>
                             <div class="stats-card" data-aos="fade-up" data-aos-delay="200">
                                 <div class="icon-box bg-primary"><i data-feather="users"></i></div>
-                                <h3 id="kDealers">8.4k</h3>
+                                <h3 id="kDealers"></h3>
                                 <p>Active Dealers
                                 </p>
                             </div>
@@ -63,7 +63,7 @@ require_once ROOT_PATH . '/includes/header.php';
 
                         <div class="stats-card" data-aos="fade-up" data-aos-delay="300">
                             <div class="icon-box bg-error"><i data-feather="truck"></i></div>
-                            <h3 id="kVehicles">1.1k</h3>
+                            <h3 id="kVehicles"></h3>
                             <p>Vehicles Listed
                             </p>
                         </div>

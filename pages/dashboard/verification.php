@@ -44,20 +44,20 @@ require_once ROOT_PATH . '/includes/header.php';
 
                         <div class="stats-card" data-aos="fade-up" data-aos-delay="100">
                             <div class="icon-box bg-accent"><i data-feather="check-circle"></i></div>
-                            <h3 id="statApproved">3.2k</h3>
+                            <h3 id="statApproved"></h3>
                             <p>Approved verifications</p>
 
                         </div>
 
                         <div class="stats-card" data-aos="fade-up" data-aos-delay="200">
                             <div class="icon-box bg-error"><i data-feather="x-circle"></i></div>
-                            <h3 id="statDeclined">8.4k</h3>
+                            <h3 id="statDeclined"></h3>
                             <p>Declined verifications</p>
                         </div>
 
                         <div class="stats-card" data-aos="fade-up" data-aos-delay="300">
                             <div class="icon-box bg-info"><i data-feather="bar-chart-2"></i></div>
-                            <h3 id="statTotal">1.1k</h3>
+                            <h3 id="statTotal"></h3>
                             <p>Total Requests</p>
                         </div>
 

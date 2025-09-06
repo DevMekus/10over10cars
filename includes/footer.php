@@ -1,5 +1,6 @@
 <!-- Toasts -->
-<div class="toast-wrap" id="toastWrap" style="z-index: 1300000;"></div>
+<div class="toast-wrap" id="toastWrap" style="z-index:9999"></div>
+<div id="toastContainer" aria-live="polite" style="position:fixed;right:20px;top:20px;z-index:9999"></div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

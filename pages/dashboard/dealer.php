@@ -14,7 +14,7 @@ require_once ROOT_PATH . '/includes/header.php';
             <?php require_once "navbar.php"; ?>
             <main class="content">
                 <section class="hero">
-                    <div class="card" data-aos="fade-up">
+                    <div class="brand-card" data-aos="fade-up">
                         <h2 class="section-title" style="margin:0">Join 10over10 as a Dealer</h2>
                         <p class="muted">Get access to verified leads, priority listings, and dealer tools to manage inventory and sales. Apply below and complete verification.</p>
 
@@ -63,7 +63,7 @@ require_once ROOT_PATH . '/includes/header.php';
 
                     </div>
 
-                    <aside class="card" data-aos="fade-down">
+                    <aside class="brand-card" data-aos="fade-down">
                         <div style="display:flex;justify-content:space-between;align-items:center"><strong>Application status</strong>
                             <div class="muted small <?= $user['company_status'] ?? ''  ?> status-pill"><?= $user['company_status'] ?? ''  ?></div>
                         </div>
@@ -88,7 +88,7 @@ require_once ROOT_PATH . '/includes/header.php';
                 <?php if (!isset($user['company'])):  ?>
                     <section style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; align-items: start;">
                         <!-- Application Form -->
-                        <div class="card" data-aos="zoom-in" style="padding: 20px;">
+                        <div class="brand-card" data-aos="zoom-in" style="padding: 20px;">
                             <h3 style="margin: 0;">Application Form</h3>
                             <p class="muted small">
                                 Fill out the form to apply as a dealer. Attach required documents for verification.
@@ -182,7 +182,7 @@ require_once ROOT_PATH . '/includes/header.php';
                             check_type()
                         </script>
                         <!-- FAQ Sidebar -->
-                        <aside class="card" data-aos="fade-up" style="padding: 20px;">
+                        <aside class="brand-card" data-aos="fade-up" style="padding: 20px;">
                             <h4 style="margin: 0;">FAQ</h4>
                             <div class="faq" style="margin-top: 16px; display: grid; gap: 12px;">
                                 <div class="q">
@@ -208,7 +208,7 @@ require_once ROOT_PATH . '/includes/header.php';
 
 
 
-                <section class="card" data-aos="fade-up">
+                <section class="brand-card" data-aos="fade-up">
                     <h4 style="margin:0">Your applications</h4>
                     <div id="applications" style="margin-top:12px" class="muted small">No applications yet.</div>
                 </section>

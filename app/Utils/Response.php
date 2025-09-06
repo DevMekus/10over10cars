@@ -2,42 +2,77 @@
 
 namespace App\Utils;
 
+/**
+ * Class Response
+ *
+ * Handles standardized JSON HTTP responses for APIs.
+ * Provides helpers for success, error, and validation responses.
+ *
+ * @package App\Utils
+ */
 class Response
 {
     /**
      * Send a JSON response.
      *
-     * @param int $status HTTP status code
-     * @param mixed $data Response data
+     * @param int         $status  HTTP status code
+     * @param mixed|null  $data    Response data
      * @param string|null $message Optional message
+     *
+     * @return void
      */
-    public static function sendJson($status, $data = null, $message = null)
+    public static function sendJson(int $status,  $data = null, ?string $message = null): void
     {
-        // Set the HTTP status code
-        http_response_code($status);
+        try {
+            // Set HTTP status code
+            http_response_code($status);
 
-        // Set content type to JSON
-        header('Content-Type: application/json');
+            // Ensure headers can still be sent
+            if (!headers_sent()) {
+                header('Content-Type: application/json; charset=UTF-8');
+            }
 
-        // Prepare the response structure
-        $response = [
-            'status' => $status,
-            'message' => $message ?? self::getStatusMessage($status),
-            'data' => $data,
-        ];
+            // Prepare structured response
+            $response = [
+                'status'  => $status,
+                'message' => $message ?? self::getStatusMessage($status),
+                'data'    => $data,
+            ];
 
-        // Encode and send the response
-        echo json_encode($response);
-        exit();
+            // Encode as JSON safely
+            $json = json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+            if ($json === false) {
+                // Fallback if encoding fails
+                $json = json_encode([
+                    'status'  => 500,
+                    'message' => 'Failed to encode JSON response',
+                ]);
+                http_response_code(500);
+            }
+
+            echo $json;
+            exit();
+        } catch (\Throwable $e) {
+            // Last-resort fallback if something goes wrong while sending response
+            http_response_code(500);
+            echo json_encode([
+                'status'  => 500,
+                'message' => 'Unexpected server error while sending response',
+            ]);
+            exit();
+        }
     }
 
     /**
      * Send a success response.
      *
-     * @param mixed $data Response data
+     * @param mixed|null  $data    Response data
      * @param string|null $message Optional message
+     *
+     * @return void
      */
-    public static function success($data = null, $message = null)
+    public static function success($data = null, ?string $message = null): void
     {
         self::sendJson(200, $data, $message ?? 'Success');
     }
@@ -45,11 +80,13 @@ class Response
     /**
      * Send an error response.
      *
-     * @param int $status HTTP status code
+     * @param int         $status  HTTP status code
      * @param string|null $message Optional error message
-     * @param mixed $data Additional error details (optional)
+     * @param mixed|null  $data    Additional error details
+     *
+     * @return void
      */
-    public static function error($status, $message = null, $data = null)
+    public static function error(int $status, ?string $message = null,  $data = null): void
     {
         self::sendJson($status, $data, $message ?? 'An error occurred');
     }
@@ -57,10 +94,12 @@ class Response
     /**
      * Send a validation error response.
      *
-     * @param array $errors Validation errors
+     * @param array       $errors  Validation errors
      * @param string|null $message Optional message
+     *
+     * @return void
      */
-    public static function validationError($errors = [], $message = 'Validation failed')
+    public static function validationError(array $errors = [], ?string $message = 'Validation failed'): void
     {
         self::sendJson(422, $errors, $message);
     }
@@ -69,9 +108,10 @@ class Response
      * Get the default HTTP status message for a given status code.
      *
      * @param int $status HTTP status code
+     *
      * @return string
      */
-    private static function getStatusMessage($status)
+    private static function getStatusMessage(int $status): string
     {
         $statusMessages = [
             200 => 'OK',

@@ -1,77 +1,107 @@
 <?php
 
-
 namespace App\Services;
 
 use App\Utils\Response;
+use Throwable;
 
+/**
+ * Class Paystack
+ *
+ * Handles interactions with Paystack's API, including payment verification.
+ *
+ * @package App\Services
+ */
 class Paystack
 {
-
-
-
-    public static function verifyPaystackPayment($reference)
+    /**
+     * Verify a Paystack transaction using its reference.
+     *
+     * @param string $reference The transaction reference to verify.
+     * @return array {
+     *     @type bool   $status   Whether the verification was successful.
+     *     @type string $message  Response message from Paystack or error reason.
+     *     @type array  $data     (optional) Additional Paystack data (amount, customer, etc.).
+     * }
+     */
+    public static function verifyPaystackPayment(string $reference): array
     {
+        $secretKey = "sk_test_0635b682702deeaa1d4ed2b29f5cf9647eb2a8c8"; // TODO: move to env/config
+        $url       = "https://api.paystack.co/transaction/verify/" . rawurlencode($reference);
 
+        try {
+            $ch = curl_init();
+            if ($ch === false) {
+                return [
+                    "status"  => false,
+                    "message" => "Failed to initialize cURL session"
+                ];
+            }
 
-        $secretKey = "sk_test_0635b682702deeaa1d4ed2b29f5cf9647eb2a8c8";
-        $url = "https://api.paystack.co/transaction/verify/" . rawurlencode($reference);
+            curl_setopt_array($ch, [
+                CURLOPT_URL            => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_SSL_VERIFYPEER => true, // ⚠️ Always true in production
+                CURLOPT_HTTPHEADER     => [
+                    "Authorization: Bearer {$secretKey}",
+                    "Cache-Control: no-cache",
+                ],
+            ]);
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //Remove production
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Authorization: Bearer " . $secretKey,
-            "Cache-Control: no-cache",
-        ]);
+            if (curl_errno($ch)) {
+                $errorMsg = curl_error($ch);
+                curl_close($ch);
+                return [
+                    "status"  => false,
+                    "message" => "cURL error: {$errorMsg}"
+                ];
+            }
 
-        $response = curl_exec($ch);
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-
-
-        if (curl_errno($ch)) {
-            $error_msg = curl_error($ch); // capture error *before* closing
             curl_close($ch);
+
+            if ($httpCode !== 200) {
+                return [
+                    "status"   => false,
+                    "message"  => "HTTP error code: {$httpCode}",
+                    "response" => $response
+                ];
+            }
+
+            $result = json_decode($response, true);
+
+            if (!is_array($result) || !isset($result['status'])) {
+                return [
+                    "status"  => false,
+                    "message" => "Invalid response format from Paystack"
+                ];
+            }
+
+            if (!$result['status']) {
+                return [
+                    "status"  => false,
+                    "message" => $result['message'] ?? "Verification failed"
+                ];
+            }
+
+            if (isset($result['data']['status']) && $result['data']['status'] === "success") {
+                return [
+                    "status" => true,
+                    "data"   => $result['data']
+                ];
+            }
+
             return [
-                "status" => false,
-                "message" => "Curl error: " . $error_msg
-            ];
-        }
-
-        curl_close($ch);
-
-        if ($httpcode !== 200) {
-            return [
-                "status" => false,
-                "message" => "HTTP error code: " . $httpcode,
-                "response" => $response
-            ];
-        }
-
-        $result = json_decode($response, true);
-
-
-
-        if (!$result['status']) {
-            return [
-                "status" => false,
-                "message" => $result['message'] ?? "Verification failed"
-            ];
-        }
-
-        if (isset($result['data']['status']) && $result['data']['status'] === "success") {
-            return [
-                "status" => true,
-                "data" => $result['data'] // includes amount, customer email, etc.
-            ];
-        } else {
-            return [
-                "status" => false,
+                "status"  => false,
                 "message" => "Payment not successful",
-                "data" => $result['data'] ?? []
+                "data"    => $result['data'] ?? []
+            ];
+        } catch (Throwable $e) {
+            return [
+                "status"  => false,
+                "message" => "Exception occurred: " . $e->getMessage()
             ];
         }
     }

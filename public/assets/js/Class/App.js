@@ -191,11 +191,7 @@ class App {
     });
   }
 
-  // datePicker() {
-  //   flatpickr(".datepicker", {
-  //     dateFormat: "Y-m-d",
-  //   });
-  // }
+  
 }
 
 new App();

@@ -2,39 +2,84 @@
 
 namespace App\Controllers;
 
-use App\Services\UserService;
-use App\Utils\RequestValidator;
-use App\Services\DealerService;
-use App\Services\NotificationService;
-use App\Services\PlansService;
 use App\Services\TransactionService;
-use App\Services\VehicleService;
-use App\Services\VerificationService;
+use App\Utils\RequestValidator;
 use App\Utils\Response;
 
+/**
+ * Class TransactionController
+ *
+ * Handles operations related to transactions such as
+ * listing, retrieving, and deleting transactions.
+ */
 class TransactionController
 {
-    public function index()
+    /**
+     * Retrieve all transactions.
+     *
+     * @return void
+     */
+    public function index(): void
     {
-        $transactions = TransactionService::fetchAllTransactions();
-        if (empty($transactions)) Response::error(404, "transactions not found");
-        Response::success($transactions, "transactions found");
+        try {
+            $transactions = TransactionService::fetchAllTransactions();
+
+            if (empty($transactions)) {
+                Response::error(404, "Transactions not found");
+                return;
+            }
+
+            Response::success($transactions, "Transactions found");
+        } catch (\Throwable $e) {
+            Response::error(500, "Error fetching transactions: " . $e->getMessage());
+        }
     }
 
-    public function findTransaction($id)
+    /**
+     * Retrieve a specific transaction by ID.
+     *
+     * @param mixed $id Transaction ID
+     * @return void
+     */
+    public function findTransaction($id): void
     {
-        $id = RequestValidator::parseId($id);
+        try {
+            $id = RequestValidator::parseId($id);
 
-        $transaction = TransactionService::fetchTransaction($id);
-        if (empty($transaction)) Response::error(404, "transaction not found");
+            $transaction = TransactionService::fetchTransaction($id);
 
-        Response::success($transaction, "transaction found");
+            if (empty($transaction)) {
+                Response::error(404, "Transaction not found");
+                return;
+            }
+
+            Response::success($transaction, "Transaction found");
+        } catch (\Throwable $e) {
+            Response::error(500, "Error fetching transaction: " . $e->getMessage());
+        }
     }
 
-    public function deleteTransaction($id)
+    /**
+     * Delete a specific transaction by ID.
+     *
+     * @param mixed $id Transaction ID
+     * @return void
+     */
+    public function deleteTransaction($id): void
     {
-        $id = RequestValidator::parseId($id);
-        if (TransactionService::deleteTransaction($id))
-            Response::success([], 'Transaction delete');
+        try {
+            $id = RequestValidator::parseId($id);
+
+            $deleted = TransactionService::deleteTransaction($id);
+
+            if ($deleted) {
+                Response::success([], "Transaction deleted successfully");
+                return;
+            }
+
+            Response::error(500, "Transaction deletion failed");
+        } catch (\Throwable $e) {
+            Response::error(500, "Error deleting transaction: " . $e->getMessage());
+        }
     }
 }
