@@ -66,29 +66,23 @@ require_once ROOT_PATH . '/includes/header.php';
                     </div>
                 </div>
 
-                <header class="brand-card">
-                    <div class="mt-1">
-                        <p class="muted">Filter transaction data</p>
-                        <div class="filters">
+                <header class="brand-card filters">
+                    <select id="statusFilter" class="select-tags">
+                        <option value="all">All status</option>
+                        <option value="success">Success</option>
+                        <option value="pending">Pending</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                    <input type="date" class="form-control datepicker" placeholder="Start" type="date" id="fromDate" />
+                    <input type="date" class="form-control datepicker" placeholder="End" type="date" id="toDate" />
 
-                            <select id="statusFilter" class="select-tags">
-                                <option value="all">All status</option>
-                                <option value="success">Success</option>
-                                <option value="pending">Pending</option>
-                                <option value="failed">Failed</option>
-                            </select>
-                            <input type="date" class="form-control datepicker" placeholder="Start" type="date" id="fromDate" />
-                            <input type="date" class="form-control datepicker" placeholder="End" type="date" id="toDate" />
-                            <select id="methodFilter" class="select-tags">
-                                <option value="all">All methods</option>
-                                <option value="card">Card</option>
-                                <option value="bank">Bank</option>
-                                <option value="ussd">USSD</option>
-                                <option value="wallet">Wallet</option>
-                            </select>
-                        </div>
-                    </div>
-
+                    <select id="methodFilter" class="select-tags">
+                        <option value="all">All methods</option>
+                        <option value="card">Card</option>
+                        <option value="bank">Bank</option>
+                        <option value="ussd">USSD</option>
+                        <option value="wallet">Wallet</option>
+                    </select>
                 </header>
                 <section class="brand-card" data-aos="fade-up">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">

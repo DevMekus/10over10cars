@@ -138,19 +138,24 @@ class App {
   dashboardSidebarToggle() {
     const sidebar = document.getElementById("sidebar");
     const menuBtn = document.getElementById("menuBtn");
+    const overlay = document.getElementById("overlay");
     if (!sidebar || !menuBtn) return;
 
-    menuBtn.addEventListener("click", () =>
-      document.getElementById("sidebar").classList.toggle("open")
-    );
+    menuBtn.addEventListener("click", () => {
+      overlay.classList.add("active");
+      document.getElementById("sidebar").classList.toggle("open");
+    });
+
     document.addEventListener("click", (e) => {
       const sb = document.getElementById("sidebar");
       if (innerWidth <= 900 && sb.classList.contains("open")) {
         if (
           !sb.contains(e.target) &&
           !document.getElementById("menuBtn").contains(e.target)
-        )
+        ) {
           sb.classList.remove("open");
+          overlay.classList.remove("active");
+        }
       }
     });
   }
@@ -190,8 +195,6 @@ class App {
       }
     });
   }
-
-  
 }
 
 new App();

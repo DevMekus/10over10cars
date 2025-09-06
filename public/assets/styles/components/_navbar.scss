@@ -85,6 +85,7 @@
   display: none;
 }
 
+/* Hidden on desktop */
 #mobile-drawer {
   display: none;
 }
@@ -93,24 +94,24 @@
   .nav-links {
     display: none;
   }
-
   .mobile-menu-btn {
     display: inline-flex;
   }
 
-  .mobile-drawer {
+  #mobile-drawer {
     display: block;
-    max-height: 0;
+    max-height: 0; /* collapsed by default */
     overflow: hidden;
     transition: max-height 0.3s ease;
     border-top: 1px solid var(--border);
   }
 
-  .mobile-drawer.open {
-    max-height: 420px;
+  /* remove hard max-height from .open */
+  #mobile-drawer.open {
+    z-index: 5;
   }
 
-  .mobile-drawer a {
+  #mobile-drawer a {
     display: block;
     padding: 14px 2px;
     border-bottom: 1px dashed var(--border);

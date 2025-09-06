@@ -6,6 +6,7 @@
     $route = explode("/", $current)[1];
 
     ?>
+  <div id="overlay"></div>
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
       <div class="brand">
           <img class="brande" src="<?= BASE_URL ?>assets/images/dark-logo.jpg" />

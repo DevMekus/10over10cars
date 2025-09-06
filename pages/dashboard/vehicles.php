@@ -67,39 +67,35 @@ require_once ROOT_PATH . '/includes/header.php';
                 </div>
 
                 <!-- Toolbar -->
-                <section class="brand-card" data-aos="fade-up" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-                    <div class="filters">
-                        <select id="statusFilter" class="select-tags">
-                            <option value="all">All status</option>
-                            <option value="approved">Approved</option>
-                            <option value="pending">Pending</option>
-                            <option value="rejected">Rejected</option>
-                            <option value="draft">Draft</option>
-                        </select>
-                        <select id="sortBy" class="select-tags">
-                            <option value="date">Sort: Date</option>
-                            <option value="price">Sort: Price</option>
-                            <option value="mileage">Sort: Mileage</option>
-                            <option value="year">Sort: Year</option>
-                        </select>
+                <div class="brand-card filters">
+                    <select id="statusFilter" class="select-tags">
+                        <option value="all">All status</option>
+                        <option value="approved">Approved</option>
+                        <option value="pending">Pending</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="draft">Draft</option>
+                    </select>
+                    <select id="sortBy" class="select-tags">
+                        <option value="date">Sort: Date</option>
+                        <option value="price">Sort: Price</option>
+                        <option value="mileage">Sort: Mileage</option>
+                        <option value="year">Sort: Year</option>
+                    </select>
 
-                        <input class="input" id="min" type="number" min="0" step="50000" placeholder="Min price (₦)" />
-                        <input class="input" id="max" type="number" min="0" step="50000" placeholder="Max price (₦)" />
-                        <!-- <div class="field">
+                    <input class="input" id="min" type="number" min="0" step="50000" placeholder="Min price (₦)" />
+                    <input class="input" id="max" type="number" min="0" step="50000" placeholder="Max price (₦)" />
+                    <!-- <div class="field">
                             <label for="dateFrom">Listed from</label>
                             <input class="input" id="dateFrom" type="date" />
                         </div> -->
-                        <button id="bulkApprove" class="btn btn-sm btn-outline-primary">Bulk Approve</button>
-                        <button id="bulkReject" class="btn btn-sm btn-outline-primary">Bulk Reject</button>
-                        <button id="exportCsv" class="btn btn-sm btn-outline-primary">Export CSV</button>
-                        <?php if ($user && $user['company'] !== null): ?>
-                            <button id="addVehicleBtns" class="btn  btn-primary btn-pill" data-bs-toggle="modal" data-bs-target="#uploadVehicleModal"><i class="bi bi-plus-circle"></i> Add Vehicle</button>
-                        <?php endif; ?>
-                    </div>
-                    <div>
-                        <button id="toggleView" class="btn btn-sm btn-outline-accent"><i class="bi bi-grid"></i> Grid</button>
-                    </div>
-                </section>
+
+                    <button id="exportCsv" class="btn btn-sm btn-outline-primary">Export CSV</button>
+                    <?php if ($user && $user['company'] !== null): ?>
+                        <button id="addVehicleBtns" class="btn  btn-primary btn-pill" data-bs-toggle="modal" data-bs-target="#uploadVehicleModal"><i class="bi bi-plus-circle"></i> Add Vehicle</button>
+                    <?php endif; ?>
+                    <button id="toggleView" class="btn btn-sm btn-outline-accent"><i class="bi bi-grid"></i> Grid</button>
+                </div>
+
 
                 <section class="s">
                     <!-- Grid -->

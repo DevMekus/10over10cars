@@ -40,7 +40,12 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll('.select-tags').forEach((el) => {
-            new TomSelect(el);
+            new TomSelect(el, {
+                dropdownParent: "body", // append dropdown to body
+                placeholder: "Select...",
+                allowEmptyOption: true
+            });
+
         });
     });
 </script>

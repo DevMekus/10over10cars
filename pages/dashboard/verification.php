@@ -12,7 +12,6 @@ require_once ROOT_PATH . '/includes/header.php';
         <!-- Main area -->
         <div class="main">
             <?php require_once "navbar.php"; ?>
-
             <main class="content">
                 <div class="dashboard">
                     <!-- Summary Header Card -->
@@ -65,21 +64,41 @@ require_once ROOT_PATH . '/includes/header.php';
                     </div>
                 </div>
                 <section class="brand-card filters" data-aos="fade-up" aria-label="Report filters">
-                    <div class="col-sm-6">
+
+                    <!-- Search Field -->
+                    <div class="filter-item search-field">
                         <input id="qSearch" class="form-control" placeholder="Search VIN, user, dealer..." />
                     </div>
-                    <select class="select-tags" id="statusFilter">
-                        <option value="all">All Status</option>
-                        <option value="pending">Pending</option>
-                        <option value="approved">Approved</option>
-                        <option value="declined">Declined</option>
-                    </select>
-                    <input class="form-control datepicker" placeholder="Start" type="date" id="fromDate" />
-                    <input class="form-control datepicker" placeholder="End" type="date" id="toDate" />
+
+                    <!-- Status Dropdown -->
+                    <div class="filter-item select-field">
+                        <select class="form-control select-tags" id="statusFilter">
+                            <option value="all">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="declined">Declined</option>
+                        </select>
+                    </div>
+
+                    <!-- Date Range -->
+                    <div class="filter-item date-field">
+                        <input class="form-control datepicker" placeholder="Start" type="date" id="fromDate" />
+                    </div>
+                    <div class="filter-item date-field">
+                        <input class="form-control datepicker" placeholder="End" type="date" id="toDate" />
+                    </div>
+
+                    <!-- Action Button (Conditional for non-admins) -->
                     <?php if ($role !== 'admin'): ?>
-                        <a href="<?= BASE_URL ?>dashboard/new-verify" class="btn btn-outline-primary">Verify VIN</a>
+                        <div class="filter-item action-btn">
+                            <a href="<?= BASE_URL ?>dashboard/new-verify" class="btn btn-outline-primary">
+                                Verify VIN
+                            </a>
+                        </div>
                     <?php endif; ?>
+
                 </section>
+
                 <!-- <div style="display:flex;align-items:center;gap:12px" class="brand-card">
                     <div class="search" role="search">
                         <i class="bi bi-search muted"></i>

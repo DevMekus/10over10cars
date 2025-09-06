@@ -47,7 +47,7 @@
  </footer>
 
  <!-- Sticky Mobile Verify Button -->
- <a class="btn btn-primary sticky-mobile-verify" href="#verify" aria-label="Verify VIN"><i class="bi bi-shield-check"></i> Verify</a>
+ <a class="btn btn-primary sticky-mobile-verify" href="#vinForm" aria-label="Verify VIN"><i class="bi bi-shield-check"></i>Start verification</a>
 
  <!-- Back to top -->
  <button id="backToTop" class="btn btn-outline back-to-top" aria-label="Back to top"><i class="bi bi-arrow-up"></i></button>

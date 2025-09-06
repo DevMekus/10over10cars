@@ -67,37 +67,28 @@ require_once ROOT_PATH . '/includes/header.php';
                     </div>
                 </div>
                 <!-- Toolbar -->
-                <section class="brand-card" data-aos="fade-up" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-                    <div class="filters">
-                        <select id="statusFilter" class="select-tags">
-                            <option value="all">All status</option>
-                            <option value="approved">Approved</option>
-                            <option value="pending">Pending</option>
-                            <option value="suspended">Suspended</option>
-                        </select>
-                        <select id="sortBy" class="select-tags">
-                            <option value="name">Sort: Name</option>
-                            <option value="date">Sort: Date</option>
-                            <option value="listings">Sort: Listings</option>
-                            <option value="rating">Sort: Rating</option>
-                        </select>
-                        <!-- <button id="bulkApprove" class="btn">Bulk Approve</button>
-                        <button id="bulkSuspend" class="btn">Bulk Suspend</button> -->
-                        <button id="exportCsv" class="btn btn-sm btn-ghost">Export CSV</button>
-                        <a href="<?= BASE_URL ?>dashboard/dealer" id="addDealerBtn" class="btn btn btn-pill btn-primary"><i class="bi bi-person-plus"></i> Add Dealer</a>
-                    </div>
-                    <div>
-                        <button id="toggleView" class="btn btn-sm btn-outline-primary"><i class="bi bi-grid"></i> Grid</button>
-                    </div>
-                </section>
+                <div class="brand-card filters">
+                    <select id="statusFilter" class="select-tags">
+                        <option value="all">All status</option>
+                        <option value="approved">Approved</option>
+                        <option value="pending">Pending</option>
+                        <option value="suspended">Suspended</option>
+                    </select>
+                    <select id="sortBy" class="select-tags">
+                        <option value="name">Sort: Name</option>
+                        <option value="date">Sort: Date</option>
+                        <option value="listings">Sort: Listings</option>
+                        <option value="rating">Sort: Rating</option>
+                    </select>
+
+                    <button id="exportCsv" class="btn btn-sm btn-ghost">Export CSV</button>
+                    <a href="<?= BASE_URL ?>dashboard/dealer" id="addDealerBtn" class="btn btn btn-pill btn-primary"><i class="bi bi-person-plus"></i> Add Dealer</a>
+                    <button id="toggleView" class="btn btn-sm btn-outline-primary"><i class="bi bi-grid"></i> Grid</button>
+                </div>
                 <section class="brand-card">
-
-
                     <!-- Dealers Grid -->
                     <section id="gridView" class="grid" aria-live="polite"></section>
                     <div id="pagination" style="margin-top:20px; display:flex; gap:6px; justify-content:center"></div>
-
-
                     <!-- Dealers Table -->
                     <section id="tableView" class="card-dash" style="display:none">
                         <div class="table-wrap table-responsive">
@@ -119,7 +110,6 @@ require_once ROOT_PATH . '/includes/header.php';
                         <div class="small muted" id="pgInfo" style="padding:10px;text-align:center"></div>
                     </section>
                     <div class="no-data"></div>
-
                 </section>
                 <?php require "footer.php"; ?>
 

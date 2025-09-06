@@ -95,10 +95,12 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  margin-left: auto; /* align right on desktop */
 }
 
 .summary-icon i {
   color: var(--accent);
+  font-size: 1.8rem;
 }
 
 /* ===== Stat Cards Grid ===== */
@@ -106,6 +108,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
+  margin-top: 2rem;
 }
 
 .stats-card {
@@ -139,12 +142,72 @@
   font-size: 1.8rem;
   font-weight: 600;
   margin: 0.2rem 0;
+  text-align: center;
 }
 
 .stats-card p {
   margin: 0;
   font-size: 0.95rem;
   color: #555;
+  text-align: center;
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 900px) {
+  .summary-card {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .summary-icon {
+    margin: 1rem 0 0 0; /* move below text */
+  }
+
+  .summary-card h1 {
+    font-size: 2rem;
+  }
+
+  .summary-card p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .summary-card {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .summary-card h1 {
+    font-size: 1.7rem;
+  }
+
+  .summary-card p {
+    font-size: 0.9rem;
+  }
+
+  .summary-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .summary-icon i {
+    font-size: 1.5rem;
+  }
+
+  .stats-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .stats-card p {
+    font-size: 0.85rem;
+  }
+
+  .icon-box {
+    width: 50px;
+    height: 50px;
+  }
 }
 
 /* Custom backgrounds for icons */

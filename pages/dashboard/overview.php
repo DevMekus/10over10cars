@@ -6,13 +6,12 @@ require_once ROOT_PATH . '/includes/header.php';
 ?>
 
 <body id="Dashboard" class="overviewPage" data-role="<?= $role; ?>" data-userid="<?= $userid; ?>">
-    <div class="app">
-        <!-- Sidebar -->
+    <div class="app">        <!-- Sidebar -->
         <?php require_once "sidebar.php"; ?>
         <!-- Main area -->
         <div class="main">
             <?php require_once "navbar.php"; ?>
-            <main class="content ">
+            <main class="content">
                 <div class="dashboard">
                     <!-- Summary Header Card -->
                     <div class="summary-card" data-aos="fade-up">

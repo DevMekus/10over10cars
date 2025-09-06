@@ -19,7 +19,7 @@ require_once ROOT_PATH . '/includes/header.php';
                 </div>
 
                 <!-- VIN form -->
-                <section class="card" data-aos="fade-up">
+                <section class="brand-card" data-aos="fade-up">
                     <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
                         <div style="flex:1">
                             <div class="vin-wrap">
@@ -40,11 +40,11 @@ require_once ROOT_PATH . '/includes/header.php';
                 </section>
 
                 <!-- Results + sidebar -->
-                <section class="card result-grid" data-aos="fade-up">
+                <section class="brand-card result-grid" data-aos="fade-up">
                     <div>
                         <div id="noResult" class="muted">No verification yet — enter a VIN and click Verify.</div>
                         <div id="resultArea" style="display:none">
-                            <div class="vehicle-card card" style="margin-bottom:12px">
+                            <div class="vehicle-card" style="margin-bottom:12px">
                                 <div class="vehicle-media" id="vehMedia"></div>
                                 <div>
                                     <div style="display:flex;justify-content:space-between;align-items:center">
@@ -83,7 +83,7 @@ require_once ROOT_PATH . '/includes/header.php';
                                 </div>
                             </div>
 
-                            <div class="card" style="margin-bottom:12px"><strong>Verification details</strong>
+                            <div class="brand-card" style="margin-bottom:12px"><strong>Verification details</strong>
                                 <div id="rawDetails" class="muted small" style="margin-top:8px">Start verification to get all the available details of this car.</div>
                             </div>
 
@@ -94,14 +94,14 @@ require_once ROOT_PATH . '/includes/header.php';
                     </div>
 
                     <aside>
-                        <div class="card">
+                        <div class="brand-card">
                             <strong>Verification history (local)</strong>
                             <div class="muted small" style="margin-top:6px">Recent VIN lookups</div>
                             <div class="history-list" id="historyList" style="margin-top:10px"></div>
                             <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end"><button id="clearHistory" class="btn btn-sm btn-outline-accent btn-pill">Clear</button></div>
                         </div>
 
-                        <div class="card" style="margin-top:12px">
+                        <div class="brand-card" style="margin-top:12px">
                             <strong>Helpful tips</strong>
                             <div class="tips small muted" style="margin-top:8px">
                                 <div>• Always cross-check VIN characters: 0 (zero) vs O (letter O).</div>

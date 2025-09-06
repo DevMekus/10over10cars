@@ -343,6 +343,82 @@ require_once ROOT_PATH . '/includes/navbar.php';
         </div>
     </section>
 
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            const drawer = document.getElementById('mobile-drawer');
+            const icon = menuBtn.querySelector('i');
+
+            if (!menuBtn || !drawer) return;
+            menuBtn.setAttribute('type', 'button');
+
+            let isOpen = false;
+
+            function openDrawer() {
+                drawer.classList.add('open');
+                drawer.style.maxHeight = drawer.scrollHeight + 'px';
+                menuBtn.setAttribute('aria-expanded', 'true');
+                drawer.setAttribute('aria-hidden', 'false');
+                if (icon) icon.classList.replace('bi-list', 'bi-x');
+                isOpen = true;
+            }
+
+            function closeDrawer() {
+                drawer.style.maxHeight = drawer.scrollHeight + 'px'; // start from current height
+                drawer.offsetHeight; // force reflow
+                drawer.style.maxHeight = '0';
+                menuBtn.setAttribute('aria-expanded', 'false');
+                drawer.setAttribute('aria-hidden', 'true');
+                if (icon) icon.classList.replace('bi-x', 'bi-list');
+
+                // Remove .open after transition ends
+                drawer.addEventListener('transitionend', function handler(e) {
+                    if (e.propertyName === 'max-height') {
+                        drawer.classList.remove('open');
+                        drawer.style.maxHeight = '';
+                        drawer.removeEventListener('transitionend', handler);
+                    }
+                });
+
+                isOpen = false;
+            }
+
+            menuBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (!window.matchMedia('(max-width: 880px)').matches) return;
+
+                if (isOpen) closeDrawer();
+                else openDrawer();
+            });
+
+            // Close drawer when clicking any link inside
+            drawer.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.matchMedia('(max-width: 880px)').matches) closeDrawer();
+                });
+            });
+
+            // Keep drawer state consistent on resize
+            window.addEventListener('resize', () => {
+                if (!window.matchMedia('(max-width: 880px)').matches) {
+                    drawer.classList.remove('open');
+                    drawer.style.maxHeight = '';
+                    menuBtn.setAttribute('aria-expanded', 'false');
+                    if (icon) icon.classList.replace('bi-x', 'bi-list');
+                    isOpen = false;
+                } else {
+                    if (isOpen) drawer.style.maxHeight = drawer.scrollHeight + 'px';
+                    else drawer.style.maxHeight = '0';
+                }
+            });
+        });
+    </script>
+
+
+
+
+
     <?php require_once ROOT_PATH . '/includes/footer-links.php'; ?>
     <?php require_once ROOT_PATH . '/includes/footer.php'; ?>
     <script type="module" src="<?php echo BASE_URL; ?>assets/src/Pages/LandingPage.js"></script>

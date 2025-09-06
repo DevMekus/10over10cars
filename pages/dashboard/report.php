@@ -74,20 +74,17 @@ require_once ROOT_PATH . '/includes/header.php';
                 <section class="brand-card filters" data-aos="fade-up" aria-label="Report filters">
                     <input type="text" class="datepicker form-control" placeholder="Start date" id="fromDate" />
                     <input type="text" class="datepicker form-control" placeholder="End" id="toDate" />
-                    <div>
-                        <select id="reportType" class="select-tags">
-                            <option value="overview">Overview</option>
-                            <option value="verifications">Verifications</option>
-                            <option value="transactions">Transactions</option>
-                            <option value="dealers">Dealers</option>
-                            <option value="vehicles">Vehicles</option>
-                        </select>
-                    </div>
+                    <select id="reportType" class="select-tags">
+                        <option value="overview">Overview</option>
+                        <option value="verifications">Verifications</option>
+                        <option value="transactions">Transactions</option>
+                        <option value="dealers">Dealers</option>
+                        <option value="vehicles">Vehicles</option>
+                    </select>
                     <div style="margin-left:auto;display:flex;gap:8px;align-items:end">
-                        <button id="applyFilters" class="btn btn-sm btn-primary">Apply</button>
+                        <button id="applyFilters" class="btn btn-primary btn-pill">Apply</button>
                         <button id="resetFilters" class="btn btn-sm btn-ghost">Reset</button>
-                        <button id="exportCsv" class="btn btn-sm btn-ghost">Export CSV</button>
-                        <button id="exportPdf" class="btn btn-sm btn-ghost">Export PDF</button>
+
                     </div>
                 </section>
 

@@ -1,223 +1,216 @@
+/* ==========================================================================
+   Dashboard Styles
+   ========================================================================== */
+
+/* Root container */
 #Dashboard {
   margin: 0;
   height: 100%;
   color: var(--text);
   background: var(--bg);
-
-  /* layout */
-  .app {
-    display: flex;
-    min-height: 100vh;
-  }
-
-  .sidebar {
-    width: var(--sidebar-w);
-    background: var(--bg);
-    color: var(--text);
-    border-right: 1px solid rgba(15, 23, 36, 0.06);
-    padding: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 1000;
-
-    transition: transform 0.3s ease;
-  }
-
-  .sidebar a {
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  .brand {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
-
-  .mark {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    display: grid;
-    place-items: center;
-    color: #fff;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    font-weight: 800;
-  }
-
-  .nav {
-    margin-top: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .nav a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: var(--muted);
-  }
-
-  .nav a.active {
-    // background: linear-gradient(
-    //   90deg,
-    //   rgba(14, 165, 233, 0.08),
-    //   rgba(22, 163, 74, 0.06)
-    // );
-    background-color: var(--primary);
-    color: var(--text);
-    font-weight: 700;
-  }
-
-  .sidebar .account {
-    margin-top: auto;
-    padding-top: 8px;
-    border-top: 1px dashed rgba(0, 0, 0, 0.04);
-  }
-
-  .main {
-    margin-left: var(--sidebar-w);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .topbar {
-    height: 64px;
-    padding: 12px 20px;
-    border-bottom: 1px solid rgba(15, 23, 36, 0.06);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    background: var(--bg);
-    z-index: 20;
-  }
-
-  #themeToggle i {
-    color: var(--text);
-  }
-
-  .search {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    background: var(--bg);
-
-    padding: 8px;
-    border-radius: 10px;
-    width: 420px;
-  }
-
-  .content {
-    padding: 20px;
-    display: grid;
-    gap: 16px;
-  }
-
-  .card {
-    background: var(--bg);
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    padding: 14px;
-  }
-
-  .muted {
-    color: var(--muted);
-  }
-
-  .small {
-    font-size: 13px;
-  }
-
-  /* Filters and table */
-  .filters {
-    width: 100%;
-    position: relative;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 10px;
-  }
-
-  .filters select,
-  .filters input {
-    padding: 8px;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    max-width: 150px;
-  }
-
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-  }
-
-  .stat {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
-
-  .stat .badge {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    display: grid;
-    place-items: center;
-    color: var(--text-light);
-    font-weight: 800;
-  }
-
-  .status-pill {
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-weight: 700;
-  }
-
-  .s-success,
-  .approved {
-    background: rgba(16, 185, 129, 0.12);
-    color: var(--accent);
-  }
-
-  .s-pending,
-  .pending {
-    background: rgba(245, 158, 11, 0.08);
-    color: #b45309;
-  }
-
-  .s-failed,
-  .failed,
-  .suspended,
-  .rejected {
-    background: rgba(239, 68, 68, 0.08);
-    color: var(--danger);
-  }
-
-  .overview-activity {
-    display: grid;
-    grid-template-columns: 1fr 380px;
-    gap: 16px;
-  }
+  font-family: "Inter", sans-serif;
 }
 
+/* =========================
+   Layout
+   ========================= */
+#Dashboard .app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* =========================
+   Sidebar
+   ========================= */
+#Dashboard .sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg);
+  color: var(--text);
+  border-right: 1px solid rgba(15, 23, 36, 0.06);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+
+/* Sidebar links */
+#Dashboard .sidebar a {
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Brand section */
+#Dashboard .brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+#Dashboard .mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  font-weight: 800;
+}
+
+/* Navigation */
+#Dashboard .nav {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#Dashboard .nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  color: var(--muted);
+  transition: background 0.2s, color 0.2s;
+}
+
+#Dashboard .nav a.active {
+  background-color: var(--primary);
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Account section in sidebar */
+#Dashboard .sidebar .account {
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.04);
+}
+
+/* =========================
+   Main content
+   ========================= */
+#Dashboard .main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Topbar */
+#Dashboard .topbar {
+  height: 64px;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(15, 23, 36, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 20;
+}
+
+#Dashboard #themeToggle i {
+  color: var(--text);
+}
+
+/* Search bar */
+#Dashboard .search {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: var(--bg);
+  padding: 8px;
+  border-radius: 10px;
+  width: 420px;
+  min-width: 50%;
+}
+
+#Dashboard .search input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* =========================
+   Content
+   ========================= */
+#Dashboard .content {
+  padding: 20px;
+  display: grid;
+  gap: 16px;
+}
+
+/* Utility classes */
+#Dashboard .muted {
+  color: var(--muted);
+}
+
+#Dashboard .small {
+  font-size: 13px;
+}
+
+#Dashboard .status-pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+/* Status types */
+#Dashboard .s-success,
+#Dashboard .approved {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--accent);
+}
+
+#Dashboard .s-pending,
+#Dashboard .pending {
+  background: rgba(245, 158, 11, 0.08);
+  color: #b45309;
+}
+
+#Dashboard .s-failed,
+#Dashboard .failed,
+#Dashboard .suspended,
+#Dashboard .rejected {
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--danger);
+}
+
+/* Overview Activity Layout */
+#Dashboard .overview-activity {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 16px;
+}
+
+#menuBtn {
+  display: none;
+}
+
+/* =========================
+   Responsive Design
+   ========================= */
+
+/* Medium screens */
 @media (max-width: 900px) {
   #Dashboard .sidebar {
     transform: translateX(-110%);
     position: fixed;
+  }
+
+  #menuBtn {
+    display: block;
   }
 
   #Dashboard .sidebar.open {
@@ -232,215 +225,208 @@
     width: 200px;
   }
 
-  .overview-activity {
+  #Dashboard .overview-activity {
     display: flex;
     flex-wrap: wrap;
   }
 }
 
+/* Small screens */
 @media (max-width: 560px) {
+  #Dashboard .topbar {
+    width: 100%;
+    position: relative;
+  }
+
   #Dashboard .topbar .search {
     width: 100%;
+  }
+
+  #menuBtn {
+    display: block;
   }
 
   #Dashboard .topbar .search input {
     width: 100%;
   }
 
+  .user-name {
+    display: none;
+  }
+
+  /* Hide less important table columns */
   #Dashboard thead th:nth-child(3),
   #Dashboard tbody td:nth-child(3) {
     display: none;
   }
-}
 
-.overviewPage {
-  .icon-btn {
-    background: transparent;
-    border: none;
-    padding: 8px;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-
-  .grid-4 {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-
-  .grid-3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-
-  .card {
-    background: var(--bg);
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-  }
-
-  .stat {
-    font-size: 20px;
-    font-weight: 800;
-  }
-
-  /* tables */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  thead th {
-    text-align: left;
-    padding: 10px 8px;
-    color: var(--muted);
-    font-weight: 600;
-    font-size: 13px;
-  }
-
-  tbody td {
-    padding: 10px 8px;
-    border-top: 1px solid rgba(15, 23, 36, 0.04);
-    vertical-align: middle;
-  }
-
-  .status-pill {
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-weight: 700;
-    font-size: 13px;
-  }
-
-  .status-green {
-    background: rgba(16, 185, 129, 0.12);
-    color: var(--accent);
-  }
-
-  .status-amber {
-    background: rgba(245, 158, 11, 0.08);
-    color: #b45309;
-  }
-
-  .status-red {
-    background: rgba(239, 68, 68, 0.08);
-    color: var(--danger);
-  }
-
-  .status-success {
-    background: rgba(16, 185, 129, 0.12);
-    color: var(--accent);
-  }
-
-  .status-pending {
-    background: rgba(245, 158, 11, 0.08);
-    color: var(--danger);
-  }
-
-  /* vehicles grid */
-  .vehicles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 12px;
-  }
-
-  .vehicle-card {
-    background: var(--surface);
-    border-radius: 12px;
-    border: 1px solid rgba(15, 23, 36, 0.04);
-    overflow: hidden;
+  #Dashboard .content {
+    padding: 10px;
     display: flex;
     flex-direction: column;
-  }
-
-  .vehicle-media {
-    height: 160px;
-    background: #f0f2f5;
-    display: grid;
-    place-items: center;
-  }
-
-  .vehicle-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .vehicle-body {
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .vehicle-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  /* responsive */
-  @media (max-width: 1100px) {
-    .grid-4 {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .grid-3 {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    gap: 10px;
   }
 }
+
+/* Filters Container */
+.brand-card.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  background: var(--bg-alt);
+  border-radius: 12px;
+  align-items: center;
+}
+
+/* Individual filter items */
+.brand-card.filters .filter-item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input & Select full width */
+.brand-card.filters .form-control,
+.brand-card.filters .select-tags {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.brand-card.filters .select-tags {
+  position: relative;
+  z-index: 100; /* higher than other elements */
+}
+
+/* Button styling */
+.brand-card.filters .action-btn .btn {
+  width: 100%;
+  padding: 10px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .brand-card.filters {
+    grid-template-columns: 1fr; /* stack all inputs vertically */
+  }
+}
+
+/* Overlay default hidden */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 900; /* below the sidebar (1000) */
+}
+
+/* Show overlay */
+#overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+// .verificationPage {
+//   /* pagination */
+//   .pager {
+//     display: flex;
+//     gap: 8px;
+//     align-items: center;
+//     justify-content: center;
+//     padding: 12px;
+//   }
+
+//   .modal {
+//     position: fixed;
+//     inset: 0;
+//     display: none;
+//     align-items: center;
+//     justify-content: center;
+//     background: rgba(2, 6, 23, 0.5);
+//     z-index: 2000;
+//     padding: 20px;
+//   }
+
+//   .modal.open {
+//     display: flex;
+//   }
+
+//   .modal-card {
+//     width: 100%;
+//     max-width: 980px;
+//     background: var(--surface);
+//     border-radius: 12px;
+//     padding: 16px;
+//     box-shadow: var(--shadow);
+//     max-height: 90vh;
+//     overflow: auto;
+//   }
+
+//   .modal-grid {
+//     display: grid;
+//     grid-template-columns: 380px 1fr;
+//     gap: 12px;
+//   }
+
+//   .vehicle-media {
+//     height: 240px;
+//     background: #f0f2f5;
+//     display: grid;
+//     place-items: center;
+//     border-radius: 8px;
+//     overflow: hidden;
+//   }
+
+//   .vehicle-media img {
+//     width: 100%;
+//     height: 100%;
+//     object-fit: cover;
+//   }
+// }
+
+/* ==========================================================================
+   Verification Page Styles
+   Description: Styles for the verification page including modals, grids,
+                vehicle media, and pagination.
+   ========================================================================== */
 
 .verificationPage {
-  .controls {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .small {
-    font-size: 13px;
-  }
-
-  .status-pill {
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-weight: 700;
-  }
-
-  /* filters row */
-  .filters {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  /* pagination */
+  /* ===================== Pagination Styles ===================== */
   .pager {
     display: flex;
     gap: 8px;
     align-items: center;
     justify-content: center;
     padding: 12px;
+    flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
   }
 
+  /* ===================== Modal Styles ===================== */
   .modal {
     position: fixed;
     inset: 0;
-    display: none;
+    display: none; /* Hidden by default */
     align-items: center;
     justify-content: center;
-    background: rgba(2, 6, 23, 0.5);
+    background: rgba(2, 6, 23, 0.5); /* Semi-transparent overlay */
     z-index: 2000;
     padding: 20px;
+    overflow-y: auto; /* Allows scrolling if modal content exceeds viewport */
   }
 
   .modal.open {
-    display: flex;
+    display: flex; /* Show modal when 'open' class is added */
   }
 
+  /* ===================== Modal Card ===================== */
   .modal-card {
     width: 100%;
     max-width: 980px;
@@ -449,15 +435,17 @@
     padding: 16px;
     box-shadow: var(--shadow);
     max-height: 90vh;
-    overflow: auto;
+    overflow: auto; /* Scroll inside the card if content is too tall */
   }
 
+  /* ===================== Modal Grid Layout ===================== */
   .modal-grid {
     display: grid;
-    grid-template-columns: 380px 1fr;
+    grid-template-columns: 380px 1fr; /* Two-column layout */
     gap: 12px;
   }
 
+  /* ===================== Vehicle Media ===================== */
   .vehicle-media {
     height: 240px;
     background: #f0f2f5;
@@ -470,7 +458,29 @@
   .vehicle-media img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* Ensures image fills container without distortion */
+  }
+
+  /* ===================== Responsive Styles ===================== */
+  @media (max-width: 768px) {
+    .modal-grid {
+      grid-template-columns: 1fr; /* Stack columns on smaller screens */
+    }
+
+    .vehicle-media {
+      height: 180px; /* Reduce height for mobile */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pager {
+      gap: 4px;
+      padding: 8px;
+    }
+
+    .modal-card {
+      padding: 12px;
+    }
   }
 }
 

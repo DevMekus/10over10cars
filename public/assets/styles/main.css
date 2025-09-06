@@ -475,6 +475,26 @@ a {
   cursor: pointer;
 }
 
+.toast-wrap {
+  position: fixed;
+  right: 18px;
+  top: 18px;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background: var(--bg);
+  padding: 10px 12px;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(2, 6, 23, 0.12);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 @media (prefers-color-scheme: dark) {
   .empty-state {
     --bg: #0b0f14;
@@ -1217,10 +1237,12 @@ select {
   align-items: center;
   justify-content: center;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  margin-left: auto; /* align right on desktop */
 }
 
 .summary-icon i {
   color: var(--accent);
+  font-size: 1.8rem;
 }
 
 /* ===== Stat Cards Grid ===== */
@@ -1228,6 +1250,7 @@ select {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
+  margin-top: 2rem;
 }
 
 .stats-card {
@@ -1261,14 +1284,62 @@ select {
   font-size: 1.8rem;
   font-weight: 600;
   margin: 0.2rem 0;
+  text-align: center;
 }
 
 .stats-card p {
   margin: 0;
   font-size: 0.95rem;
   color: #555;
+  text-align: center;
 }
 
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 900px) {
+  .summary-card {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .summary-icon {
+    margin: 1rem 0 0 0; /* move below text */
+  }
+  .summary-card h1 {
+    font-size: 2rem;
+  }
+  .summary-card p {
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 640px) {
+  .summary-card {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+  .summary-card h1 {
+    font-size: 1.7rem;
+  }
+  .summary-card p {
+    font-size: 0.9rem;
+  }
+  .summary-icon {
+    width: 50px;
+    height: 50px;
+  }
+  .summary-icon i {
+    font-size: 1.5rem;
+  }
+  .stats-card h3 {
+    font-size: 1.5rem;
+  }
+  .stats-card p {
+    font-size: 0.85rem;
+  }
+  .icon-box {
+    width: 50px;
+    height: 50px;
+  }
+}
 /* Custom backgrounds for icons */
 .bg-primary {
   background: var(--primary);
@@ -1494,6 +1565,7 @@ select {
   display: none;
 }
 
+/* Hidden on desktop */
 #mobile-drawer {
   display: none;
 }
@@ -1505,17 +1577,18 @@ select {
   .mobile-menu-btn {
     display: inline-flex;
   }
-  .mobile-drawer {
+  #mobile-drawer {
     display: block;
-    max-height: 0;
+    max-height: 0; /* collapsed by default */
     overflow: hidden;
     transition: max-height 0.3s ease;
     border-top: 1px solid var(--border);
   }
-  .mobile-drawer.open {
-    max-height: 420px;
+  /* remove hard max-height from .open */
+  #mobile-drawer.open {
+    z-index: 5;
   }
-  .mobile-drawer a {
+  #mobile-drawer a {
     display: block;
     padding: 14px 2px;
     border-bottom: 1px dashed var(--border);
@@ -2017,6 +2090,12 @@ select {
   /* Accordion */
   /* CTA Band */
   /* Footer */
+  /* Footer */
+  /* Grid layout */
+  /* Footer column links */
+  /* Newsletter section */
+  /* Copyright */
+  /* Responsive adjustments */
   /* Utilities */
 }
 #LANDINGPAGE .hero {
@@ -2134,6 +2213,11 @@ select {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
+}
+#LANDINGPAGE #pricing-title,
+#LANDINGPAGE #section-sub,
+#LANDINGPAGE .section-sub {
+  color: var(--text);
 }
 #LANDINGPAGE .price-card {
   padding: 22px;
@@ -2276,7 +2360,7 @@ select {
   color: #d1d5db;
 }
 #LANDINGPAGE footer .container {
-  padding: 40px 0;
+  padding: 40px 20px; /* add some horizontal padding for small screens */
 }
 #LANDINGPAGE .footer-grid {
   display: grid;
@@ -2287,11 +2371,17 @@ select {
   color: #cbd5e1;
   display: block;
   padding: 6px 0;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+#LANDINGPAGE .footer-col a:hover {
+  color: #fff;
 }
 #LANDINGPAGE .newsletter {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  margin-top: 12px;
 }
 #LANDINGPAGE .newsletter input {
   flex: 1 1 260px;
@@ -2307,6 +2397,24 @@ select {
   padding: 16px 0;
   text-align: center;
   color: #94a3b8;
+  font-size: 14px;
+}
+@media (max-width: 1024px) {
+  #LANDINGPAGE .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  #LANDINGPAGE .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  #LANDINGPAGE .newsletter {
+    flex-direction: column;
+  }
+  #LANDINGPAGE .newsletter input {
+    width: 100%;
+  }
 }
 #LANDINGPAGE .hidden {
   display: none !important;
@@ -2354,7 +2462,10 @@ select {
   margin: auto;
 }
 
-.carDetailsPage .container_ {
+.carDetailsPage {
+  /* Responsive adjustments */
+}
+.carDetailsPage .carDetailsPage .container_ {
   max-width: 1200px;
   margin: 40px auto;
   padding: 20px;
@@ -2363,7 +2474,7 @@ select {
   gap: 24px;
 }
 .carDetailsPage .car-gallery {
-  background: #fff;
+  background: var(--bg);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -2417,6 +2528,9 @@ select {
   overflow-x: auto;
   background: #fafafa;
 }
+.carDetailsPage #carTitle {
+  color: var(--text);
+}
 .carDetailsPage .thumbnails img {
   width: 80px;
   height: 60px;
@@ -2433,7 +2547,7 @@ select {
   border-color: #007bff;
 }
 .carDetailsPage .car-info {
-  background: #fff;
+  background: var(--bg);
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -2445,6 +2559,7 @@ select {
   margin: 0;
   font-size: 26px;
   font-weight: 600;
+  color: var(--text);
 }
 .carDetailsPage .car-meta {
   color: #555;
@@ -2458,14 +2573,46 @@ select {
 .carDetailsPage .actions {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
   margin-top: auto;
 }
-@media (max-width: 900px) {
-  .carDetailsPage .container {
+@media (max-width: 1024px) {
+  .carDetailsPage .carDetailsPage .container_ {
     grid-template-columns: 1fr;
   }
   .carDetailsPage .carousel-main {
     height: 300px;
+  }
+  .carDetailsPage .thumbnails img {
+    width: 70px;
+    height: 50px;
+  }
+  .carDetailsPage .car-info h2 {
+    font-size: 22px;
+  }
+  .carDetailsPage .car-price {
+    font-size: 22px;
+  }
+}
+@media (max-width: 640px) {
+  .carDetailsPage .carousel-main {
+    height: 220px;
+  }
+  .carDetailsPage .thumbnails img {
+    width: 60px;
+    height: 45px;
+  }
+  .carDetailsPage .car-info h2 {
+    font-size: 20px;
+  }
+  .carDetailsPage .car-price {
+    font-size: 20px;
+  }
+  .carDetailsPage .actions {
+    flex-direction: column;
+  }
+  .carDetailsPage .car-gallery {
+    margin: 10px 0px;
   }
 }
 
@@ -2784,18 +2931,29 @@ select {
     height: 160px;
   }
 }
+/* ==========================================================================
+   Dashboard Styles
+   ========================================================================== */
+/* Root container */
 #Dashboard {
   margin: 0;
   height: 100%;
   color: var(--text);
   background: var(--bg);
-  /* layout */
-  /* Filters and table */
+  font-family: "Inter", sans-serif;
 }
+
+/* =========================
+   Layout
+   ========================= */
 #Dashboard .app {
   display: flex;
   min-height: 100vh;
 }
+
+/* =========================
+   Sidebar
+   ========================= */
 #Dashboard .sidebar {
   width: var(--sidebar-w);
   background: var(--bg);
@@ -2812,15 +2970,21 @@ select {
   z-index: 1000;
   transition: transform 0.3s ease;
 }
+
+/* Sidebar links */
 #Dashboard .sidebar a {
   font-size: 16px;
   font-weight: 600;
+  text-decoration: none;
 }
+
+/* Brand section */
 #Dashboard .brand {
   display: flex;
   gap: 12px;
   align-items: center;
 }
+
 #Dashboard .mark {
   width: 44px;
   height: 44px;
@@ -2831,37 +2995,49 @@ select {
   background: linear-gradient(135deg, var(--primary), var(--accent));
   font-weight: 800;
 }
+
+/* Navigation */
 #Dashboard .nav {
   margin-top: 12px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
+
 #Dashboard .nav a {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px;
   border-radius: 10px;
-  text-decoration: none;
   color: var(--muted);
+  transition: background 0.2s, color 0.2s;
 }
+
 #Dashboard .nav a.active {
   background-color: var(--primary);
   color: var(--text);
   font-weight: 700;
 }
+
+/* Account section in sidebar */
 #Dashboard .sidebar .account {
   margin-top: auto;
   padding-top: 8px;
   border-top: 1px dashed rgba(0, 0, 0, 0.04);
 }
+
+/* =========================
+   Main content
+   ========================= */
 #Dashboard .main {
   margin-left: var(--sidebar-w);
   flex: 1;
   display: flex;
   flex-direction: column;
 }
+
+/* Topbar */
 #Dashboard .topbar {
   height: 64px;
   padding: 12px 20px;
@@ -2874,9 +3050,12 @@ select {
   background: var(--bg);
   z-index: 20;
 }
+
 #Dashboard #themeToggle i {
   color: var(--text);
 }
+
+/* Search bar */
 #Dashboard .search {
   display: flex;
   gap: 8px;
@@ -2885,74 +3064,53 @@ select {
   padding: 8px;
   border-radius: 10px;
   width: 420px;
+  min-width: 50%;
 }
+
+#Dashboard .search input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* =========================
+   Content
+   ========================= */
 #Dashboard .content {
   padding: 20px;
   display: grid;
   gap: 16px;
 }
-#Dashboard .card {
-  background: var(--bg);
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  padding: 14px;
-}
+
+/* Utility classes */
 #Dashboard .muted {
   color: var(--muted);
 }
+
 #Dashboard .small {
   font-size: 13px;
 }
-#Dashboard .filters {
-  width: 100%;
-  position: relative;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-  padding: 10px;
-}
-#Dashboard .filters select,
-#Dashboard .filters input {
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  max-width: 150px;
-}
-#Dashboard .stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
-}
-#Dashboard .stat {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-#Dashboard .stat .badge {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  color: var(--text-light);
-  font-weight: 800;
-}
+
 #Dashboard .status-pill {
   padding: 6px 10px;
   border-radius: 999px;
   font-weight: 700;
 }
+
+/* Status types */
 #Dashboard .s-success,
 #Dashboard .approved {
   background: rgba(16, 185, 129, 0.12);
   color: var(--accent);
 }
+
 #Dashboard .s-pending,
 #Dashboard .pending {
   background: rgba(245, 158, 11, 0.08);
   color: #b45309;
 }
+
 #Dashboard .s-failed,
 #Dashboard .failed,
 #Dashboard .suspended,
@@ -2960,16 +3118,29 @@ select {
   background: rgba(239, 68, 68, 0.08);
   color: var(--danger);
 }
+
+/* Overview Activity Layout */
 #Dashboard .overview-activity {
   display: grid;
   grid-template-columns: 1fr 380px;
   gap: 16px;
 }
 
+#menuBtn {
+  display: none;
+}
+
+/* =========================
+   Responsive Design
+   ========================= */
+/* Medium screens */
 @media (max-width: 900px) {
   #Dashboard .sidebar {
     transform: translateX(-110%);
     position: fixed;
+  }
+  #menuBtn {
+    display: block;
   }
   #Dashboard .sidebar.open {
     transform: translateX(0);
@@ -2980,164 +3151,120 @@ select {
   #Dashboard .topbar .search {
     width: 200px;
   }
-  .overview-activity {
+  #Dashboard .overview-activity {
     display: flex;
     flex-wrap: wrap;
   }
 }
+/* Small screens */
 @media (max-width: 560px) {
+  #Dashboard .topbar {
+    width: 100%;
+    position: relative;
+  }
   #Dashboard .topbar .search {
     width: 100%;
+  }
+  #menuBtn {
+    display: block;
   }
   #Dashboard .topbar .search input {
     width: 100%;
   }
+  .user-name {
+    display: none;
+  }
+  /* Hide less important table columns */
   #Dashboard thead th:nth-child(3),
   #Dashboard tbody td:nth-child(3) {
     display: none;
   }
+  #Dashboard .content {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 }
-.overviewPage {
-  /* tables */
-  /* vehicles grid */
-  /* responsive */
-}
-.overviewPage .icon-btn {
-  background: transparent;
-  border: none;
-  padding: 8px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-.overviewPage .grid-4 {
+/* Filters Container */
+.brand-card.filters {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
-.overviewPage .grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-.overviewPage .card {
-  background: var(--bg);
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-}
-.overviewPage .stat {
-  font-size: 20px;
-  font-weight: 800;
-}
-.overviewPage table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.overviewPage thead th {
-  text-align: left;
-  padding: 10px 8px;
-  color: var(--muted);
-  font-weight: 600;
-  font-size: 13px;
-}
-.overviewPage tbody td {
-  padding: 10px 8px;
-  border-top: 1px solid rgba(15, 23, 36, 0.04);
-  vertical-align: middle;
-}
-.overviewPage .status-pill {
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 13px;
-}
-.overviewPage .status-green {
-  background: rgba(16, 185, 129, 0.12);
-  color: var(--accent);
-}
-.overviewPage .status-amber {
-  background: rgba(245, 158, 11, 0.08);
-  color: #b45309;
-}
-.overviewPage .status-red {
-  background: rgba(239, 68, 68, 0.08);
-  color: var(--danger);
-}
-.overviewPage .status-success {
-  background: rgba(16, 185, 129, 0.12);
-  color: var(--accent);
-}
-.overviewPage .status-pending {
-  background: rgba(245, 158, 11, 0.08);
-  color: var(--danger);
-}
-.overviewPage .vehicles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 12px;
-}
-.overviewPage .vehicle-card {
-  background: var(--surface);
+  padding: 16px;
+  background: var(--bg-alt);
   border-radius: 12px;
-  border: 1px solid rgba(15, 23, 36, 0.04);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-.overviewPage .vehicle-media {
-  height: 160px;
-  background: #f0f2f5;
-  display: grid;
-  place-items: center;
-}
-.overviewPage .vehicle-media img {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-.overviewPage .vehicle-body {
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.overviewPage .vehicle-meta {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-}
-@media (max-width: 1100px) {
-  .overviewPage .grid-4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .overviewPage .grid-3 {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
+/* Individual filter items */
+.brand-card.filters .filter-item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input & Select full width */
+.brand-card.filters .form-control,
+.brand-card.filters .select-tags {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.brand-card.filters .select-tags {
+  position: relative;
+  z-index: 100; /* higher than other elements */
+}
+
+/* Button styling */
+.brand-card.filters .action-btn .btn, .brand-card.filters .action-btn .default-form input[type=submit], .default-form .brand-card.filters .action-btn input[type=submit],
+.brand-card.filters .action-btn .default-form input[type=reset],
+.default-form .brand-card.filters .action-btn input[type=reset] {
+  width: 100%;
+  padding: 10px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .brand-card.filters {
+    grid-template-columns: 1fr; /* stack all inputs vertically */
+  }
+}
+/* Overlay default hidden */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 900; /* below the sidebar (1000) */
+}
+
+/* Show overlay */
+#overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ==========================================================================
+   Verification Page Styles
+   Description: Styles for the verification page including modals, grids,
+                vehicle media, and pagination.
+   ========================================================================== */
 .verificationPage {
-  /* filters row */
-  /* pagination */
-}
-.verificationPage .controls {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.verificationPage .small {
-  font-size: 13px;
-}
-.verificationPage .status-pill {
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-weight: 700;
-}
-.verificationPage .filters {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items: center;
+  /* ===================== Pagination Styles ===================== */
+  /* ===================== Modal Styles ===================== */
+  /* ===================== Modal Card ===================== */
+  /* ===================== Modal Grid Layout ===================== */
+  /* ===================== Vehicle Media ===================== */
+  /* ===================== Responsive Styles ===================== */
 }
 .verificationPage .pager {
   display: flex;
@@ -3145,19 +3272,21 @@ select {
   align-items: center;
   justify-content: center;
   padding: 12px;
+  flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
 }
 .verificationPage .modal {
   position: fixed;
   inset: 0;
-  display: none;
+  display: none; /* Hidden by default */
   align-items: center;
   justify-content: center;
-  background: rgba(2, 6, 23, 0.5);
+  background: rgba(2, 6, 23, 0.5); /* Semi-transparent overlay */
   z-index: 2000;
   padding: 20px;
+  overflow-y: auto; /* Allows scrolling if modal content exceeds viewport */
 }
 .verificationPage .modal.open {
-  display: flex;
+  display: flex; /* Show modal when 'open' class is added */
 }
 .verificationPage .modal-card {
   width: 100%;
@@ -3167,11 +3296,11 @@ select {
   padding: 16px;
   box-shadow: var(--shadow);
   max-height: 90vh;
-  overflow: auto;
+  overflow: auto; /* Scroll inside the card if content is too tall */
 }
 .verificationPage .modal-grid {
   display: grid;
-  grid-template-columns: 380px 1fr;
+  grid-template-columns: 380px 1fr; /* Two-column layout */
   gap: 12px;
 }
 .verificationPage .vehicle-media {
@@ -3186,7 +3315,24 @@ select {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
-     object-fit: cover;
+     object-fit: cover; /* Ensures image fills container without distortion */
+}
+@media (max-width: 768px) {
+  .verificationPage .modal-grid {
+    grid-template-columns: 1fr; /* Stack columns on smaller screens */
+  }
+  .verificationPage .vehicle-media {
+    height: 180px; /* Reduce height for mobile */
+  }
+}
+@media (max-width: 480px) {
+  .verificationPage .pager {
+    gap: 4px;
+    padding: 8px;
+  }
+  .verificationPage .modal-card {
+    padding: 12px;
+  }
 }
 
 .userVerify {

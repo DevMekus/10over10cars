@@ -1,10 +1,10 @@
-import { CONFIG } from "../Utils/config";
-import { fetchEncryptionKey } from "../Utils/Session";
-import PaystackPayment from "./Paystack";
-import Utility from "./Utility";
-import { DataTransfer } from "../Utils/api";
+import { CONFIG } from "../Utils/config.js";
+import { fetchEncryptionKey } from "../Utils/Session.js";
+import Paystack from "./Paystack.js";
+import Utility from "./Utility.js";
+import { DataTransfer } from "../Utils/api.js";
 /**
- * PaymentChannel.js
+ *
  *
  * Handles payments through Paystack.
  * Integrates with Utility, Session, and API helpers for
@@ -13,7 +13,7 @@ import { DataTransfer } from "../Utils/api";
  * Dependencies:
  *  - CONFIG: Global configuration values.
  *  - fetchEncryptionKey: Retrieves encryption keys for secure transactions.
- *  - PaystackPayment: Wrapper for Paystack SDK integration.
+ *  - Paystack: Wrapper for Paystack SDK integration.
  *  - Utility: Provides UI helpers (confirmation, toasts, etc.).
  *  - DataTransfer: Handles API communication.
  */
@@ -64,7 +64,7 @@ export default class PaymentChannel {
       Utility.toast("Please wait...", "info");
 
       // Initialize Paystack payment
-      const paystack = new PaystackPayment({
+      const paystack = new Paystack({
         publicKey: getKey.PAYSTACK_PK,
       });
 
