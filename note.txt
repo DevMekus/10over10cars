@@ -1,7 +1,0 @@
-JWT_SECRET=d10b86de4e86d5f6636b96f041f10ded5346a6c760d8d981a6690fbef7c87132
-
-DB_HOST=localhost
-DB_NAME=overtendb
-DB_USERNAME=root
-DB_PASSWORD="g&n!Ch#-ed50+NT,"  
-EMAIL_ADDRESS=support@impruuvsystems.com
